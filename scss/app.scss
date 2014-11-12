@@ -38,3 +38,42 @@
 //   "foundation/components/type",
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
+
+section {
+  padding:1rem 0;
+}
+section#info,
+section#save {
+  background-color:#EFEFEF;
+}
+pre {
+  overflow:scroll;
+  background-color:#222;
+  color:#AAA;
+  padding:1rem;
+}
+textarea {
+  min-height:15rem;
+}
+#message {
+  width:100%;
+  padding:1rem;
+  text-align:center;
+}
+section#info input,
+section#info a {
+  display:inline;
+}
+section#info input {
+  font-size:.75rem;
+  padding-left: .1rem;
+  height:1rem;
+  width:5rem;
+}
+section#info #save_dir {
+  font-size:.75rem;
+  font-family:"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  color:#AAA;
+  display: inline-block;
+  padding: 0 .1rem 0 0;
+}
