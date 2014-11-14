@@ -5,9 +5,13 @@ app.service( 'sparql', function( $http, $q ) {
 		search: search
 	});
 	
+	function query_url() {
+		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' )+'/query';
+	}
+	
 	// Update data on server
-	function search( scope ) {
-		var request = get( scope.config.query, scope.search );
+	function search( search ) {
+		var request = get( query_url(), search );
 		return( request.then( 
 			function( r ) { return r.data.results.bindings  },
 			function( r ){ return r }

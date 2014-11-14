@@ -24,6 +24,14 @@ app.config(['$routeProvider',
 			templateUrl: 'partials/collection.html',
 			controller: 'CollectionCtrl'
 		}).
+		when('/annotations', {
+			templateUrl: 'partials/annotation-list.html',
+			controller: 'AnnotationListCtrl'
+		}).
+		when('/annotations/:annotationId', {
+			templateUrl: 'partials/annotation.html',
+			controller: 'AnnotationCtrl'
+		}).
 		when('/home', {
 			templateUrl: 'partials/home.html',
 			controller: 'HomeCtrl'

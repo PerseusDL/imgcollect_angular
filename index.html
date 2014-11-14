@@ -8,6 +8,17 @@
     <script src="bower_components/modernizr/modernizr.js"></script>
   </head>
   <body id='content'>
+	  
+	<!-- Main Nav -->
+	<h3 ng-controller="UserCtrl">{{ user }}</h3>
+	<ul class="button-group">
+		<li><a href="#/home" class="button secondary tiny selected">Home</a></li>
+		<li><a href="#/images" class="button secondary tiny">Images</a></li>
+		<li><a href="#/collections" class="button secondary tiny">Collections</a></li>
+		<li><a href="#/annotations" class="button secondary tiny">Annotations</a></li>
+	</ul>
+	
+	<!-- Views -->
     <div ng-view></div>
 	
 	<!-- Library -->
