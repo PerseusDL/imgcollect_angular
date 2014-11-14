@@ -9,9 +9,13 @@ app.service( 'json', function( $http, $q ) {
 		urn: urn
 	});
 	
+	function host() {
+		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' );
+	}
+	
 	// Retrieve a JSON file by URN
-	function urn( scope ) {
-		var request = api( 'GET', scope.urn_url );
+	function urn( urn ) {
+		var request = api( 'GET', host()+'/src?urn='+urn );
 		return( request.then( 
 			success, 
 			error 
@@ -19,17 +23,17 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// Create a new JSON file if it doesn't already exist.
-	function post( scope ) {
-		var request = api( 'POST', scope.save_url, scope.data );
+	function post( url, data ) {
+		var request = api( 'POST', url, data );
 		return( request.then(
 			success, 
-			function( r ){ return put( scope ) } 
+			function( r ){ return put( url, data ) } 
 		));
 	}
 	
 	// Update data on server
-	function put( scope ) {
-		var request = api( 'PUT', scope.save_url, scope.data );
+	function put( url, data ) {
+		var request = api( 'PUT', url, data );
 		return( request.then( 
 			success, 
 			error 
@@ -37,8 +41,8 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// GET the JSON
-	function get( scope ) {
-		var request = api( 'GET', scope.save_url );
+	function get( url ) {
+		var request = api( 'GET', url );
 		return( request.then( 
 			success, 
 			error 
@@ -46,8 +50,8 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// Run the ls command
-	function ls( scope ) {
-		var request = api( 'GET', scope.save_dir+"?cmd=ls" );
+	function ls( url ) {
+		var request = api( 'GET', url+"?cmd=ls" );
 		return( request.then(
 			success,
 			error

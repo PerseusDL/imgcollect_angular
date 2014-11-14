@@ -12,15 +12,15 @@ app.config(['$routeProvider',
 			templateUrl: 'partials/image-list.html',
 			controller: 'ImageListCtrl'
 		}).
-		when('/images/:imageId', {
+		when('/image/:urn', {
 			templateUrl: 'partials/image.html',
 			controller: 'ImageCtrl'
 		}).
-		when('/collections', {
+		when('/collections/:page', {
 			templateUrl: 'partials/collection-list.html',
 			controller: 'CollectionListCtrl'
 		}).
-		when('/collections/:collectionId', {
+		when('/collection/:urn', {
 			templateUrl: 'partials/collection.html',
 			controller: 'CollectionCtrl'
 		}).
@@ -28,7 +28,7 @@ app.config(['$routeProvider',
 			templateUrl: 'partials/annotation-list.html',
 			controller: 'AnnotationListCtrl'
 		}).
-		when('/annotations/:annotationId', {
+		when('/annotation/:urn', {
 			templateUrl: 'partials/annotation.html',
 			controller: 'AnnotationCtrl'
 		}).

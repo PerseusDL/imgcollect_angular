@@ -12,14 +12,17 @@ appControllers.controller('ImageCtrl', ['$scope','json','sparql',
 	}
 ]);
 
-appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
-	function($scope, json, sparql){
+// Collection List
+appControllers.controller('CollectionListCtrl', ['$scope','sparql','$routeParams',
+	function($scope, sparql, $routeParams){
 		$scope.title = "Collection List";
 		$scope.order = "?time";
 		$scope.limit = "10";
-		$scope.page = 0;
+		$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
 		$scope.list = null;
-		
+		$scope.pages = null;
+		$scope.keys = [ 'urn','label','desc','user','time' ]
+
 		function prefix() {
 		return "\
 		PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
@@ -31,7 +34,7 @@ appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
 		return "\
 		ORDER BY DESC( "+$scope.order+" )\
 		LIMIT "+$scope.limit+"\
-		OFFSET "+$scope.limit*$scope.page+"\
+		OFFSET "+$scope.limit*($scope.page-1)+"\
 		";
 		}
 		
@@ -62,6 +65,9 @@ appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
 			return sparql.search( query ).then(
 				function( data ) {
 					$scope.count = data[0]['.1'].value;
+					$scope.pages = Math.ceil( $scope.count / $scope.limit );
+					$scope.prev = ( $scope.page > 1 ) ? true : false;
+					$scope.next = ( $scope.page < $scope.pages ) ? true : false;
 				}
 			)
 		}
@@ -74,9 +80,33 @@ appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
 	}
 ]);
 
-appControllers.controller('CollectionCtrl', ['$scope','json','sparql',
-	function($scope){	
+// Collection
+appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routeParams',
+	function($scope, json, sparql, $routeParams){
 		$scope.title = "Collection";
+		$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+		$scope.src = null;
+		$scope.json = [];
+		
+		function src() {
+			json.urn( $scope.urn ).then( function(data){
+				$scope.src = data.src;
+				get();
+			});
+		}
+		
+		function get() {
+			for ( var i=0; i < $scope.src.length; i++ ) {
+				json.get( $scope.src[i] ).then( function(data){
+					$scope.json.push( data );
+				});
+			}
+		}
+		
+		function init() {
+			src();
+		}
+		init();
 	}
 ]);
 

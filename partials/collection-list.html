@@ -1,13 +1,31 @@
+<!-- Info -->
 <div>{{ title }}</div>
+<div>limit: {{ limit }}</div>
 <div>count: {{ count }}</div>
+<div>pages: {{ pages }}</div>
 <div>page: {{ page }}</div>
+
+<!-- Collections -->
 <ul class="collections">
   <li ng-repeat="item in list">
     <table>
-	  <tr ng-repeat="(key,prop) in item">
+	  <tr ng-repeat="key in keys" ng-switch on="key">
 		<th>{{ key }}</th>
-		<td>{{ prop.value }}</td>
+		<!-- urn -->
+		<td ng-switch-when="urn">
+			<a href="#/collection/{{ item[key].value }}">{{ item[key].value }}</a>
+		</td>
+		<!-- user -->
+		<td ng-switch-when="user">
+			<a href="{{ item[key].value }}">{{ item[key].value }}</a>
+		</td>
+		<!-- default -->
+		<td ng-switch-default>{{ item[key].value }}</td>
 	  </tr>
 	</table>
   </li>
 </ul>
+
+<!-- Pagination -->
+<a class="button secondary" ng-show="prev" href="#/collections/{{ page-1 }}">Previous</a>
+<a class="button secondary" ng-show="next" href="#/collections/{{ page+1 }}">Next</a>

@@ -5,13 +5,13 @@ app.service( 'sparql', function( $http, $q ) {
 		search: search
 	});
 	
-	function query_url() {
+	function url() {
 		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' )+'/query';
 	}
 	
 	// Update data on server
 	function search( search ) {
-		var request = get( query_url(), search );
+		var request = get( search );
 		return( request.then( 
 			function( r ) { return r.data.results.bindings  },
 			function( r ){ return r }
@@ -19,8 +19,8 @@ app.service( 'sparql', function( $http, $q ) {
 	}
 	
 	// JackSON wrapper
-	function get( url, search ) {
-		var query = url+'?query='+encodeURIComponent( search );
+	function get( search ) {
+		var query = url()+'?query='+encodeURIComponent( search );
 		return $http({
 			method: 'GET',
 			url: query,
