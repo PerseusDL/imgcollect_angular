@@ -1,2 +1,13 @@
-<h4>{{ title }}</h4>
-<pre>{{ list }}</pre>
+<div>{{ title }}</div>
+<div>count: {{ count }}</div>
+<div>page: {{ page }}</div>
+<ul class="collections">
+  <li ng-repeat="item in list">
+    <table>
+	  <tr ng-repeat="(key,prop) in item">
+		<th>{{ key }}</th>
+		<td>{{ prop.value }}</td>
+	  </tr>
+	</table>
+  </li>
+</ul>

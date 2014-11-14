@@ -18,7 +18,7 @@ appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
 		$scope.order = "?time";
 		$scope.limit = "10";
 		$scope.page = 0;
-		$scope.list = list();
+		$scope.list = null;
 		
 		function prefix() {
 		return "\
@@ -37,22 +37,40 @@ appControllers.controller('CollectionListCtrl', ['$scope','json','sparql',
 		
 		function list() {
 			var query = prefix()+"\
-			SELECT ?urn ?label ?desc ?time ?user ?keyword\
+			SELECT ?urn ?label ?desc ?time ?user\
 			WHERE {\
-				?s this:type 'collection';\
+				?urn this:type 'collection';\
 				OPTIONAL { ?urn rdf:label ?label . }\
 				OPTIONAL { ?urn rdf:description ?desc . }\
 				OPTIONAL { ?urn xml:dateTime ?time . }\
 				OPTIONAL { ?urn <http://data.perseus.org/sosol/users/> ?user . }\
-				OPTIONAL { ?urn this:keyword ?keyword }\
 			}\
 			"+paginate();
-			return sparql.search( query ).then(
-				function( data ) {
-					return angular.toJson( data, true );
+			return sparql.search( query ).then( 
+				function( data ) { 
+					$scope.list = data;
 				}
 			);
 		}
+		
+		function count() {
+			var query = prefix()+"\
+			SELECT count( distinct ?urn )\
+			WHERE {\
+				?urn this:type 'collection';\
+			}";
+			return sparql.search( query ).then(
+				function( data ) {
+					$scope.count = data[0]['.1'].value;
+				}
+			)
+		}
+		
+		function init() {
+			count();
+			list();
+		}
+		init();
 	}
 ]);
 
