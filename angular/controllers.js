@@ -87,6 +87,7 @@ appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routePar
 		$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 		$scope.src = null;
 		$scope.json = [];
+		$scope.json_string = '';
 		
 		function src() {
 			json.urn( $scope.urn ).then( function(data){
@@ -99,6 +100,7 @@ appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routePar
 			for ( var i=0; i < $scope.src.length; i++ ) {
 				json.get( $scope.src[i] ).then( function(data){
 					$scope.json.push( data );
+					$scope.json_string += angular.toJson( data, true );
 				});
 			}
 		}
