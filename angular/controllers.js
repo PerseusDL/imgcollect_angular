@@ -6,7 +6,7 @@ appControllers.controller('HomeCtrl', ['$scope','$injector','user',
 		$scope.type = "home";
 		$scope.keys = [ 'urn','label','desc','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
-		$scope.count = "\
+		$scope.number = "\
 		SELECT count( distinct ?urn )\
 		WHERE {\
 			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">\
