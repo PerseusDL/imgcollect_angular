@@ -39,6 +39,12 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+body {
+  padding:1rem;
+}
+li {
+  list-style-type:none;	
+}
 .button.selected.secondary {
   background-color:#CCC;
 }

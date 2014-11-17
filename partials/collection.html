@@ -1,6 +1,18 @@
+<!-- STDOUT -->
+<pre>{{ stdout }}</pre>
+
 <!-- Info -->
 <div>{{ title }}</h4>
 <div>urn: {{ urn }}</div>
 <div>src: {{ src }}</div>
+
+<!-- Collection -->
+<form>
+	<input type="text" ng-change="change('@urn')" ng-model="form['@urn']" placeholder="URN" />
+	<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
+	<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+	<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+</form>
+
 <!-- JSON -->
 <pre>{{ json_string }}</pre>

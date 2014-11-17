@@ -9,12 +9,12 @@ app.service( 'json', function( $http, $q ) {
 		urn: urn
 	});
 	
-	function host() {
+	function host(){
 		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' );
 	}
 	
 	// Retrieve a JSON file by URN
-	function urn( urn ) {
+	function urn( urn ){
 		var request = api( 'GET', host()+'/src?urn='+urn );
 		return( request.then( 
 			success, 
@@ -23,17 +23,17 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// Create a new JSON file if it doesn't already exist.
-	function post( url, data ) {
-		var request = api( 'POST', url, data );
+	function post( url, data ){
+		var request = api( 'POST', rel(url), data );
 		return( request.then(
 			success, 
-			function( r ){ return put( url, data ) } 
+			function( r ){ return put( rel(url), data ) } 
 		));
 	}
 	
 	// Update data on server
-	function put( url, data ) {
-		var request = api( 'PUT', url, data );
+	function put( url, data ){
+		var request = api( 'PUT', rel(url), data );
 		return( request.then( 
 			success, 
 			error 
@@ -41,8 +41,8 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// GET the JSON
-	function get( url ) {
-		var request = api( 'GET', url );
+	function get( url ){
+		var request = api( 'GET', rel(url) );
 		return( request.then( 
 			success, 
 			error 
@@ -50,8 +50,8 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// Run the ls command
-	function ls( url ) {
-		var request = api( 'GET', url+"?cmd=ls" );
+	function ls( url ){
+		var request = api( 'GET', rel(url)+"?cmd=ls" );
 		return( request.then(
 			success,
 			error
@@ -59,7 +59,7 @@ app.service( 'json', function( $http, $q ) {
 	}
 	
 	// API
-	function api( method, url, data ) {
+	function api( method, url, data ){
 		return $http({
 			method: method.toUpperCase(),
 			url: url,
@@ -70,13 +70,20 @@ app.service( 'json', function( $http, $q ) {
 		});
 	}
 	
+	function rel( url ){
+		if ( url.indexOf('http://') == 0 ){
+			return url;
+		}
+		return host()+'/data/'+url;
+	}
+	
 	// JackSON formatted json
-	function wrap( json ) {
+	function wrap( json ){
 		return { data: json }
 	}
 	
 	// Error handler
-	function error( r ) {
+	function error( r ){
 		if (
 			! angular.isObject( r.data ) ||
 			! r.data.error
@@ -88,7 +95,7 @@ app.service( 'json', function( $http, $q ) {
 	}
 
 	// Success handler	
-	function success( r ) {
+	function success( r ){
 		return( r.data );
 	}
 });

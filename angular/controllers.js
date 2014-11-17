@@ -82,27 +82,53 @@ appControllers.controller('CollectionListCtrl', ['$scope','sparql','$routeParams
 
 // Collection
 appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routeParams',
-	function($scope, json, sparql, $routeParams){
+	function( $scope, json, sparql, $routeParams ){
 		$scope.title = "Collection";
 		$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 		$scope.src = null;
-		$scope.json = [];
+		
+		// Data and form
+		// objects and methods
+		$scope.json = {};
+		$scope.form = {
+			'@id':"",
+			'rdf:label':"",
+			'rdf:description':"",
+			'this:keyword':[]
+		};
 		$scope.json_string = '';
+		$scope.save = function(){ save() }
+		$scope.change = function( key ){ change(key) }
+		
+		function change( key ) {
+			if ( key in $scope.json ) {
+				$scope.json[key] = $scope.form[key];
+				json_to_str( $scope.json );
+			}
+		}
+		
+		function save() {
+			json.put( $scope.src[0], $scope.json ).then(
+				function(msg){ $scope.stdout = msg }
+			);
+		}
 		
 		function src() {
-			json.urn( $scope.urn ).then( function(data){
+			json.urn( $scope.urn ).then( function( data ){
 				$scope.src = data.src;
 				get();
 			});
 		}
 		
 		function get() {
-			for ( var i=0; i < $scope.src.length; i++ ) {
-				json.get( $scope.src[i] ).then( function(data){
-					$scope.json.push( data );
-					$scope.json_string += angular.toJson( data, true );
-				});
-			}
+			json.get( $scope.src[0] ).then( function( data ){
+				$scope.json = data;
+				json_to_str( data );
+			});
+		}
+		
+		function json_to_str( data ) {
+			$scope.json_string = angular.toJson( data, true );
 		}
 		
 		function init() {
@@ -113,25 +139,25 @@ appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routePar
 ]);
 
 appControllers.controller('AnnotationListCtrl', ['$scope','json','sparql',
-	function($scope){
+	function( $scope ){
 		$scope.title = "Annotation List";
 	}
 ]);
 
 appControllers.controller('AnnotationCtrl', ['$scope','json','sparql',
-	function($scope){
+	function( $scope ){
 		$scope.title = "Annotation";
 	}
 ]);
 
 appControllers.controller('HomeCtrl', ['$scope','json','sparql',
-	function($scope){
+	function( $scope ){
 		$scope.title = "Home";
 	}
 ]);
 
 appControllers.controller('UserCtrl', ['$scope','json','sparql',
-	function($scope){
+	function( $scope ){
 		$scope.user = "Username1"
 	}
 ]);
