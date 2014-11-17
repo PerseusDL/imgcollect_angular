@@ -4,6 +4,7 @@
 var EditCtrl = function( $scope, json, $routeParams ){
 	$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 	$scope.stdout = "";
+	$scope.context = null;
 	
 	// JSON and HTML form
 	$scope.src = null;
@@ -56,7 +57,15 @@ var EditCtrl = function( $scope, json, $routeParams ){
 	
 	// Turn JSON into pretty-printed string
 	function json_to_str( data ) {
-		$scope.json_string = angular.toJson( data, true );
+		var json = {};
+		for ( var key in data ) {
+			if ( key == '@context' ){ 
+				$scope.context = angular.toJson( data[key], true );
+				continue;
+			}
+			json[key] = data[key];
+		}
+		$scope.json_string = angular.toJson( json, true );
 	}
 	
 	// Run when controller is initialized
