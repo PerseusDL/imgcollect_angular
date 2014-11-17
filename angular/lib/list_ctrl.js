@@ -35,6 +35,7 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	
 	function list() {
 		var search = $scope.prefix + $scope.select + $scope.paginate;
+		console.log( search );
 		return sparql.search( search ).then( 
 			function( data ){
 				$scope.json = data;

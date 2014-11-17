@@ -94,18 +94,21 @@ appControllers.controller('ImageCtrl', ['$scope','$injector',
 	}
 ]);
 
+// Annotation List
 appControllers.controller('AnnotationListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Annotation List";
 	}
 ]);
 
+// Annotation
 appControllers.controller('AnnotationCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Annotation";
 	}
 ]);
 
+// User
 appControllers.controller('UserCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
 		$scope.user = user.id;

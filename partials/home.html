@@ -1,5 +1,9 @@
 <!-- Info -->
 <div>{{ title }}</div>
+<div>limit: {{ limit }}</div>
+<div>count: {{ count }}</div>
+<div>pages: {{ pages }}</div>
+<div>page: {{ page }}</div>
 
 <!-- User's Stuff -->
 <ul class="stuff">
@@ -21,3 +25,7 @@
 	</table>
   </li>
 </ul>
+
+<!-- Pagination -->
+<a class="button secondary" ng-show="prev" href="#/home/{{ page-1 }}">&lt;</a>
+<a class="button secondary" ng-show="next" href="#/home/{{ page+1 }}">&gt;</a>

@@ -45,6 +45,10 @@ app.config(['$routeProvider',
 			templateUrl: 'partials/home.html',
 			controller: 'HomeCtrl'
 		}).
+		when('/home/:page', {
+			templateUrl: 'partials/home.html',
+			controller: 'HomeCtrl'
+		}).
 		otherwise({
 			redirectTo: '/home'
 		});
