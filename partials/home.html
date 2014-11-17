@@ -1,1 +1,23 @@
-<h4>{{ title }}</h4>
+<!-- Info -->
+<div>{{ title }}</div>
+
+<!-- User's Stuff -->
+<ul class="stuff">
+  <li ng-repeat="item in json">
+    <table>
+	  <tr ng-repeat="key in keys" ng-switch on="key">
+		<th>{{ key }}</th>
+		<!-- urn -->
+		<td ng-switch-when="urn">
+			<a href="#/collection/{{ item[key].value }}">{{ item[key].value }}</a>
+		</td>
+		<!-- user -->
+		<td ng-switch-when="user">
+			<a href="{{ item[key].value }}">{{ item[key].value }}</a>
+		</td>
+		<!-- default -->
+		<td ng-switch-default>{{ item[key].value }}</td>
+	  </tr>
+	</table>
+  </li>
+</ul>

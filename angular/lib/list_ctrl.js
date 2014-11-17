@@ -1,4 +1,4 @@
-var ListCtrl = 	function($scope, sparql, $routeParams){
+var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
 	$scope.order = "?time";
 	$scope.limit = "10";
@@ -11,7 +11,7 @@ var ListCtrl = 	function($scope, sparql, $routeParams){
 	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
 	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>";
 	
-	$scope.query = $scope.prefix+"\
+	$scope.select = "\
 	SELECT ?urn ?label ?desc ?time ?user\
 	WHERE {\
 		?urn this:type '"+$scope.type+"';\
@@ -19,33 +19,33 @@ var ListCtrl = 	function($scope, sparql, $routeParams){
 		OPTIONAL { ?urn rdf:description ?desc . }\
 		OPTIONAL { ?urn xml:dateTime ?time . }\
 		OPTIONAL { ?urn <http://data.perseus.org/sosol/users/> ?user . }\
-	}\
-	"+paginate();
+	}";
 	
-	function paginate() {
-	return "\
+	$scope.count = "\
+	SELECT count( distinct ?urn )\
+	WHERE {\
+		?urn this:type '"+$scope.type+"';\
+	}";
+	
+	$scope.paginate = "\
 	ORDER BY DESC( "+$scope.order+" )\
 	LIMIT "+$scope.limit+"\
 	OFFSET "+$scope.limit*($scope.page-1)+"\
 	";
-	}
 	
 	function list() {
-		return sparql.search( $scope.query ).then( 
-			function( data ) { 
+		var search = $scope.prefix + $scope.select + $scope.paginate;
+		return sparql.search( search ).then( 
+			function( data ){
 				$scope.json = data;
 			}
 		);
 	}
 	
 	function count() {
-		var query = $scope.prefix+"\
-		SELECT count( distinct ?urn )\
-		WHERE {\
-			?urn this:type '"+$scope.type+"';\
-		}";
-		return sparql.search( query ).then(
-			function( data ) {
+		var count = $scope.prefix + $scope.count;
+		return sparql.search( count ).then(
+			function( data ){
 				$scope.count = data[0]['.1'].value;
 				$scope.pages = Math.ceil( $scope.count / $scope.limit );
 				$scope.prev = ( $scope.page > 1 ) ? true : false;
@@ -55,7 +55,7 @@ var ListCtrl = 	function($scope, sparql, $routeParams){
 	}
 	
 	function init() {
-		if ( !('type' in $scope) ) {
+		if ( !('type' in $scope) ){
 			throw "$scope.type is not defined.";
 		}
 		count();
