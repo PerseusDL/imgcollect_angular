@@ -1,4 +1,4 @@
-app.service( 'sparql', function( $http, $q ) {
+app.service( 'sparql', function( $http, $q, host ) {
 
 	// Publicly accessible methods
 	return ({
@@ -6,7 +6,7 @@ app.service( 'sparql', function( $http, $q ) {
 	});
 	
 	function url() {
-		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' )+'/query';
+		return host.url+'/query';
 	}
 	
 	// Update data on server

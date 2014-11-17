@@ -21,7 +21,7 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 		OPTIONAL { ?urn <http://data.perseus.org/sosol/users/> ?user . }\
 	}";
 	
-	$scope.count = "\
+	$scope.number = "\
 	SELECT count( distinct ?urn )\
 	WHERE {\
 		?urn this:type '"+$scope.type+"';\
@@ -35,7 +35,6 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	
 	function list() {
 		var search = $scope.prefix + $scope.select + $scope.paginate;
-		console.log( search );
 		return sparql.search( search ).then( 
 			function( data ){
 				$scope.json = data;
@@ -44,7 +43,7 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	}
 	
 	function count() {
-		var count = $scope.prefix + $scope.count;
+		var count = $scope.prefix + $scope.number;
 		return sparql.search( count ).then(
 			function( data ){
 				$scope.count = data[0]['.1'].value;

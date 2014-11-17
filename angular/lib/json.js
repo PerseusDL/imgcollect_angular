@@ -1,4 +1,4 @@
-app.service( 'json', function( $http, $q ) {
+app.service( 'json', function( $http, $q, host ) {
 	
 	// Publicly accessible methods
 	return ({
@@ -9,13 +9,9 @@ app.service( 'json', function( $http, $q ) {
 		urn: urn
 	});
 	
-	function host(){
-		return location.protocol+'//'+location.hostname+(location.port ? ':' + location.port: '' );
-	}
-	
 	// Retrieve a JSON file by URN
 	function urn( urn ){
-		var request = api( 'GET', host()+'/src?urn='+urn );
+		var request = api( 'GET', host.url+'/src?urn='+urn );
 		return( request.then( 
 			success, 
 			error 
@@ -74,7 +70,7 @@ app.service( 'json', function( $http, $q ) {
 		if ( url.indexOf('http://') == 0 ){
 			return url;
 		}
-		return host()+'/data/'+url;
+		return host.url+'/data/'+url;
 	}
 	
 	// JackSON formatted json
