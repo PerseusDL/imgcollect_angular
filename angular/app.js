@@ -9,6 +9,14 @@ var app = angular.module('app',[
 app.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.
+		when('/uploads', {
+			templateUrl: 'partials/upload-list.html',
+			controller: 'UploadListCtrl'
+		}).
+		when('/upload/:urn', {
+			templateUrl: 'partials/upload.html',
+			controller: 'UploadCtrl'
+		}).
 		when('/images', {
 			templateUrl: 'partials/image-list.html',
 			controller: 'ImageListCtrl'
