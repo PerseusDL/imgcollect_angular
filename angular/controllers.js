@@ -1,14 +1,75 @@
 var appControllers = angular.module('appControllers',[]);
 
+// Base controller
+// http://blog.omkarpatil.com/2013/02/controller-inheritance-in-angularjs.html
+
+var EditCtrl = function( $scope, json, sparql, $routeParams ){
+	$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+	$scope.stdout = "";
+	
+	// JSON and HTML form
+	$scope.src = null;
+	$scope.json = {};
+	$scope.json_string = '';
+	$scope.save = function(){ save() }
+	$scope.change = function( key ){ change(key) }
+	$scope.init = function(){ init() }
+	
+	// Update JSON when form changes
+	function change( key ) {
+		if ( key in $scope.json ) {
+			$scope.json[key] = $scope.form[key];
+			json_to_str( $scope.json );
+		}
+	}
+	
+	// Update the form with JSON data
+	function form() {
+		for ( var key in $scope.json ) {
+			if ( key in $scope.form ) {
+				$scope.form[key] = $scope.json[key];
+			}
+		}
+	}
+	
+	// Save JSON
+	function save() {
+		json.put( $scope.src[0], $scope.json ).then(
+			function(msg){ $scope.stdout = msg }
+		);
+	}
+	
+	// Retrieve JSON src url
+	function src() {
+		json.urn( $scope.urn ).then( function( data ){
+			$scope.src = data.src;
+			get();
+		});
+	}
+	
+	// Get JSON
+	function get() {
+		json.get( $scope.src[0] ).then( function( data ){
+			$scope.json = data;
+			json_to_str( data );
+			form();
+		});
+	}
+	
+	// Turn JSON into pretty-printed string
+	function json_to_str( data ) {
+		$scope.json_string = angular.toJson( data, true );
+	}
+	
+	// Run when controller is initialized
+	function init() {
+		src();
+	}
+}
+
 appControllers.controller('ImageListCtrl', ['$scope','json','sparql', 
 	function($scope){	
 		$scope.title = "Image List";
-	}
-]);
-
-appControllers.controller('ImageCtrl', ['$scope','json','sparql',
-	function($scope){	
-		$scope.title = "Image";
 	}
 ]);
 
@@ -81,60 +142,30 @@ appControllers.controller('CollectionListCtrl', ['$scope','sparql','$routeParams
 ]);
 
 // Collection
-appControllers.controller('CollectionCtrl', ['$scope','json','sparql','$routeParams',
-	function( $scope, json, sparql, $routeParams ){
+appControllers.controller('CollectionCtrl', ['$scope','$injector',
+	function( $scope, $injector ){
+		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.title = "Collection";
-		$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
-		$scope.src = null;
-		
-		// Data and form
-		// objects and methods
-		$scope.json = {};
 		$scope.form = {
-			'@id':"",
 			'rdf:label':"",
 			'rdf:description':"",
 			'this:keyword':[]
 		};
-		$scope.json_string = '';
-		$scope.save = function(){ save() }
-		$scope.change = function( key ){ change(key) }
-		
-		function change( key ) {
-			if ( key in $scope.json ) {
-				$scope.json[key] = $scope.form[key];
-				json_to_str( $scope.json );
-			}
-		}
-		
-		function save() {
-			json.put( $scope.src[0], $scope.json ).then(
-				function(msg){ $scope.stdout = msg }
-			);
-		}
-		
-		function src() {
-			json.urn( $scope.urn ).then( function( data ){
-				$scope.src = data.src;
-				get();
-			});
-		}
-		
-		function get() {
-			json.get( $scope.src[0] ).then( function( data ){
-				$scope.json = data;
-				json_to_str( data );
-			});
-		}
-		
-		function json_to_str( data ) {
-			$scope.json_string = angular.toJson( data, true );
-		}
-		
-		function init() {
-			src();
-		}
-		init();
+		$scope.init();
+	}
+]);
+
+// Collection
+appControllers.controller('ImageCtrl', ['$scope','$injector',
+	function( $scope, $injector ){
+		$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		$scope.title = "Image";
+		$scope.form = {
+			'rdf:label':"",
+			'rdf:description':"",
+			'this:keyword':[]
+		};
+		$scope.init();
 	}
 ]);
 
