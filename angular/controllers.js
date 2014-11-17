@@ -34,7 +34,10 @@ appControllers.controller('CollectionCtrl', ['$scope','$injector',
 // Upload list
 appControllers.controller('UploadListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
-		$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		$scope.type = "upload";
+		$scope.title = "Upload List";
+		$scope.keys = [ 'urn','label','desc','user','time' ];
+		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 	}
 ]);

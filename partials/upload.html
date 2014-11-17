@@ -1,0 +1,24 @@
+<!-- STDOUT -->
+<div>{{ stdout }}</div>
+
+<!-- Info -->
+<div>{{ title }}</h4>
+<div>urn: {{ urn }}</div>
+<div>src: {{ src }}</div>
+
+<!-- Preview Image -->
+<img src="{{ json['this:src'] }}" />
+
+<!-- Upload -->
+<form>
+	<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
+	<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+	<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+</form>
+
+<!-- JSON -->
+<label>object</label>
+<pre>{{ json_string }}</pre>
+
+<label>context</label>
+<pre>{{ context }}</pre>
