@@ -105,7 +105,7 @@ appControllers.controller('ItemListCtrl', ['$scope','$injector',
 		$scope.type = "item";	
 		$scope.title = "Item List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
-		$injector.invoke( ListCtrl, this, { $scope: $scope });
+		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 	}
 ]);
@@ -127,7 +127,11 @@ appControllers.controller('ItemCtrl', ['$scope','$injector',
 // Annotation List
 appControllers.controller('AnnotationListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
+		$scope.type = "annotation";
 		$scope.title = "Annotation List";
+		$scope.keys = [ 'urn','label','desc','user','time' ];
+		$injector.invoke( ListCtrl, this, { $scope: $scope } );
+		$scope.init();
 	}
 ]);
 
