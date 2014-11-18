@@ -1,15 +1,20 @@
 var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 	
 	// Actual list data
+	
 	$scope.json = {};
 	
+	
 	// SPARQL prefixes
+	
 	$scope.prefix = "\
 	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
 	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
 	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>";
 	
+	
 	// Needed for pagination
+	
 	$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
 	$scope.order = "?time";
 	$scope.limit = "10";
@@ -20,8 +25,11 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 	OFFSET "+$scope.limit*($scope.page-1)+"\
 	";
 	
+	
 	// Needed to build SPARQL SELECT query
-	// that will populate $scope.json
+	// that will populate $scope.json.
+	// See optionals() and handles()
+	
 	$scope.items = {
 		"rdf:label": "?label",
 		"rdf:description": "?desc",
@@ -29,12 +37,19 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 		"<http://data.perseus.org/sosol/users/>": "?user"
 	};
 	
+	
+	// Build the SPARQL SELECT query
+	
 	$scope.select = "\
 	SELECT ?urn "+handles()+"\
 	WHERE {\
 		"+where()+"\
 		"+optionals()+"\
 	}";
+	$scope.query = "";
+	
+	
+	// Get record count
 	
 	$scope.number = "\
 	SELECT count( distinct ?urn )\
@@ -44,7 +59,9 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 	
 	$scope.init = function(){ init() }
 	
+	
 	// Only your data or everyones?
+	
 	function where() {
 		if ( user.only == true ) {
 			return "?urn this:type '"+$scope.type+"'.\
@@ -70,8 +87,8 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 	}
 	
 	function list() {
-		var search = $scope.prefix + $scope.select + $scope.paginate;
-		return sparql.search( search ).then( 
+		$scope.query = $scope.prefix + $scope.select + $scope.paginate;
+		return sparql.search( $scope.query ).then( 
 			function( data ){
 				$scope.json = data;
 			}
