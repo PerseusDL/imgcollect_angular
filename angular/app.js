@@ -8,8 +8,14 @@ var app = angular.module('app',[
 
 app.config(['$routeProvider',
 	function($routeProvider) {
+		
+		// Uploads
 		$routeProvider.
 		when('/uploads', {
+			templateUrl: 'partials/upload-list.html',
+			controller: 'UploadListCtrl'
+		}).
+		when('/uploads/:page', {
 			templateUrl: 'partials/upload-list.html',
 			controller: 'UploadListCtrl'
 		}).
@@ -17,14 +23,28 @@ app.config(['$routeProvider',
 			templateUrl: 'partials/upload.html',
 			controller: 'UploadCtrl'
 		}).
-		when('/images', {
-			templateUrl: 'partials/image-list.html',
-			controller: 'ImageListCtrl'
+		when('/new/upload', {
+			templateUrl: 'partials/upload-new.html',
+			controller: 'UploadNew'
+		});
+		
+		// Items
+		$routeProvider.
+		when('/items', {
+			templateUrl: 'partials/item-list.html',
+			controller: 'ItemListCtrl'
 		}).
-		when('/image/:urn', {
-			templateUrl: 'partials/image.html',
-			controller: 'ImageCtrl'
+		when('/items/:page', {
+			templateUrl: 'partials/item-list.html',
+			controller: 'ItemListCtrl'
 		}).
+		when('/item/:urn', {
+			templateUrl: 'partials/item.html',
+			controller: 'ItemCtrl'
+		});
+		
+		// Collections
+		$routeProvider.
 		when('/collections/:page', {
 			templateUrl: 'partials/collection-list.html',
 			controller: 'CollectionListCtrl'
@@ -32,7 +52,10 @@ app.config(['$routeProvider',
 		when('/collection/:urn', {
 			templateUrl: 'partials/collection.html',
 			controller: 'CollectionCtrl'
-		}).
+		});
+		
+		// Annotations
+		$routeProvider.
 		when('/annotations', {
 			templateUrl: 'partials/annotation-list.html',
 			controller: 'AnnotationListCtrl'
@@ -40,7 +63,10 @@ app.config(['$routeProvider',
 		when('/annotation/:urn', {
 			templateUrl: 'partials/annotation.html',
 			controller: 'AnnotationCtrl'
-		}).
+		});
+		
+		// Home
+		$routeProvider.
 		when('/home', {
 			templateUrl: 'partials/home.html',
 			controller: 'HomeCtrl'

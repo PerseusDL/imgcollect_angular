@@ -1,4 +1,4 @@
-var ListCtrl = 	function( $scope, sparql, $routeParams ){
+var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 	$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
 	$scope.order = "?time";
 	$scope.limit = "10";
@@ -14,7 +14,7 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	$scope.select = "\
 	SELECT ?urn ?label ?desc ?time ?user\
 	WHERE {\
-		?urn this:type '"+$scope.type+"';\
+		"+where()+"\
 		OPTIONAL { ?urn rdf:label ?label . }\
 		OPTIONAL { ?urn rdf:description ?desc . }\
 		OPTIONAL { ?urn xml:dateTime ?time . }\
@@ -24,7 +24,7 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	$scope.number = "\
 	SELECT count( distinct ?urn )\
 	WHERE {\
-		?urn this:type '"+$scope.type+"';\
+		"+where()+"\
 	}";
 	
 	$scope.paginate = "\
@@ -32,6 +32,15 @@ var ListCtrl = 	function( $scope, sparql, $routeParams ){
 	LIMIT "+$scope.limit+"\
 	OFFSET "+$scope.limit*($scope.page-1)+"\
 	";
+	
+	// Only your data or everyones?
+	function where() {
+		if ( user.only == true ) {
+			return "?urn this:type '"+$scope.type+"'.\
+			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">";
+		}
+		return "?urn this:type '"+$scope.type+"';";
+	}
 	
 	function list() {
 		var search = $scope.prefix + $scope.select + $scope.paginate;

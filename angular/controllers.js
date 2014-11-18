@@ -4,21 +4,25 @@ appControllers.controller('HomeCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
 		$scope.title = "Home";
 		$scope.type = "home";
-		$scope.keys = [ 'urn','label','desc','time' ];
+		$scope.keys = [ 'urn', 'type', 'label', 'desc', 'time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
+		
 		$scope.number = "\
 		SELECT count( distinct ?urn )\
 		WHERE {\
 			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">\
 		}";
+		
 		$scope.select = "\
-		SELECT ?urn ?label ?desc ?time\
+		SELECT ?urn ?type ?label ?desc ?time\
 		WHERE {\
 			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">\
+			OPTIONAL { ?urn this:type ?type . }\
 			OPTIONAL { ?urn rdf:label ?label . }\
 			OPTIONAL { ?urn rdf:description ?desc . }\
 			OPTIONAL { ?urn xml:dateTime ?time . }\
 		}";
+		
 		$scope.init();
 	}
 ]);
@@ -48,6 +52,13 @@ appControllers.controller('CollectionCtrl', ['$scope','$injector',
 	}
 ]);
 
+// Upload new
+appControllers.controller('UploadNew', ['$scope',
+	function( $scope ){
+		$scope.title = "Upload New";
+	}
+]);
+
 // Upload list
 appControllers.controller('UploadListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -74,16 +85,20 @@ appControllers.controller('UploadCtrl', ['$scope','$injector',
 ]);
 
 // Image List
-appControllers.controller('ImageListCtrl', ['$scope','json','sparql', 
-	function($scope){	
-		$scope.title = "Image List";
+appControllers.controller('ItemListCtrl', ['$scope','$injector', 
+	function( $scope, $injector ){
+		$scope.type = "item";	
+		$scope.title = "Item List";
+		$scope.keys = [ 'urn','label','desc','user','time' ];
+		$injector.invoke( ListCtrl, this, { $scope: $scope });
+		$scope.init();
 	}
 ]);
 
 // Image
-appControllers.controller('ImageCtrl', ['$scope','$injector',
+appControllers.controller('ItemCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
-		$scope.title = "Image";
+		$scope.title = "Item";
 		$scope.form = {
 			'rdf:label':"",
 			'rdf:description':"",

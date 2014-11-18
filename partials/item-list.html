@@ -5,15 +5,15 @@
 <div>pages: {{ pages }}</div>
 <div>page: {{ page }}</div>
 
-<!-- Uploads -->
-<ul class="uploads">
+<!-- Items -->
+<ul class="items">
   <li ng-repeat="item in json">
     <table>
 	  <tr ng-repeat="key in keys" ng-switch on="key">
 		<th>{{ key }}</th>
 		<!-- urn -->
 		<td ng-switch-when="urn">
-			<a href="#/upload/{{ item[key].value }}">{{ item[key].value }}</a>
+			<a href="#/item/{{ item[key].value }}">{{ item[key].value }}</a>
 		</td>
 		<!-- user -->
 		<td ng-switch-when="user">
@@ -27,5 +27,5 @@
 </ul>
 
 <!-- Pagination -->
-<a class="button secondary" ng-show="prev" href="#/uploads/{{ page-1 }}">&lt;</a>
-<a class="button secondary" ng-show="next" href="#/uploads/{{ page+1 }}">&gt;</a>
+<a class="button secondary" ng-show="prev" href="#/items/{{ page-1 }}">&lt;</a>
+<a class="button secondary" ng-show="next" href="#/items/{{ page+1 }}">&gt;</a>
