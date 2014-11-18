@@ -53,9 +53,24 @@ appControllers.controller('CollectionCtrl', ['$scope','$injector',
 ]);
 
 // Upload new
-appControllers.controller('UploadNew', ['$scope',
-	function( $scope ){
+appControllers.controller('UploadNew', ['$scope','urn',
+	function( $scope, urn ){
 		$scope.title = "Upload New";
+		$scope.urn = "urn:cite:perseus:uploads.OKeTDxLa9eO";
+		$scope.go = function( fresh ) {
+			switch ( fresh ) {
+				case true:
+					console.log('good to go!');
+					break;
+				case false:
+					console.log('wait a minute!');
+					break;
+				default:
+					throw "Something is seriously wrong with your urn.fresh() callback!"
+					break;
+			}
+		}
+		urn.fresh( $scope.urn, $scope.go );
 	}
 ]);
 
