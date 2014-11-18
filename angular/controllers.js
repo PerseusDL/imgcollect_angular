@@ -127,5 +127,9 @@ appControllers.controller('AnnotationCtrl', ['$scope','$injector',
 appControllers.controller('UserCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
 		$scope.user = user.id;
+		function init() {
+			$scope.only = user.only;
+		}
+		init();
 	}
 ]);

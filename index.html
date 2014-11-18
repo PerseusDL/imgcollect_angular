@@ -10,8 +10,9 @@
   <body id='content'>
 	  
 	<!-- Main Nav -->
-	<div ng-controller="UserCtrl">
+	<div ng-controller="UserCtrl" ng-switch on="only">
 	<h3>{{ user }}</h3>
+	<span ng-switch-when="true">only</span>
 	</div>
 	
 	<ul id="nav" class="button-group">
