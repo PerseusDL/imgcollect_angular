@@ -1,24 +1,39 @@
 var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
-	$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
-	$scope.order = "?time";
-	$scope.limit = "10";
-	$scope.json = {};
-	$scope.pages = null;
-	$scope.init = function(){ init() }
 	
+	// Actual list data
+	$scope.json = {};
+	
+	// SPARQL prefixes
 	$scope.prefix = "\
 	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
 	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
 	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>";
 	
+	// Needed for pagination
+	$scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
+	$scope.order = "?time";
+	$scope.limit = "10";
+	$scope.pages = null;
+	$scope.paginate = "\
+	ORDER BY DESC( "+$scope.order+" )\
+	LIMIT "+$scope.limit+"\
+	OFFSET "+$scope.limit*($scope.page-1)+"\
+	";
+	
+	// Needed to build SPARQL SELECT query
+	// that will populate $scope.json
+	$scope.items = {
+		"rdf:label": "?label",
+		"rdf:description": "?desc",
+		"xml:dateTime": "?time",
+		"<http://data.perseus.org/sosol/users/>": "?user"
+	};
+	
 	$scope.select = "\
-	SELECT ?urn ?label ?desc ?time ?user\
+	SELECT ?urn "+handles()+"\
 	WHERE {\
 		"+where()+"\
-		OPTIONAL { ?urn rdf:label ?label . }\
-		OPTIONAL { ?urn rdf:description ?desc . }\
-		OPTIONAL { ?urn xml:dateTime ?time . }\
-		OPTIONAL { ?urn <http://data.perseus.org/sosol/users/> ?user . }\
+		"+optionals()+"\
 	}";
 	
 	$scope.number = "\
@@ -27,11 +42,7 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 		"+where()+"\
 	}";
 	
-	$scope.paginate = "\
-	ORDER BY DESC( "+$scope.order+" )\
-	LIMIT "+$scope.limit+"\
-	OFFSET "+$scope.limit*($scope.page-1)+"\
-	";
+	$scope.init = function(){ init() }
 	
 	// Only your data or everyones?
 	function where() {
@@ -40,6 +51,22 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">";
 		}
 		return "?urn this:type '"+$scope.type+"';";
+	}
+	
+	function handles() {
+		var out = [];
+		for ( var key in $scope.items ) {
+			out.push( $scope.items[key] );
+		}
+		return out.join(' ');
+	}
+	
+	function optionals() {
+		var out = [];
+		for ( var key in $scope.items ) {
+			out.push( "OPTIONAL { ?urn "+key+" "+$scope.items[key]+" . }" );
+		}
+		return out.join("\n");
 	}
 	
 	function list() {
