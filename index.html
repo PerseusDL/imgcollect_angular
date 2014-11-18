@@ -10,13 +10,13 @@
   <body id='content'>
 	  
 	<!-- Main Nav -->
-	<div ng-controller="UserCtrl" ng-switch on="only">
+	<div id="user" ng-controller="UserCtrl" ng-switch on="only">
 	<h3>{{ user }}</h3>
 	<span ng-switch-when="true">only</span>
 	</div>
 	
 	<ul id="nav" class="button-group">
-		<li><a href="#/home" class="button secondary tiny selected">Home</a></li>
+		<li><a href="#/home" class="button secondary tiny">Home</a></li>
 		<li><a href="#/uploads" class="button secondary tiny">Uploads</a></li>
 		<li><a href="#/collections/1" class="button secondary tiny">Collections</a></li>
 		<li><a href="#/items" class="button secondary tiny">Items</a></li>
