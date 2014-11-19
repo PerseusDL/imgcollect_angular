@@ -1,4 +1,4 @@
-var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
+var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, sparql, user, $routeParams ){
 	
 	// Actual list data
 	
@@ -114,4 +114,4 @@ var ListCtrl = 	function( $scope, sparql, user, $routeParams ){
 		count();
 		list();
 	}
-}
+}];

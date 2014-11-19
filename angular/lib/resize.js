@@ -1,4 +1,4 @@
-app.service( 'resize', function( sparql ) {
+app.service( 'resize', ['sparql', function( sparql ) {
 	return ({
 		in_upload: in_upload
 	})
@@ -36,5 +36,4 @@ app.service( 'resize', function( sparql ) {
 			return out;
 		});
 	}
-	
-});
+}]);

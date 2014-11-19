@@ -45,6 +45,10 @@ app.config(['$routeProvider',
 		
 		// Collections
 		$routeProvider.
+		when('/collections', {
+			templateUrl: 'partials/collection-list.html',
+			controller: 'CollectionListCtrl'
+		}).
 		when('/collections/:page', {
 			templateUrl: 'partials/collection-list.html',
 			controller: 'CollectionListCtrl'
@@ -57,6 +61,10 @@ app.config(['$routeProvider',
 		// Annotations
 		$routeProvider.
 		when('/annotations', {
+			templateUrl: 'partials/annotation-list.html',
+			controller: 'AnnotationListCtrl'
+		}).
+		when('/annotations/:page', {
 			templateUrl: 'partials/annotation-list.html',
 			controller: 'AnnotationListCtrl'
 		}).

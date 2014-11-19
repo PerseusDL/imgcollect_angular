@@ -1,7 +1,7 @@
 // Base controller
 // http://blog.omkarpatil.com/2013/02/controller-inheritance-in-angularjs.html
 
-var EditCtrl = function( $scope, json, $routeParams ){
+var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $routeParams ){
 	$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 	$scope.stdout = "";
 	$scope.context = null;
@@ -72,4 +72,4 @@ var EditCtrl = function( $scope, json, $routeParams ){
 	function init() {
 		src();
 	}
-}
+}];

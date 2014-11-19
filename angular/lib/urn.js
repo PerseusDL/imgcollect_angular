@@ -1,4 +1,4 @@
-app.service( 'urn', function( sparql ) {
+app.service( 'urn', ['sparql', function( sparql ) {
 	return ({
 		check: check,
 		fresh: fresh
@@ -47,4 +47,4 @@ app.service( 'urn', function( sparql ) {
 		}
 		return out
 	}
-});
+}]);
