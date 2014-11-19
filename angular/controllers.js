@@ -57,8 +57,8 @@ appControllers.controller('UploadNew', ['$scope','urn',
 	function( $scope, urn ){
 		$scope.title = "Upload New";
 		$scope.urn = "urn:cite:perseus:uploads.OKeTDxLa9eO";
-		$scope.go = function( fresh ){
-			switch ( fresh ) {
+		$scope.after_check = function( bool, urn ){
+			switch ( bool ) {
 				case true:
 					console.log('good to go!');
 					break;
@@ -70,7 +70,11 @@ appControllers.controller('UploadNew', ['$scope','urn',
 					break;
 			}
 		}
-		urn.check( $scope.urn, $scope.go );
+		$scope.after_fresh = function( urn ){
+			console.log( urn );
+		}
+		urn.check( $scope.urn, $scope.after_check );
+		urn.fresh( "urn:cite:perseus:uploads.{{ id }}", $scope.after_fresh );
 	}
 ]);
 
