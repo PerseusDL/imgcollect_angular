@@ -1,7 +1,9 @@
-app.service( 'urn', ['sparql', function( sparql ) {
+app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host ) {
+	
 	return ({
 		check: check,
-		fresh: fresh
+		fresh: fresh,
+		claim: claim
 	})
 	
 	function query( urn ) {
@@ -24,7 +26,9 @@ app.service( 'urn', ['sparql', function( sparql ) {
 		});
 	}
 	
-	// Grab a fresh urn with an 11 digit ID
+	
+	// Grab a fresh URN with an 11 digit id
+	
 	function fresh( templ, callback ) {
 		var urn = templ.replace( '{{ id }}', id( 11,'#aA') );
 		return check( urn, function( bool, urn ){
@@ -32,7 +36,9 @@ app.service( 'urn', ['sparql', function( sparql ) {
 		})
 	}
 	
-	// Generate an ID
+	
+	// Generate an id
+	
 	function id( n, chars ) {
 		var mask = '';
 		if ( chars.indexOf('a') > -1 ) mask += 'abcdefghijklmnopqrstuvwxyz';
@@ -47,4 +53,18 @@ app.service( 'urn', ['sparql', function( sparql ) {
 		}
 		return out
 	}
+	
+	
+	// Claim a URN and JackSON data location
+	
+	function claim( url, urn ) {
+		var base = {
+			'@context': {
+				"urn": "http://data.perseus.org/collections/urn:"
+			},
+			"@id": urn
+		}
+		return json.post( url, base );
+	}
+	
 }]);

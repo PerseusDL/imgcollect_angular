@@ -53,9 +53,11 @@ appControllers.controller('CollectionCtrl', ['$scope','$injector',
 ]);
 
 // Upload new
-appControllers.controller('UploadNew', ['$scope','urn',
-	function( $scope, urn ){
+appControllers.controller('UploadNew', ['$scope','urnServ',
+	function( $scope, urnServ ){
 		$scope.title = "Upload New";
+		$scope.stdout = "";
+		/*
 		$scope.urn = "urn:cite:perseus:uploads.OKeTDxLa9eO";
 		$scope.after_check = function( bool, urn ){
 			switch ( bool ) {
@@ -70,11 +72,13 @@ appControllers.controller('UploadNew', ['$scope','urn',
 					break;
 			}
 		}
+		*/
 		$scope.after_fresh = function( urn ){
-			console.log( urn );
+			urnServ.claim( 'upload/'+urn, urn ).then(
+				function( data ){ $scope.stdout = data }
+			);
 		}
-		urn.check( $scope.urn, $scope.after_check );
-		urn.fresh( "urn:cite:perseus:uploads.{{ id }}", $scope.after_fresh );
+		urnServ.fresh( "urn:cite:perseus:uploads.{{ id }}", $scope.after_fresh );
 	}
 ]);
 
