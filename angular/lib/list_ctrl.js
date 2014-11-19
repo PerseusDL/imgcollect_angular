@@ -44,7 +44,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	SELECT ?urn "+handles()+"\
 	WHERE {\
 		"+where()+"\
-		"+search()+"\
+		"+filter()+"\
 		"+optionals()+"\
 	}";
 	$scope.query = "";
@@ -56,7 +56,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	SELECT count( distinct ?urn )\
 	WHERE {\
 		"+where()+"\
-		"+search()+"\
+		"+filter()+"\
 	}";
 	
 	$scope.init = function(){ init() }
@@ -80,7 +80,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		return "?urn this:type '"+$scope.type+"';";
 	}
 	
-	function search() {
+	function filter() {
 		var out = [];
 		for ( var key in $scope.filter ){
 			var item = $scope.items[key];
