@@ -57,7 +57,7 @@ appControllers.controller('UploadNew', ['$scope','urn',
 	function( $scope, urn ){
 		$scope.title = "Upload New";
 		$scope.urn = "urn:cite:perseus:uploads.OKeTDxLa9eO";
-		$scope.go = function( fresh ) {
+		$scope.go = function( fresh ){
 			switch ( fresh ) {
 				case true:
 					console.log('good to go!');
@@ -70,7 +70,7 @@ appControllers.controller('UploadNew', ['$scope','urn',
 					break;
 			}
 		}
-		urn.fresh( $scope.urn, $scope.go );
+		urn.check( $scope.urn, $scope.go );
 	}
 ]);
 
@@ -86,8 +86,8 @@ appControllers.controller('UploadListCtrl', ['$scope','$injector',
 ]);
 
 // Upload
-appControllers.controller('UploadCtrl', ['$scope','$injector',
-	function( $scope, $injector ){
+appControllers.controller('UploadCtrl', ['$scope','$injector','resize',
+	function( $scope, $injector, resize ){
 		$scope.title = "Upload";
 		$scope.form = {
 			'rdf:label':"",
@@ -96,6 +96,10 @@ appControllers.controller('UploadCtrl', ['$scope','$injector',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
+		$scope.resize = [];
+		resize.in_upload( $scope.urn ).then(
+			function( data ) { $scope.resize = data }
+		);
 	}
 ]);
 

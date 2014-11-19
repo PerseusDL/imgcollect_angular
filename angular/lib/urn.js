@@ -1,5 +1,6 @@
 app.service( 'urn', function( sparql ) {
 	return ({
+		check: check,
 		fresh: fresh
 	})
 	
@@ -9,18 +10,21 @@ app.service( 'urn', function( sparql ) {
 	WHERE { <"+urn+"> ?p ?o }"
 	}
 	
-	function fresh( urn, callback ) {
+	function check( urn, callback ) {
 		return sparql.search( query(urn) ).then(
 		function( data ){
 			var check = data[0]['.1']['value'];
+			// urn already exists
 			if ( check > 0 ) {
-				// urn already exists
-				// therefore it is not fresh!
 				callback( false );
 				return;
 			}
 			callback( true );
 			return;
 		});
+	}
+	
+	function fresh( urn ) {
+		
 	}
 });

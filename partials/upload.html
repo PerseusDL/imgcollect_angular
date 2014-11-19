@@ -7,6 +7,13 @@
 <div>src: {{ src }}</div>
 
 <!-- Preview Image -->
+<div>Resized</div>
+<ul class="resized">
+	<li ng-repeat="item in resize">
+		<a href="{{ item.urn }}">{{ item.urn }} -- {{ item.width }} x {{ item.height }}</a>
+	</li>
+</ul>
+
 <img src="{{ json['this:src'] }}" />
 
 <!-- Upload -->
