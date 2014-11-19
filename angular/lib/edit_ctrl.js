@@ -6,7 +6,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	$scope.stdout = "";
 	$scope.context = null;
 	
+	
 	// JSON and HTML form
+	
 	$scope.src = null;
 	$scope.json = {};
 	$scope.json_string = '';
@@ -14,7 +16,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	$scope.change = function( key ){ change(key) }
 	$scope.init = function(){ init() }
 	
+	
 	// Update JSON when form changes
+	
 	function change( key ) {
 		if ( key in $scope.json ) {
 			$scope.json[key] = $scope.form[key];
@@ -22,7 +26,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 		}
 	}
 	
+	
 	// Update the form with JSON data
+	
 	function form() {
 		for ( var key in $scope.json ) {
 			if ( key in $scope.form ) {
@@ -31,14 +37,18 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 		}
 	}
 	
+	
 	// Save JSON
+	
 	function save() {
 		json.put( $scope.src[0], $scope.json ).then(
 			function(msg){ $scope.stdout = msg }
 		);
 	}
 	
+	
 	// Retrieve JSON src url
+	
 	function src() {
 		json.urn( $scope.urn ).then( function( data ){
 			$scope.src = data.src;
@@ -46,7 +56,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 		});
 	}
 	
+	
 	// Get JSON
+	
 	function get() {
 		json.get( $scope.src[0] ).then( function( data ){
 			$scope.json = data;
@@ -55,7 +67,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 		});
 	}
 	
+	
 	// Turn JSON into pretty-printed string
+	
 	function json_to_str( data ) {
 		var json = {};
 		for ( var key in data ) {
@@ -68,8 +82,11 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 		$scope.json_string = angular.toJson( json, true );
 	}
 	
+	
 	// Run when controller is initialized
+	
 	function init() {
 		src();
 	}
+	
 }];

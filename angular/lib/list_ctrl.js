@@ -44,6 +44,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	SELECT ?urn "+handles()+"\
 	WHERE {\
 		"+where()+"\
+		"+search()+"\
 		"+optionals()+"\
 	}";
 	$scope.query = "";
@@ -55,24 +56,44 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	SELECT count( distinct ?urn )\
 	WHERE {\
 		"+where()+"\
+		"+search()+"\
 	}";
 	
 	$scope.init = function(){ init() }
 	
 	
+	// Refresh
+	
+	$scope.refresh = function() {
+		count();
+		list();
+	}
+	
+	
 	// Only your data or everyones?
 	
 	function where() {
-		if ( user.only == true ) {
+		if ( user.only == true ){
 			return "?urn this:type '"+$scope.type+"'.\
-			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">";
+			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">;";
 		}
 		return "?urn this:type '"+$scope.type+"';";
 	}
 	
+	function search() {
+		var out = [];
+		for ( var key in $scope.filter ){
+			var item = $scope.items[key];
+			var check = $scope.filter[key];
+			var filter = key+' '+item+' FILTER regex( '+item+', "'+check+'", "i" )';
+			out.push( filter )
+		}
+		return out.join("\n");
+	}
+	
 	function handles() {
 		var out = [];
-		for ( var key in $scope.items ) {
+		for ( var key in $scope.items ){
 			out.push( $scope.items[key] );
 		}
 		return out.join(' ');
@@ -80,8 +101,9 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	
 	function optionals() {
 		var out = [];
-		for ( var key in $scope.items ) {
-			out.push( "OPTIONAL { ?urn "+key+" "+$scope.items[key]+" . }" );
+		for ( var key in $scope.items ){
+			var obj = $scope.items[key];
+			out.push( "OPTIONAL { ?urn "+key+" "+obj+" . }" );
 		}
 		return out.join("\n");
 	}

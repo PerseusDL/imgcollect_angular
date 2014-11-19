@@ -1,6 +1,9 @@
 var appControllers = angular.module('appControllers',[]);
 
-appControllers.controller('HomeCtrl', ['$scope','$injector','user',
+
+// Home
+
+appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
 		$scope.title = "Home";
 		$scope.type = "home";
@@ -27,19 +30,33 @@ appControllers.controller('HomeCtrl', ['$scope','$injector','user',
 	}
 ]);
 
+
 // Collection List
-appControllers.controller('CollectionListCtrl', ['$scope','$injector',
+
+appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.type = "collection";
 		$scope.title = "Collection List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		// search testing
+		$scope.filter = {
+			"rdf:label": "q"
+		}
+		function search() {
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
+		search();
 	}
 ]);
 
+
 // Collection
-appControllers.controller('CollectionCtrl', ['$scope','$injector',
+
+appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Collection";
 		$scope.form = {
@@ -52,38 +69,27 @@ appControllers.controller('CollectionCtrl', ['$scope','$injector',
 	}
 ]);
 
+
 // Upload new
-appControllers.controller('UploadNew', ['$scope','urnServ',
+
+appControllers.controller( 'UploadNew', ['$scope','urnServ',
 	function( $scope, urnServ ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
-		/*
-		$scope.urn = "urn:cite:perseus:uploads.OKeTDxLa9eO";
-		$scope.after_check = function( bool, urn ){
-			switch ( bool ) {
-				case true:
-					console.log('good to go!');
-					break;
-				case false:
-					console.log('wait a minute!');
-					break;
-				default:
-					throw "Something is seriously wrong with your urn.fresh() callback!"
-					break;
-			}
-		}
-		*/
-		$scope.after_fresh = function( urn ){
+
+		var after_fresh = function( urn ){
 			urnServ.claim( 'upload/'+urn, urn ).then(
 				function( data ){ $scope.stdout = data }
 			);
 		}
-		urnServ.fresh( "urn:cite:perseus:uploads.{{ id }}", $scope.after_fresh );
+		urnServ.fresh( "urn:cite:perseus:uploads.{{ id }}", after_fresh );
 	}
 ]);
 
+
 // Upload list
-appControllers.controller('UploadListCtrl', ['$scope','$injector',
+
+appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.type = "upload";
 		$scope.title = "Upload List";
@@ -93,8 +99,10 @@ appControllers.controller('UploadListCtrl', ['$scope','$injector',
 	}
 ]);
 
+
 // Upload
-appControllers.controller('UploadCtrl', ['$scope','$injector','resize',
+
+appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize',
 	function( $scope, $injector, resize ){
 		$scope.title = "Upload";
 		$scope.form = {
@@ -111,8 +119,10 @@ appControllers.controller('UploadCtrl', ['$scope','$injector','resize',
 	}
 ]);
 
+
 // Image List
-appControllers.controller('ItemListCtrl', ['$scope','$injector', 
+
+appControllers.controller( 'ItemListCtrl', ['$scope','$injector', 
 	function( $scope, $injector ){
 		$scope.type = "item";	
 		$scope.title = "Item List";
@@ -122,8 +132,10 @@ appControllers.controller('ItemListCtrl', ['$scope','$injector',
 	}
 ]);
 
+
 // Image
-appControllers.controller('ItemCtrl', ['$scope','$injector',
+
+appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Item";
 		$scope.form = {
@@ -136,8 +148,10 @@ appControllers.controller('ItemCtrl', ['$scope','$injector',
 	}
 ]);
 
+
 // Annotation List
-appControllers.controller('AnnotationListCtrl', ['$scope','$injector',
+
+appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.type = "annotation";
 		$scope.title = "Annotation List";
@@ -147,15 +161,19 @@ appControllers.controller('AnnotationListCtrl', ['$scope','$injector',
 	}
 ]);
 
+
 // Annotation
-appControllers.controller('AnnotationCtrl', ['$scope','$injector',
+
+appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Annotation";
 	}
 ]);
 
+
 // User
-appControllers.controller('UserCtrl', ['$scope','$injector','user',
+
+appControllers.controller( 'UserCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
 		$scope.user = user.id;
 		function init() {
