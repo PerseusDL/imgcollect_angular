@@ -33,32 +33,47 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 // new/collection
 
 appControllers.controller( 'CollectionNew', ['$scope','urnServ', function( $scope, urnServ ){
+	
 		$scope.title = "Collection New";
 		$scope.stdout = "";
 		
 		
-		// Ask user for collection id
+		// Needed to build a valid CITE
 		
+		$scope.id = null;
+		$scope.urn = '';
+		$scope.base_urn = urnServ.base;
+				
 
 		// Claim JackSON data url and CITE URN
 		
-		var after_check = function( urn ){
-			urnServ.claim( 'collection/'+urn, urn ).then(
-				function( data ){ 
-					$scope.stdout = data 
-					retrieve_default();
-				}
-			);
+		var is_uniq = function( bool, urn ){
+			if ( bool == true ) {
+				urnServ.claim( 'collection/'+urn, urn ).then(
+					function( data ){ 
+						$scope.stdout = data;
+						default_json()
+					}
+				);
+			}
 		}
 		
-		function retrieve_default(){
-			
+		
+		// Load the default JSON data
+		
+		var default_json = function(){
+			console.log( 'load_default json')
 		}
 		
 		// Check CITE URN for uniqueness
 		
-		$scope.urn_check = function(){
-			urnServ.check( $scope.form.urn, after_check );
+		$scope.urn_uniq = function(){
+			urnServ.uniq( $scope.urn, is_uniq );
+		}
+		
+		// Build CITE URN
+		$scope.urn_build = function(){
+			$scope.urn = $scope.base_urn+$scope.id;
 		}
 	}
 ]);

@@ -23,13 +23,13 @@ appDirectives.directive('navBox', function(){
 
 
 // Builds a box for checking URN uniqueness
-// You must implement a $scope.check_urn function
+// You must implement a $scope.urn_uniq function
 // in your controller.
 
 // see controllers.js: CollectionNew
 
-appDirectives.directive('urnCheckBox', function(){
+appDirectives.directive('urnUniqBox', function(){
 	return {
-		templateUrl: 'partials/share/urn-check-box.html'
+		templateUrl: 'partials/share/urn-uniq-box.html'
 	}
-})
+});

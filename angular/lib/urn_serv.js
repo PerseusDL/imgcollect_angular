@@ -1,9 +1,10 @@
 app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host ) {
 	
 	return ({
-		check: check,
+		uniq: uniq,
 		fresh: fresh,
-		claim: claim
+		claim: claim,
+		base: 'urn:cite:perseus:'
 	})
 	
 	function query( urn ) {
@@ -12,7 +13,7 @@ app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host 
 	WHERE { <"+urn+"> ?p ?o }"
 	}
 	
-	function check( urn, callback ) {
+	function uniq( urn, callback ) {
 		return sparql.search( query(urn) ).then(
 		function( data ){
 			var check = data[0]['.1']['value'];
