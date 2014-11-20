@@ -59,15 +59,13 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		"+filter()+"\
 	}";
 	
-	$scope.init = function(){ init() }
 	
+	// Initializing and applying a filter
+	// are essentially the same thing.
+	// The configuration state determines what 
+	// data gets displayed.
 	
-	// Refresh
-	
-	$scope.refresh = function() {
-		count();
-		list();
-	}
+	$scope.init = function(){ init() }	
 	
 	
 	// Only your data or everyones?
@@ -81,14 +79,20 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	}
 	
 	function filter() {
-		var out = [];
+		var items = [];
+		var regex = [];
+		var out = '';
 		for ( var key in $scope.filter ){
-			var item = $scope.items[key];
 			var check = $scope.filter[key];
-			var filter = key+' '+item+' FILTER regex( '+item+', "'+check+'", "i" )';
-			out.push( filter )
+			if ( check == null ) continue;
+			var item = $scope.items[key];
+			items.push( key+' '+item );
+			regex.push( 'regex( '+item+', "'+check+'", "i" )' );
 		}
-		return out.join("\n");
+		if ( items.length > 0 ){
+			out = items.join(";\n")+"\nFILTER ( "+regex.join(" && ")+" )";
+		}
+		return out;
 	}
 	
 	function handles() {

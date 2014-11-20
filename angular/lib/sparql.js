@@ -16,7 +16,7 @@ app.service( 'sparql', ['$http', '$q', 'host', function( $http, $q, host ) {
 	function search( search ) {
 		var request = get( search );
 		return( request.then( 
-			function( r ) { return r.data.results.bindings  },
+			function( r ){ return r.data.results.bindings  },
 			function( r ){ return r }
 		));
 	}

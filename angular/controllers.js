@@ -43,13 +43,13 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 		
 		// search testing
 		$scope.filter = {
-			"rdf:label": "q"
+			"rdf:label": null,
+			"rdf:description": null
 		}
-		function search() {
+		$scope.apply_filter = function() {
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
 			$scope.init();
 		}
-		search();
 	}
 ]);
 
