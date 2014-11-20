@@ -1,9 +1,10 @@
 var appDirectives = angular.module('appDirectives',[]);
 
-appDirectives.directive('myPretty', function(){
+
+// Build a filterbox in list controllers
+
+appDirectives.directive('filterbox', function(){
 	return {
-		template: function( elem, attr ){
-			return angular.toJson( elem.textContent, true );
-		}
+		templateUrl: 'partials/share/filterbox.html',
 	}
 });

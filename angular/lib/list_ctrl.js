@@ -59,13 +59,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		"+filter()+"\
 	}";
 	
-	
-	// Initializing and applying a filter
-	// are essentially the same thing.
-	// The configuration state determines what 
-	// data gets displayed.
-	
-	$scope.init = function(){ init() }	
+	$scope.init = function(){ init() }
 	
 	
 	// Only your data or everyones?
@@ -77,6 +71,9 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		}
 		return "?urn this:type '"+$scope.type+"';";
 	}
+	
+	
+	// Build a SPARQL filter clause
 	
 	function filter() {
 		var items = [];

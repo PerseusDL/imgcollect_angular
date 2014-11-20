@@ -1,7 +1,7 @@
 var appControllers = angular.module('appControllers',[]);
 
 
-// Home
+// home
 
 appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
@@ -31,7 +31,7 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 ]);
 
 
-// Collection List
+// collections
 
 appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -41,20 +41,39 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 		
-		// search testing
+		
+		// The fields you allow users to filter
+		// are set with object keys in $scope.filter
+		//
+		// See lib/list_ctr.js: filter()
+		
 		$scope.filter = {
 			"rdf:label": null,
 			"rdf:description": null
 		}
-		$scope.apply_filter = function() {
+		
+		
+		// Applying the filter is the same as initializing..
+		
+		$scope.apply_filter = function(){
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
 			$scope.init();
+		}
+		
+		
+		// Clear the filter
+		
+		$scope.clear_filter = function(){
+			for ( var key in $scope.filter ){
+				$scope.filter[key] = null;
+			}
+			$scope.apply_filter();
 		}
 	}
 ]);
 
 
-// Collection
+// collection/:urn
 
 appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -70,7 +89,7 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 ]);
 
 
-// Upload new
+// new/upload
 
 appControllers.controller( 'UploadNew', ['$scope','urnServ',
 	function( $scope, urnServ ){
@@ -87,7 +106,7 @@ appControllers.controller( 'UploadNew', ['$scope','urnServ',
 ]);
 
 
-// Upload list
+// uploads
 
 appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -100,7 +119,7 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 ]);
 
 
-// Upload
+// upload/:urn
 
 appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize',
 	function( $scope, $injector, resize ){
@@ -120,7 +139,7 @@ appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize',
 ]);
 
 
-// Image List
+// items
 
 appControllers.controller( 'ItemListCtrl', ['$scope','$injector', 
 	function( $scope, $injector ){
@@ -133,7 +152,7 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 ]);
 
 
-// Image
+// item/:urn
 
 appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -149,7 +168,7 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 ]);
 
 
-// Annotation List
+// annotations
 
 appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
@@ -162,7 +181,7 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 ]);
 
 
-// Annotation
+// annotation/:urn
 
 appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
