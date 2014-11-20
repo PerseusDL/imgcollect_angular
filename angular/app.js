@@ -56,6 +56,10 @@ app.config(['$routeProvider',
 		when('/collection/:urn', {
 			templateUrl: 'partials/collection.html',
 			controller: 'CollectionCtrl'
+		}).
+		when('/new/collection', {
+			templateUrl: 'partials/collection-new.html',
+			controller: 'CollectionNew'
 		});
 		
 		// Annotations

@@ -30,6 +30,39 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 	}
 ]);
 
+// new/collection
+
+appControllers.controller( 'CollectionNew', ['$scope','urnServ', function( $scope, urnServ ){
+		$scope.title = "Collection New";
+		$scope.stdout = "";
+		
+		
+		// Ask user for collection id
+		
+
+		// Claim JackSON data url and CITE URN
+		
+		var after_check = function( urn ){
+			urnServ.claim( 'collection/'+urn, urn ).then(
+				function( data ){ 
+					$scope.stdout = data 
+					retrieve_default();
+				}
+			);
+		}
+		
+		function retrieve_default(){
+			
+		}
+		
+		// Check CITE URN for uniqueness
+		
+		$scope.urn_check = function(){
+			urnServ.check( $scope.form.urn, after_check );
+		}
+	}
+]);
+
 
 // collections
 
