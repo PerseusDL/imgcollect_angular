@@ -1,4 +1,5 @@
 <div id="user" ng-controller="UserCtrl" ng-switch on="only">
 <h3>{{ user }}</h3>
-<span ng-switch-when="true">only</span>
+<input type="submit" ng-switch-when="false" ng-click="switch(true)" class="button secondary tiny" value="off" />
+<input type="submit" ng-switch-when="true" ng-click="switch(false)" class="button secondary tiny" value="on" />
 </div>

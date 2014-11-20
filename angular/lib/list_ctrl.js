@@ -72,6 +72,18 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	}
 	
 	
+	// Filtering changes if user.only changes
+
+	$scope.$watch( function(){ return user.only },
+		function( newVal, oldVal ){
+			if ( newVal != oldVal ){
+				$scope.apply_filter();
+			}
+		}
+	);
+
+	
+	
 	// Only your data or everyones?
 	
 	function where() {
