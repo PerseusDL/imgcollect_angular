@@ -62,6 +62,16 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	$scope.init = function(){ init() }
 	
 	
+	// Clear the filter
+	
+	$scope.clear_filter = function(){
+		for ( var key in $scope.filter ){
+			$scope.filter[key] = null;
+		}
+		$scope.apply_filter();
+	}
+	
+	
 	// Only your data or everyones?
 	
 	function where() {

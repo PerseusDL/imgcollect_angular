@@ -59,16 +59,6 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
 			$scope.init();
 		}
-		
-		
-		// Clear the filter
-		
-		$scope.clear_filter = function(){
-			for ( var key in $scope.filter ){
-				$scope.filter[key] = null;
-			}
-			$scope.apply_filter();
-		}
 	}
 ]);
 
@@ -115,6 +105,25 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		
+		// The fields you allow users to filter
+		// are set with object keys in $scope.filter
+		//
+		// See lib/list_ctr.js: filter()
+		
+		$scope.filter = {
+			"rdf:label": null,
+			"rdf:description": null
+		}
+		
+		
+		// Applying the filter is the same as initializing..
+		
+		$scope.apply_filter = function(){
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
 	}
 ]);
 
@@ -148,6 +157,25 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		
+		// The fields you allow users to filter
+		// are set with object keys in $scope.filter
+		//
+		// See lib/list_ctr.js: filter()
+		
+		$scope.filter = {
+			"rdf:label": null,
+			"rdf:description": null
+		}
+		
+		
+		// Applying the filter is the same as initializing..
+		
+		$scope.apply_filter = function(){
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
 	}
 ]);
 
@@ -177,6 +205,25 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		
+		// The fields you allow users to filter
+		// are set with object keys in $scope.filter
+		//
+		// See lib/list_ctr.js: filter()
+		
+		$scope.filter = {
+			"rdf:label": null,
+			"rdf:description": null
+		}
+		
+		
+		// Applying the filter is the same as initializing..
+		
+		$scope.apply_filter = function(){
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
 	}
 ]);
 
