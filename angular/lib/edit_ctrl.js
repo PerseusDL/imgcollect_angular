@@ -42,7 +42,8 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	
 	function save() {
 		json.put( $scope.src[0], $scope.json ).then(
-			function(msg){ $scope.stdout = msg }
+		function(msg){ 
+			$scope.stdout = msg }
 		);
 	}
 	
@@ -50,7 +51,8 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	// Retrieve JSON src url
 	
 	function src() {
-		json.urn( $scope.urn ).then( function( data ){
+		json.urn( $scope.urn ).then( 
+		function( data ){
 			$scope.src = data.src;
 			get();
 		});
@@ -62,7 +64,7 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	function get() {
 		json.get( $scope.src[0] ).then( function( data ){
 			$scope.json = data;
-			json_to_str( data );
+			json_to_str( $scope.json );
 			form();
 		});
 	}
@@ -71,15 +73,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	// Turn JSON into pretty-printed string
 	
 	function json_to_str( data ) {
-		var json = {};
-		for ( var key in data ) {
-			if ( key == '@context' ){ 
-				$scope.context = angular.toJson( data[key], true );
-				continue;
-			}
-			json[key] = data[key];
-		}
-		$scope.json_string = angular.toJson( json, true );
+		var disp = json.for_disp( data );
+		$scope.context = disp[0];
+		$scope.json_string = disp[1];
 	}
 	
 	

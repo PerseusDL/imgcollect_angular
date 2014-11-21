@@ -7,7 +7,8 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 		put: put,
 		get: get,
 		ls: ls,
-		urn: urn
+		urn: urn,
+		for_disp: for_disp
 	});
 	
 	
@@ -19,6 +20,22 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 			success, 
 			error 
 		));
+	}
+	
+	// Turn JSON into pretty-printed string
+	// Split '@onc
+	
+	function for_disp( data ) {
+		var json = {};
+		var out = [];
+		for ( var key in data ) {
+			if ( key == '@context' ){ 
+				out[0] = angular.toJson( data[key], true );
+			}
+			json[key] = data[key];
+		}
+		out[1] = angular.toJson( json, true );
+		return out;
 	}
 	
 	

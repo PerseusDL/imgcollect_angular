@@ -32,62 +32,42 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 
 // new/collection
 
-appControllers.controller( 'CollectionNew', ['$scope','urnServ', function( $scope, urnServ ){
+appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
+	function( $scope, $injector, urnServ ){
 	
 		$scope.title = "Collection New";
-		$scope.stdout = "";
+		$scope.type = "collection";
 		
 		
 		// Needed to build a valid CITE
 		
-		$scope.id = null;
-		$scope.urn = '';
-		$scope.base_urn = urnServ.base;
 		$scope.show_uniq = true;
 				
 
-		// Claim JackSON data url and CITE URN
+		// Check CITE URN for uniqueness
 		
-		var is_uniq = function( bool, urn ){
+		$scope.urn_uniq = function(){
+			urnServ.uniq( $scope.urn, uniq_callback );
+		}
+		
+		
+		// $scope.urn_uniq callback function
+		
+		var uniq_callback = function( bool, urn ){
 			$scope.show_uniq = !bool;
 			if ( bool == true ){
-				claim( urn );
+				$scope.claim( urn );
 				return;
 			}
-			// URN is NOT unique
 			else {
 				$scope.stdout = 'That URN is taken. Choose another.'
 			}
 		}
 		
-		var claim = function( urn ){
-			urnServ.claim( 'collection/'+urn, urn ).then(
-				function( data ){ 
-					$scope.stdout = data;
-					default_json()
-				}
-			);
-		}
 		
+		// Inherit from parent
 		
-		// Load the default JSON data
-		
-		var default_json = function(){
-			console.log( 'load_default json')
-		}
-		
-		
-		// Check CITE URN for uniqueness
-		
-		$scope.urn_uniq = function(){
-			urnServ.uniq( $scope.urn, is_uniq );
-		}
-		
-		
-		// Build CITE URN
-		$scope.urn_build = function(){
-			$scope.urn = $scope.base_urn+$scope.id.alphaOnly();
-		}
+		$injector.invoke( NewCtrl, this, { $scope: $scope } );
 	}
 ]);
 
@@ -105,7 +85,7 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
-		//
+		
 		// See lib/list_ctr.js: filter()
 		
 		$scope.filter = {
