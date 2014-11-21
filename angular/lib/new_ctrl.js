@@ -1,4 +1,5 @@
-var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, json, stdout ){
+var NewCtrl = ['$scope','urnServ','json', 'stdout','user', 
+function( $scope, urnServ, json, stdout, user ){
 	
 	// Update data
 	
@@ -46,12 +47,20 @@ var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, j
 	// Save the default after writing the most basic values
 	
 	var save = function(){
-		$scope.json['@id'] = $scope.urn;
+		touch();
 		json.put( data_path( $scope.urn ), $scope.json ).then(
 		function( data ){
 			stdout.log( data );
 			$scope.ready = true;
 		});
+	}
+	
+	// Set basic values
+	
+	var touch = function(){
+		$scope.json['@id'] = $scope.urn;
+		$scope.json['user']['@id'] = 'user:'+user.id;
+		$scope.json['dateTime'] = ( new TimeStamp ).xsd();
 	}
 	
 	
