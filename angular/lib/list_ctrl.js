@@ -34,8 +34,8 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		"rdf:label": "?label",
 		"rdf:description": "?desc",
 		"xml:dateTime": "?time",
-		"<http://data.perseus.org/sosol/users/>": "?user"
 	};
+	$scope.items["<"+user.base+"/>"] = "?user";
 	
 	
 	// Build the SPARQL SELECT query
@@ -89,7 +89,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	function where() {
 		if ( user.only == true ){
 			return "?urn this:type '"+$scope.type+"'.\
-			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">;";
+			?urn <"+user.base+"/> <"+user.url+">;";
 		}
 		return "?urn this:type '"+$scope.type+"';";
 	}
