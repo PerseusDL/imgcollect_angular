@@ -43,19 +43,30 @@ appControllers.controller( 'CollectionNew', ['$scope','urnServ', function( $scop
 		$scope.id = null;
 		$scope.urn = '';
 		$scope.base_urn = urnServ.base;
+		$scope.show_uniq = true;
 				
 
 		// Claim JackSON data url and CITE URN
 		
 		var is_uniq = function( bool, urn ){
-			if ( bool == true ) {
-				urnServ.claim( 'collection/'+urn, urn ).then(
-					function( data ){ 
-						$scope.stdout = data;
-						default_json()
-					}
-				);
+			$scope.show_uniq = !bool;
+			if ( bool == true ){
+				claim( urn );
+				return;
 			}
+			// URN is NOT unique
+			else {
+				$scope.stdout = 'That URN is taken. Choose another.'
+			}
+		}
+		
+		var claim = function( urn ){
+			urnServ.claim( 'collection/'+urn, urn ).then(
+				function( data ){ 
+					$scope.stdout = data;
+					default_json()
+				}
+			);
 		}
 		
 		
@@ -65,15 +76,17 @@ appControllers.controller( 'CollectionNew', ['$scope','urnServ', function( $scop
 			console.log( 'load_default json')
 		}
 		
+		
 		// Check CITE URN for uniqueness
 		
 		$scope.urn_uniq = function(){
 			urnServ.uniq( $scope.urn, is_uniq );
 		}
 		
+		
 		// Build CITE URN
 		$scope.urn_build = function(){
-			$scope.urn = $scope.base_urn+$scope.id;
+			$scope.urn = $scope.base_urn+$scope.id.alphaOnly();
 		}
 	}
 ]);
