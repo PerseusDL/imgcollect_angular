@@ -56,11 +56,17 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
 		var uniq_callback = function( bool, urn ){
 			$scope.show_uniq = !bool;
 			if ( bool == true ){
+				
+				// This next line claims a CITE URN and JackSON /data URL
+				// AND it retrieves default JSON-LD template
+				
+				// See lib/new_ctrl.js: $scope.claim
+				
 				$scope.claim( urn );
 				return;
 			}
 			else {
-				$scope.stdout = 'That URN is taken. Choose another.'
+				$scope.stdout += 'That URN is taken. Choose another.'
 			}
 		}
 		
@@ -291,5 +297,17 @@ appControllers.controller( 'UserCtrl', ['$scope','$injector','user',
 			$scope.only = user.only;
 		}
 		init();
+	}
+]);
+
+
+// STDOUT
+
+appControllers.controller( 'StdOut', ['$scope','stdout',
+	function( $scope, stdout ) {
+		$scope.stdout = stdout;
+		$scope.$watch('stdout.msg', function(){
+			$scope.msg = stdout.msg;
+		});
 	}
 ]);

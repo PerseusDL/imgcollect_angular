@@ -42,9 +42,15 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	
 	function save() {
 		json.put( $scope.src[0], $scope.json ).then(
-		function(msg){ 
-			$scope.stdout = msg }
-		);
+		function( msg ){ 
+			output( msg );
+		});
+	}
+	
+	// Write output
+	
+	function output( msg ) {
+		$scope.stdout += msg+"\n";
 	}
 	
 	

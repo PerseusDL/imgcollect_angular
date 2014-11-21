@@ -21,6 +21,12 @@ appDirectives.directive('navBox', function(){
 	}
 });
 
+appDirectives.directive('stdOut', function(){
+	return {
+		templateUrl: 'partials/share/std-out.html'
+	}
+});
+
 
 // Builds a box for checking URN uniqueness
 // You must implement a $scope.urn_uniq function

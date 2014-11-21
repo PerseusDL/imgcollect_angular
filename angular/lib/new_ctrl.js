@@ -1,4 +1,4 @@
-var NewCtrl = 	['$scope', 'urnServ', 'json', function( $scope, urnServ, json ){
+var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, json, stdout ){
 	
 	// Update data
 	
@@ -11,8 +11,9 @@ var NewCtrl = 	['$scope', 'urnServ', 'json', function( $scope, urnServ, json ){
 	$scope.urn = '';
 	$scope.base_urn = urnServ.base;
 	$scope.urn_build = function(){
-		$scope.urn = $scope.base_urn+$scope.id.alphaOnly();
+		$scope.urn = $scope.base_urn+$scope.clean_id()
 	}
+	$scope.clean_id = function(){ return $scope.id.alphaOnly().toLowerCase() };
 	
 	// Output messages
 	
@@ -28,7 +29,7 @@ var NewCtrl = 	['$scope', 'urnServ', 'json', function( $scope, urnServ, json ){
 	$scope.claim = function( urn ){
 		urnServ.claim( data_path(urn), urn ).then(
 			function( data ){ 
-				$scope.stdout = data;
+ 				stdout.log( data );
 				default_json()
 			}
 		);
@@ -48,7 +49,7 @@ var NewCtrl = 	['$scope', 'urnServ', 'json', function( $scope, urnServ, json ){
 		json.get( $scope.default_url ).then(
 		function( data ){
 			$scope.json = data;
-			$scope.stdout = "Default JSON loaded from: "+$scope.default_url;
+			stdout.log( "Default JSON loaded from: "+$scope.default_url );
 		});
 	}
 }];
