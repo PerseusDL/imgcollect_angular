@@ -4,6 +4,7 @@ var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, j
 	
 	$scope.json = {};
 	$scope.form = {};
+	$scope.ready = false;
 	
 	// Build CITE URN 
 	
@@ -21,16 +22,16 @@ var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, j
 	
 	// Path to default JSON
 	
-	$scope.default_url = 'default/'+$scope.type+'.json';
+	$scope.src = 'default/'+$scope.type+'.json';
 	
 	
 	// Claim JackSON data url and CITE URN
 	
 	$scope.claim = function( urn ){
-		urnServ.claim( data_path(urn), urn ).then(
+		urnServ.claim( data_path( urn ), urn ).then(
 			function( data ){ 
  				stdout.log( data );
-				default_json()
+				default_json();
 			}
 		);
 	}
@@ -42,14 +43,26 @@ var NewCtrl = ['$scope','urnServ','json', 'stdout', function( $scope, urnServ, j
 		return $scope.type+'/'+urn
 	}
 	
+	// Save the default after writing the most basic values
+	
+	var save = function(){
+		$scope.json['@id'] = $scope.urn;
+		json.put( data_path( $scope.urn ), $scope.json ).then(
+		function( data ){
+			stdout.log( data );
+			$scope.ready = true;
+		});
+	}
+	
 	
 	// Load the default JSON data
 	
 	var default_json = function(){
-		json.get( $scope.default_url ).then(
+		json.get( $scope.src ).then(
 		function( data ){
 			$scope.json = data;
-			stdout.log( "Default JSON loaded from: "+$scope.default_url );
+			stdout.log( "Default JSON loaded from: "+$scope.src );
+			save();
 		});
 	}
 }];

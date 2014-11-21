@@ -4,9 +4,5 @@
 <!-- URN uniq checker -->
 <div urn-uniq-box></div>
 
-<!-- Enter new data -->
-<pre>{{ json }}</pre>
-
-<!-- Upload -->
-<form>
-</form>
+<!-- Link to collection edit -->
+<a class="button secondary" ng-show="ready" href="#/collection/{{ urn }}">edit {{ urn }}</a>

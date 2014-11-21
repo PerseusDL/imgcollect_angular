@@ -37,12 +37,7 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
 	
 		$scope.title = "Collection New";
 		$scope.type = "collection";
-		
-		
-		// Needed to build a valid CITE
-		
-		$scope.show_uniq = true;
-				
+		$scope.show_uniq = true;				
 
 		// Check CITE URN for uniqueness
 		
@@ -70,7 +65,6 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
 			}
 		}
 		
-		
 		// Inherit from parent
 		
 		$injector.invoke( NewCtrl, this, { $scope: $scope } );
@@ -88,7 +82,6 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 		
-		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
 		
@@ -98,7 +91,6 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 			"rdf:label": null,
 			"rdf:description": null
 		}
-		
 		
 		// Applying the filter is the same as initializing..
 		
@@ -153,7 +145,6 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 		
-		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
 		//
@@ -163,7 +154,6 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 			"rdf:label": null,
 			"rdf:description": null
 		}
-		
 		
 		// Applying the filter is the same as initializing..
 		
@@ -216,7 +206,6 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 			"rdf:description": null
 		}
 		
-		
 		// Applying the filter is the same as initializing..
 		
 		$scope.apply_filter = function(){
@@ -253,7 +242,6 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
 		
-		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
 		//
@@ -263,7 +251,6 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 			"rdf:label": null,
 			"rdf:description": null
 		}
-		
 		
 		// Applying the filter is the same as initializing..
 		
