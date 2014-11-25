@@ -291,7 +291,9 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			touch();
 			json.post( data_path( $scope.urn ), $scope.json ).then(
 			function( data ){
-
+				
+				// Congruatulations!
+				// You've added an upload to a collection
 				// Go to Edit item view
 				
 				$location.path('item/'+$scope.urn );	
