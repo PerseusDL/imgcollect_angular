@@ -13,13 +13,13 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 		$scope.number = "\
 		SELECT count( distinct ?urn )\
 		WHERE {\
-			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">\
+			?urn <"+user.base+"/> <"+user.url+">\
 		}";
 		
 		$scope.select = "\
 		SELECT ?urn ?type ?label ?desc ?time\
 		WHERE {\
-			?urn <http://data.perseus.org/sosol/users/> <http://data.perseus.org/sosol/users/"+user.id+">\
+			?urn <"+user.base+"/> <"+user.url+">\
 			OPTIONAL { ?urn this:type ?type . }\
 			OPTIONAL { ?urn rdf:label ?label . }\
 			OPTIONAL { ?urn rdf:description ?desc . }\
@@ -124,13 +124,6 @@ appControllers.controller( 'UploadNew', ['$scope','urnServ',
 	function( $scope, urnServ ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
-
-		var after_fresh = function( urn ){
-			urnServ.claim( 'upload/'+urn, urn ).then(
-				function( data ){ $scope.stdout = data }
-			);
-		}
-		urnServ.fresh( "urn:cite:perseus:uploads.{{ id }}", after_fresh );
 	}
 ]);
 
