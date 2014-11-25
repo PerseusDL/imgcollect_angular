@@ -1,5 +1,5 @@
-app.service( 'resize', ['sparql', function( sparql ) {
-	return ({
+app.service( 'item', ['sparql', function( sparql ) {
+	return({
 		get:get
 	})
 	
@@ -11,12 +11,10 @@ app.service( 'resize', ['sparql', function( sparql ) {
 	function query( urn ) {
 	return "\
 	"+prefix()+"\
-	SELECT ?urn ?width ?height\
+	SELECT ?urn\
 	WHERE {\
-		?urn this:type 'resize'.\
+		?urn this:type 'item'.\
 		?urn this:upload <"+urn+">\
-		OPTIONAL { ?urn this:width ?width . }\
-		OPTIONAL { ?urn this:height ?height . }\
 	}"
 	}
 	

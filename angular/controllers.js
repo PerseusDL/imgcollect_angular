@@ -45,7 +45,7 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
 			urnServ.uniq( $scope.urn, uniq_callback );
 		}
 		
-		
+
 		// $scope.urn_uniq callback function
 		
 		var uniq_callback = function( bool, urn ){
@@ -160,8 +160,8 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 
 // upload/:urn
 
-appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize',
-	function( $scope, $injector, resize ){
+appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item',
+	function( $scope, $injector, resize, item ){
 		$scope.title = "Upload";
 		$scope.form = {
 			'rdf:label':"",
@@ -170,10 +170,21 @@ appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		// Resize
+		
 		$scope.resize = [];
-		resize.in_upload( $scope.urn ).then(
-			function( data ) { $scope.resize = data }
+		resize.get( $scope.urn ).then(
+			function( data ){ $scope.resize = data }
 		);
+		
+		// Items
+		
+		$scope.items = [];
+		item.get( $scope.urn ).then(
+			function( data ){ $scope.items = data }
+		);
+		
 	}
 ]);
 
@@ -187,7 +198,6 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		$scope.init();
-		
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
@@ -221,6 +231,37 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
+	}
+]);
+
+
+// new/item/:urn
+
+appControllers.controller( 'ItemNew', ['$scope','$injector','urnServ','$routeParams','collections',
+	function( $scope, $injector, urnServ, $routeParams, collections ){
+		$scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+		$scope.type = "item";
+		$scope.title = "Item New";
+		
+		// Inherit from parent
+		
+		$injector.invoke( NewCtrl, this, { $scope: $scope } );
+		
+		// Get collections for the collection selector
+		
+		$scope.collections = [];
+		collections.get().then(
+			function( data ){ $scope.collections = data }
+		);
+		
+		
+		// Add upload to collection
+		
+		$scope.add_to = function( urn ){
+			
+			// Create a new item URN
+			
+		}
 	}
 ]);
 

@@ -1,0 +1,10 @@
+<!-- Info -->
+<div>{{ title }}</div>
+<div>Add {{ upload_urn }} to a collection</div>
+
+<div>Collections</div>
+<ul class="collections">
+	<li ng-repeat="item in collections">
+		<a ng-click="add_to( item.urn )" href="{{ item.urn }}">{{ item.urn }}</a>
+	</li>
+</ul>

@@ -44,6 +44,7 @@ function( $scope, urnServ, json, stdout, user ){
 		return $scope.type+'/'+urn
 	}
 	
+	
 	// Save the default after writing the most basic values
 	
 	var save = function(){
@@ -54,6 +55,7 @@ function( $scope, urnServ, json, stdout, user ){
 			$scope.ready = true;
 		});
 	}
+	
 	
 	// Set basic values
 	

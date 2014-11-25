@@ -6,7 +6,18 @@
 <div>urn: {{ urn }}</div>
 <div>src: {{ src }}</div>
 
-<!-- Preview Image -->
+<!-- Associated Collection Items -->
+<div>Items</div>
+<ul class="items">
+	<li ng-repeat="item in items">
+		<a href="#/item/{{ item.urn }}">{{ item.urn }}</a>
+	</li>
+</ul>
+
+<!-- Add Upload to Collection -->
+<a class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
+
+<!-- Resized Images -->
 <div>Resized</div>
 <ul class="resized">
 	<li ng-repeat="item in resize">
@@ -14,6 +25,7 @@
 	</li>
 </ul>
 
+<!-- Image Preview -->
 <img src="{{ json['this:src'] }}" />
 
 <!-- Upload -->

@@ -1,5 +1,5 @@
-app.service( 'resize', ['sparql', function( sparql ) {
-	return ({
+app.service( 'collections', ['sparql', function( sparql ) {
+	return({
 		get:get
 	})
 	
@@ -8,20 +8,17 @@ app.service( 'resize', ['sparql', function( sparql ) {
 	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
 	}
 	
-	function query( urn ) {
+	function query() {
 	return "\
 	"+prefix()+"\
-	SELECT ?urn ?width ?height\
+	SELECT ?urn\
 	WHERE {\
-		?urn this:type 'resize'.\
-		?urn this:upload <"+urn+">\
-		OPTIONAL { ?urn this:width ?width . }\
-		OPTIONAL { ?urn this:height ?height . }\
+		?urn this:type 'collection'\
 	}"
 	}
 	
-	function get( urn ) {
-		return sparql.search( query(urn) ).then( 
+	function get() {
+		return sparql.search( query() ).then( 
 		function( data ){
 			var out = []
 			for ( var i=0; i<data.length; i++ ){
