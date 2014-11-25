@@ -237,16 +237,19 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 
 // new/item/:urn
 
-appControllers.controller( 'ItemNew', ['$scope','$injector','urnServ','$routeParams','collections',
-	function( $scope, $injector, urnServ, $routeParams, collections ){
+appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collections',
+	'$location','json','stdout','user',
+	function( $scope, urnServ, $routeParams, collections, $location, json, stdout,user ){
 		$scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 		$scope.type = "item";
 		$scope.title = "Item New";
+		$scope.urn = null;
+		$scope.ready = false;
 		
-		// Inherit from parent
+		// Path to default item JSON
 		
-		$injector.invoke( NewCtrl, this, { $scope: $scope } );
-		
+		$scope.src = 'default/'+$scope.type+'.json';
+				
 		// Get collections for the collection selector
 		
 		$scope.collections = [];
@@ -254,13 +257,67 @@ appControllers.controller( 'ItemNew', ['$scope','$injector','urnServ','$routePar
 			function( data ){ $scope.collections = data }
 		);
 		
-		
-		// Add upload to collection
+		// User clicks collection to add upload
 		
 		$scope.add_to = function( urn ){
 			
 			// Create a new item URN
 			
+			urnServ.fresh( urn+".{{ id }}", fresh_callback );
+		}
+		
+		// Once you have a fresh item URN
+		
+		var fresh_callback = function( urn ){
+			$scope.urn = urn;
+			$scope.ready = true;
+		}
+		
+		// User clicks edit item URN button
+		
+		$scope.create_item = function(){ default_json() }
+		
+		
+		// Build the data path URL
+	
+		var data_path = function( urn ){
+			return $scope.type+'/'+urn
+		}
+		
+		
+		// Save the default after writing the most basic values
+	
+		var save = function(){
+			touch();
+			json.post( data_path( $scope.urn ), $scope.json ).then(
+			function( data ){
+
+				// Go to Edit item view
+				
+				$location.path('item/'+$scope.urn );	
+			});
+		}
+	
+	
+		// Set basic values
+	
+		var touch = function(){
+			$scope.json['@id'] = $scope.urn;
+			$scope.json['this:upload']['@id'] = $scope.upload_urn;
+			$scope.json['user']['@id'] = 'user:'+user.id;
+			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
+		}
+	
+	
+		// Load the default JSON data
+	
+		var default_json = function(){
+			json.get( $scope.src ).then(
+			function( data ){
+				$scope.json = data;
+				stdout.log( "Default JSON loaded from: "+$scope.src );
+				save();
+			});
 		}
 	}
 ]);

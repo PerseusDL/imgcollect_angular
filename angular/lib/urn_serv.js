@@ -32,7 +32,7 @@ app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host 
 	
 	function fresh( templ, callback ) {
 		var urn = templ.replace( '{{ id }}', id( 11,'#aA') );
-		return check( urn, function( bool, urn ){
+		return uniq( urn, function( bool, urn ){
 			( bool == true ) ? callback( urn ) : fresh( templ, callback )
 		})
 	}
