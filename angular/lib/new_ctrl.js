@@ -29,7 +29,7 @@ function( $scope, urnServ, json, stdout, user ){
 	// Claim JackSON data url and CITE URN
 	
 	$scope.claim = function( urn ){
-		urnServ.claim( data_path( urn ), urn ).then(
+		urnServ.claim( $scope.data_path( urn ), urn ).then(
 			function( data ){ 
  				stdout.log( data );
 				default_json();
@@ -40,7 +40,7 @@ function( $scope, urnServ, json, stdout, user ){
 	
 	// Build the data path URL
 	
-	var data_path = function( urn ){
+	$scope.data_path = function( urn ){
 		return $scope.type+'/'+urn
 	}
 	
@@ -49,7 +49,7 @@ function( $scope, urnServ, json, stdout, user ){
 	
 	var save = function(){
 		touch();
-		json.put( data_path( $scope.urn ), $scope.json ).then(
+		json.put( $scope.data_path( $scope.urn ), $scope.json ).then(
 		function( data ){
 			stdout.log( data );
 			$scope.ready = true;

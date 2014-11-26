@@ -2,8 +2,9 @@
 <pre>{{ stdout }}</pre>
 
 <!-- Info -->
-<div>{{ title }}</h4>
+<div>{{ title }}</div>
 
 <!-- Upload -->
-<form>
-</form>
+<div ng-show="ready">
+<a class="button secondary" ng-click="save()">save</a>
+</div>

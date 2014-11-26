@@ -39,6 +39,7 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
 		$scope.type = "collection";
 		$scope.show_uniq = true;				
 
+
 		// Check CITE URN for uniqueness
 		
 		$scope.urn_uniq = function(){
@@ -92,6 +93,7 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 			"rdf:description": null
 		}
 		
+		
 		// Applying the filter is the same as initializing..
 		
 		$scope.apply_filter = function(){
@@ -108,8 +110,8 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Collection";
 		$scope.form = {
-			'rdf:label':"",
-			'rdf:description':"",
+			'rdf:label':'',
+			'rdf:description':'',
 			'this:keyword':[]
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
@@ -120,10 +122,60 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','urnServ',
-	function( $scope, urnServ ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout',
+	function( $scope, $injector, urnServ, json, stdout ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
+		$scope.form = {
+			'rdf:label':'',
+			'rdf:description':'',
+			'this:src':''
+		}
+		$scope.type = 'upload';
+		$injector.invoke( NewCtrl, this, { $scope: $scope } );
+		
+		
+		// Once you have a fresh item URN
+		
+		var fresh_callback = function( urn ){
+			$scope.urn = urn;
+			touch();
+			json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
+				function( data ){
+					stdout.log( data );
+				}
+			);
+		}
+		
+		
+		var touch = function(){
+			$scope.json['@id'] = $scope.urn;
+			$scope.json['user']['@id'] = 'user:'+user.id;
+			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
+			$scope.json['this:src'] = $scope.form['this:src'];
+			$scope.json['rdf:label'] = $scope.form['rdf:label'];
+			$scope.json['rdf:description'] = $scope.form['rdf:description'];
+		}
+		
+		
+		// Retrieve a new upload id
+		
+		$scope.save = function(){
+			urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
+		}
+		
+			
+		// Load the default json
+		
+		var default_json = function(){
+			json.get( $scope.src ).then(
+			function( data ){
+				$scope.json = data;
+				stdout.log( "Default JSON loaded from: "+$scope.src );
+				$scope.ready = true;
+			});
+		}
+		default_json();
 	}
 ]);
 
@@ -147,6 +199,7 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 			"rdf:label": null,
 			"rdf:description": null
 		}
+		
 		
 		// Applying the filter is the same as initializing..
 		
@@ -209,6 +262,7 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 			"rdf:description": null
 		}
 		
+		
 		// Applying the filter is the same as initializing..
 		
 		$scope.apply_filter = function(){
@@ -257,6 +311,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			function( data ){ $scope.collections = data }
 		);
 		
+		
 		// User clicks collection to add upload
 		
 		$scope.add_to = function( urn ){
@@ -266,12 +321,14 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			urnServ.fresh( urn+".{{ id }}", fresh_callback );
 		}
 		
+		
 		// Once you have a fresh item URN
 		
 		var fresh_callback = function( urn ){
 			$scope.urn = urn;
 			$scope.ready = true;
 		}
+		
 		
 		// User clicks edit item URN button
 		
@@ -280,7 +337,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		
 		// Build the data path URL
 	
-		var data_path = function( urn ){
+		$scope.data_path = function( urn ){
 			return $scope.type+'/'+urn
 		}
 		
@@ -289,7 +346,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 	
 		var save = function(){
 			touch();
-			json.post( data_path( $scope.urn ), $scope.json ).then(
+			json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
 			function( data ){
 				
 				// Congruatulations!
