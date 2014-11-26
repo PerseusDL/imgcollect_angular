@@ -8,7 +8,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 		get: get,
 		ls: ls,
 		urn: urn,
-		for_disp: for_disp
+		disp: disp
 	});
 	
 	
@@ -23,14 +23,14 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	}
 	
 	// Turn JSON into pretty-printed string
-	// Split '@onc
 	
-	function for_disp( data ) {
+	function disp( data ) {
 		var json = {};
 		var out = [];
 		for ( var key in data ) {
 			if ( key == '@context' ){ 
 				out[0] = angular.toJson( data[key], true );
+				continue;
 			}
 			json[key] = data[key];
 		}

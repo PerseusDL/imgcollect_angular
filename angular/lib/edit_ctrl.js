@@ -79,7 +79,7 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	// Turn JSON into pretty-printed string
 	
 	function json_to_str( data ) {
-		var disp = json.for_disp( data );
+		var disp = json.disp( data );
 		$scope.context = disp[0];
 		$scope.json_string = disp[1];
 	}

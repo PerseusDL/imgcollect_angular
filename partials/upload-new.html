@@ -5,6 +5,16 @@
 <div>{{ title }}</div>
 
 <!-- Upload -->
-<div ng-show="ready">
-<a class="button secondary" ng-click="save()">save</a>
-</div>
+<form ng-show="ready">
+	<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
+	<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+	<input type="text" ng-change="change('this:src')" ng-model="form['this:src']" placeholder="src" />
+	<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+</form>
+
+<!-- JSON -->
+<label>object</label>
+<pre>{{ json_string }}</pre>
+
+<label>context</label>
+<pre>{{ context }}</pre>

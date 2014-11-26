@@ -122,8 +122,8 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout',
-	function( $scope, $injector, urnServ, json, stdout ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user',
+	function( $scope, $injector, urnServ, json, stdout, user ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
 		$scope.form = {
@@ -133,6 +133,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		}
 		$scope.type = 'upload';
 		$injector.invoke( NewCtrl, this, { $scope: $scope } );
+		$scope.change = function(key){ change(key) }
 		
 		
 		// Once you have a fresh item URN
@@ -148,26 +149,56 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		}
 		
 		
-		var touch = function(){
+		function touch (){
 			$scope.json['@id'] = $scope.urn;
 			$scope.json['user']['@id'] = 'user:'+user.id;
 			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
-			$scope.json['this:src'] = $scope.form['this:src'];
-			$scope.json['rdf:label'] = $scope.form['rdf:label'];
-			$scope.json['rdf:description'] = $scope.form['rdf:description'];
 		}
 		
 		
-		// Retrieve a new upload id
+		// Update JSON when form changes
+	
+		function change( key ) {
+			if ( key in $scope.json ) {
+				$scope.json[key] = $scope.form[key];
+				json_to_str( $scope.json );
+			}
+		}
+	
+	
+		// Update the form with JSON data
+	
+		function form() {
+			for ( var key in $scope.json ) {
+				if ( key in $scope.form ) {
+					$scope.form[key] = $scope.json[key];
+				}
+			}
+		}
+		
+		
+		// Turn JSON into pretty-printed string
+	
+		function json_to_str( data ) {
+			var disp = json.disp( data );
+			$scope.context = disp[0];
+			$scope.json_string = disp[1];
+		}
+		
+		
+		// Save your new upload
 		
 		$scope.save = function(){
+			
+			// Retrieve a new upload URN
+			
 			urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
 		}
 		
 			
-		// Load the default json
+		// Load the default JSON
 		
-		var default_json = function(){
+		function default_json(){
 			json.get( $scope.src ).then(
 			function( data ){
 				$scope.json = data;
