@@ -30,6 +30,7 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 	}
 ]);
 
+
 // new/collection
 
 appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
@@ -265,7 +266,7 @@ appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item',
 		// Items
 		
 		$scope.items = [];
-		item.get( $scope.urn ).then(
+		item.by_upload( $scope.urn ).then(
 			function( data ){ $scope.items = data }
 		);
 		
