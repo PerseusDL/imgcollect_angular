@@ -33,6 +33,12 @@ appDirectives.directive('stdOut', function(){
 	}
 });
 
+appDirectives.directive('urnInfo', function(){
+	return {
+		templateUrl: 'partials/share/urn-info.html'
+	}
+})
+
 
 // Builds a box for checking URN uniqueness
 // You must implement a $scope.urn_uniq function

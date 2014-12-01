@@ -75,6 +75,32 @@ ul.list {
 ul.list table{
   width:100%;
 }
+.box{
+  margin:.5rem 0;
+  padding:1rem;
+  background-color:$vapor;
+}
+.box ul {
+  margin:1rem 0;
+}
+.box .button {
+  margin:0;
+}
+.box h3 {
+  text-align:center;
+  margin:0;
+  margin-bottom:.25rem;
+  font-size:1.25rem;
+}
+.output {
+  margin:5rem 0;
+}
+.output h3 {
+  text-align:center;
+}
+img.preview {
+  margin:.5rem 0;
+}
 
 
 /* Shared */
@@ -88,7 +114,7 @@ ul.list table{
 #list-meta-box {
   background-color:$vapor;
   padding:1rem;
-  margin-bottom:.5rem;
+  margin:.5rem 0;
 }
 #list-meta-box .button {
   margin:0;
@@ -99,10 +125,20 @@ ul.list table{
 #filter-box {
   padding:1rem;
   background-color:$vapor;
+  margin:.5rem 0;
 }
 #filter-box .button {
   margin:0;
 }
 #filter-box ul {
   margin:0;
+}
+#urn-info {
+  margin:2rem 0;
+}
+#urn-info h1 {
+  padding:0;
+}
+#urn-info * {
+  text-align:center;
 }
