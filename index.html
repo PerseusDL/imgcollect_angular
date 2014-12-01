@@ -10,11 +10,21 @@
   <body id='content'>
 	  
 	<!-- Main Nav -->
-	<div user-box></div>
-	<div nav-box></div>
+	<div class="row">
+		<div class="columns small-4">
+			<div user-box></div>
+		</div>
+		<div class="columns small-8">
+			<div nav-box></div>
+		</div>
+	</div>
 	
 	<!-- Views -->
-    <div ng-view></div>
+	<div class="row">
+		<div class="columns small-12">
+			<div ng-view></div>
+		</div>
+	</div>
 	
 	<!-- STDOUT -->
 	<div std-out></div>

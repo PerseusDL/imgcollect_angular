@@ -39,6 +39,7 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+/* Basics */
 body {
   padding:1rem;
 }
@@ -57,9 +58,17 @@ pre {
 textarea {
   min-height:15rem;
 }
-#user {
-  clear:both;
+
+/* Common */
+.button-group > li .button {
+  margin-bottom:.5rem;
 }
-#user h3 {
+
+/* Shared */
+#user-box .name {
+  padding: 0 1rem 0 0;
+}
+#user-box *{
   float:left;
+  display:inline-block;
 }

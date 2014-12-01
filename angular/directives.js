@@ -15,6 +15,12 @@ appDirectives.directive('userBox', function(){
 	}
 });
 
+appDirectives.directive('listMetaBox', function(){
+	return {
+		templateUrl: 'partials/share/list-meta-box.html'
+	}
+});
+
 appDirectives.directive('navBox', function(){
 	return {
 		templateUrl: 'partials/share/nav-box.html'
