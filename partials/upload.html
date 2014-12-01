@@ -29,7 +29,7 @@
 			<h3>resize</h3>
 			<ul class="resize">
 				<li ng-repeat="item in resize">
-					<a href="{{ item.urn }}">{{ item.urn }} {{ item.width }} x {{ item.height }}</a>
+					<a href="{{ item.urn }}">{{ item.urn }}</a><span class="img-px">{{ item.width }} x {{ item.height }}</span>
 				</li>
 			</ul>
 		</div>
@@ -50,13 +50,5 @@
 	</div>
 </div>
 
-<!-- JSON -->
-<div class="output">
-	<h3>JSON preview</h3>
-	<pre>{{ json_string }}</pre>
-</div>
-
-<div class="output">
-	<h3>JSON-LD context</h3>
-	<pre>{{ context }}</pre>
-</div>
+<!-- JSON output -->
+<div json-out></div>

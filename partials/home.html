@@ -1,10 +1,11 @@
-<div id="list-meta-box">
-	<h3 class="title">{{ title }}</h3>
+<div id="list-meta-box" class="box">
 	<div>{{ count }} total </div>
 	<div>page {{ page }} of {{ pages}}</div>
 	<!-- Pagination -->
-	<a class="button secondary" ng-show="prev" href="#/home/{{ page-1 }}">&lt;</a>
-	<a class="button secondary" ng-show="next" href="#/home/{{ page+1 }}">&gt;</a>
+	<div class="pager">
+		<a class="button secondary" ng-show="prev" href="#/home/{{ page-1 }}">&lt;</a>
+		<a class="button secondary" ng-show="next" href="#/home/{{ page+1 }}">&gt;</a>
+	</div>
 </div>
 
 <!-- User's Stuff -->

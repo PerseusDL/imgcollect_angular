@@ -40,8 +40,11 @@
 //   "foundation/components/visibility";
 
 /* Basics */
-body {
-  padding:1rem;
+.full-window {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
 }
 li {
   list-style-type:none;	
@@ -101,37 +104,25 @@ ul.list table{
 img.preview {
   margin:.5rem 0;
 }
+.img-px {
+  padding:0 .5rem;
+  color:$faded-text;
+}
 
 
 /* Shared */
 #user-box .name {
-  padding: 0 1rem 0 0;
+  margin:0 1rem 0 2rem;
 }
 #user-box *{
   float:left;
   display:inline-block;
 }
-#list-meta-box {
-  background-color:$vapor;
-  padding:1rem;
-  margin:.5rem 0;
-}
-#list-meta-box .button {
-  margin:0;
-}
-#list-meta-box .title {
+#list-meta-box * {
   text-align:center;
 }
-#filter-box {
-  padding:1rem;
-  background-color:$vapor;
-  margin:.5rem 0;
-}
-#filter-box .button {
-  margin:0;
-}
-#filter-box ul {
-  margin:0;
+#list-meta-box .pager {
+  margin-top:1rem;
 }
 #urn-info {
   margin:2rem 0;
@@ -141,4 +132,15 @@ img.preview {
 }
 #urn-info * {
   text-align:center;
+  word-break: break-all;
+}
+#top-row {
+  padding:.25rem;
+  background-color:$robin;
+}
+#top-row .columns {
+  padding:.25rem;
+}
+#top-row .button {
+  margin:0;
 }
