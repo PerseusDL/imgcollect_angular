@@ -1,6 +1,10 @@
 <!-- List Info -->
 <div list-meta-box></div>
 
+<!-- Pagination -->
+<a class="button secondary" ng-show="prev" href="#/annotations/{{ page-1 }}">&lt;</a>
+<a class="button secondary" ng-show="next" href="#/annotations/{{ page+1 }}">&gt;</a>
+
 <!-- Filter -->
 <div filter-box></div>
 
@@ -24,10 +28,6 @@
 	</table>
   </li>
 </ul>
-
-<!-- Pagination -->
-<a class="button secondary" ng-show="prev" href="#/annotations/{{ page-1 }}">&lt;</a>
-<a class="button secondary" ng-show="next" href="#/annotations/{{ page+1 }}">&gt;</a>
 
 <!-- JSON -->
 <label>query</label>

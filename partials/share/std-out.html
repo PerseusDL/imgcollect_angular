@@ -1,2 +1,13 @@
-<br/>
-<pre id="std-out" ng-controller="StdOut">{{ msg }}</pre>
+<a id="stdOutBut" class="button secondary tiny" data-reveal-id="stdOutWin"><img src="img/bug.png" /></a>
+
+<div id="stdOutWin" class="reveal-modal" data-reveal>
+	<div>std-out</div>
+	<pre id="std-out" ng-controller="StdOut">{{ msg }}</pre>
+</div>
+
+<script type="text/javascript">
+ 
+	// Refresh foundation
+
+	$(document).foundation();
+</script>
