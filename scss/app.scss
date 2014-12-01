@@ -47,12 +47,12 @@ li {
   list-style-type:none;	
 }
 .button.selected.secondary {
-  background-color:#CCC;
+  background-color:$iron;
 }
 pre {
   overflow:scroll;
-  background-color:#222;
-  color:#AAA;
+  background-color:$jet;
+  color:$base;
   padding:1rem;
 }
 textarea {
@@ -69,6 +69,12 @@ textarea {
   top:0;
   left:0;
 }
+ul.list {
+  margin:0;
+}
+ul.list table{
+  width:100%;
+}
 
 
 /* Shared */
@@ -78,4 +84,25 @@ textarea {
 #user-box *{
   float:left;
   display:inline-block;
+}
+#list-meta-box {
+  background-color:$vapor;
+  padding:1rem;
+  margin-bottom:.5rem;
+}
+#list-meta-box .button {
+  margin:0;
+}
+#list-meta-box .title {
+  text-align:center;
+}
+#filter-box {
+  padding:1rem;
+  background-color:$vapor;
+}
+#filter-box .button {
+  margin:0;
+}
+#filter-box ul {
+  margin:0;
 }

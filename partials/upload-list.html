@@ -1,14 +1,18 @@
-<!-- New Upload -->
-<a class="button secondary" href="#/new/upload">New</a>
-
-<!-- List Info -->
-<div list-meta-box></div>
-
-<!-- Filter -->
-<div filter-box></div>
+<div class="row">
+	<div class="columns small-12 medium-6">
+		<!-- List Info -->
+		<div list-meta-box></div>
+		<!-- New Upload -->
+		<a class="button secondary" href="#/new/upload">new upload</a>
+	</div>
+	<div class="columns small-12 medium-6">	
+		<!-- Filter -->
+		<div filter-box></div>
+	</div>
+</div>
 
 <!-- Uploads -->
-<ul class="uploads">
+<ul class="uploads list">
   <li ng-repeat="item in json">
     <table>
 	  <tr ng-repeat="key in keys" ng-switch on="key">
@@ -27,10 +31,6 @@
 	</table>
   </li>
 </ul>
-
-<!-- Pagination -->
-<a class="button secondary" ng-show="prev" href="#/uploads/{{ page-1 }}">&lt;</a>
-<a class="button secondary" ng-show="next" href="#/uploads/{{ page+1 }}">&gt;</a>
 
 <!-- JSON -->
 <label>query</label>

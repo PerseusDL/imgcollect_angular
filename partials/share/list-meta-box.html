@@ -1,4 +1,8 @@
-<h1>{{ title }}</h1>
-<div>{{ count }} total </div>
-<div>showing {{ limit }} at a time</div>
-<div>page {{ page }} of {{ pages}}</div>
+<div id="list-meta-box">
+	<h3 class="title">{{ title }}</h3>
+	<div>{{ count }} total </div>
+	<div>page {{ page }} of {{ pages}}</div>
+	<!-- Pagination -->
+	<a class="button secondary" ng-show="prev" href="#/{{ type }}s/{{ page-1 }}">&lt;</a>
+	<a class="button secondary" ng-show="next" href="#/{{ type }}s/{{ page+1 }}">&gt;</a>
+</div>

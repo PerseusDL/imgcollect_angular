@@ -1,8 +1,14 @@
-<!-- List Info -->
-<div list-meta-box></div>
+<div id="list-meta-box">
+	<h3 class="title">{{ title }}</h3>
+	<div>{{ count }} total </div>
+	<div>page {{ page }} of {{ pages}}</div>
+	<!-- Pagination -->
+	<a class="button secondary" ng-show="prev" href="#/home/{{ page-1 }}">&lt;</a>
+	<a class="button secondary" ng-show="next" href="#/home/{{ page+1 }}">&gt;</a>
+</div>
 
 <!-- User's Stuff -->
-<ul class="stuff">
+<ul class="stuff list">
   <li ng-repeat="item in json">
     <table>
 	  <tr ng-repeat="key in keys" ng-switch on="key">
@@ -21,10 +27,6 @@
 	</table>
   </li>
 </ul>
-
-<!-- Pagination -->
-<a class="button secondary" ng-show="prev" href="#/home/{{ page-1 }}">&lt;</a>
-<a class="button secondary" ng-show="next" href="#/home/{{ page+1 }}">&gt;</a>
 
 <!-- JSON -->
 <label>query</label>

@@ -26,6 +26,8 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 			OPTIONAL { ?urn xml:dateTime ?time . }\
 		}";
 		
+		$scope.hide = true; // Hide default pagination buttons
+		
 		$scope.init();
 	}
 ]);

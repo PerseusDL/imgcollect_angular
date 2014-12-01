@@ -1,11 +1,16 @@
-<!-- List Info -->
-<div list-meta-box></div>
-
-<!-- Filter -->
-<div filter-box></div>
+<div class="row">
+	<div class="columns small-12 medium-6">
+		<!-- List Info -->
+		<div list-meta-box></div>
+	</div>
+	<div class="columns small-12 medium-6">	
+		<!-- Filter -->
+		<div filter-box></div>
+	</div>
+</div>
 
 <!-- Items -->
-<ul class="items">
+<ul class="items list">
   <li ng-repeat="item in json">
     <table>
 	  <tr ng-repeat="key in keys" ng-switch on="key">
@@ -24,10 +29,6 @@
 	</table>
   </li>
 </ul>
-
-<!-- Pagination -->
-<a class="button secondary" ng-show="prev" href="#/items/{{ page-1 }}">&lt;</a>
-<a class="button secondary" ng-show="next" href="#/items/{{ page+1 }}">&gt;</a>
 
 <!-- JSON -->
 <label>query</label>

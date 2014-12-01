@@ -1,13 +1,9 @@
-<!-- New Collection -->
-<a class="button secondary" href="#/new/collection">New</a>
-
 <div class="row">
 	<div class="columns small-12 medium-6">
 		<!-- List Info -->
 		<div list-meta-box></div>
-		<!-- Pagination -->
-		<a class="button secondary" ng-show="prev" href="#/annotations/{{ page-1 }}">&lt;</a>
-		<a class="button secondary" ng-show="next" href="#/annotations/{{ page+1 }}">&gt;</a>
+		<!-- New Collection -->
+		<a class="button secondary" href="#/new/collection">new collection</a>
 	</div>
 	<div class="columns small-12 medium-6">	
 		<!-- Filter -->
@@ -16,7 +12,7 @@
 </div>
 
 <!-- Collections -->
-<ul class="collections">
+<ul class="collections list">
   <li ng-repeat="item in json">
     <table>
 	  <tr ng-repeat="key in keys" ng-switch on="key">
