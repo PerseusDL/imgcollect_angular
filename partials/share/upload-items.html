@@ -1,0 +1,9 @@
+<div id="upload-items" class="box">
+	<h3>upload</h3>
+	<ul class="items">
+		<li ng-if="uploads.length == 0">No item URNs</li>
+		<li ng-repeat="item in uploads">
+			<a href="#/upload/{{ item.urn }}">{{ item.urn }}</a>
+		</li>
+	</ul>
+</div>

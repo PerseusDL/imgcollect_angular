@@ -57,6 +57,12 @@ appDirectives.directive('resizeItems', function(){
 	}
 });
 
+appDirectives.directive('uploadItems', function(){
+	return {
+		templateUrl: 'partials/share/upload-items.html'
+	}
+});
+
 
 // Builds a box for checking URN uniqueness
 // You must implement a $scope.urn_uniq function

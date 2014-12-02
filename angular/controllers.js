@@ -493,6 +493,28 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
 ]);
 
 
+// resize/:urn
+
+appControllers.controller( 'ResizeCtrl', ['$scope','$injector',
+	function( $scope, $injector ){
+		$scope.title = "Resize";
+		$scope.form = {
+			'rdf:label':"",
+			'rdf:description':"",
+			'this:keyword':[]
+		};
+		$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		
+		$scope.run = function() {
+			$scope.uploads = [];
+			$scope.uploads[0] = { urn: $scope.json['this:upload']['@id'] };
+		}
+		
+		$scope.init();
+	}
+]);
+
+
 // User
 
 appControllers.controller( 'UserCtrl', ['$scope','$injector','user',

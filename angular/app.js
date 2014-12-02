@@ -9,7 +9,9 @@ var app = angular.module('app',[
 app.config(['$routeProvider',
 	function($routeProvider) {
 		
-		// Uploads
+		
+		// uploads
+		
 		$routeProvider.
 		when('/uploads', {
 			templateUrl: 'partials/upload-list.html',
@@ -28,7 +30,9 @@ app.config(['$routeProvider',
 			controller: 'UploadNew'
 		});
 		
-		// Items
+		
+		// items
+		
 		$routeProvider.
 		when('/items', {
 			templateUrl: 'partials/item-list.html',
@@ -47,7 +51,9 @@ app.config(['$routeProvider',
 			controller: 'ItemNew'
 		});
 		
-		// Collections
+		
+		// collections
+		
 		$routeProvider.
 		when('/collections', {
 			templateUrl: 'partials/collection-list.html',
@@ -66,7 +72,9 @@ app.config(['$routeProvider',
 			controller: 'CollectionNew'
 		});
 		
-		// Annotations
+		
+		// annotations
+		
 		$routeProvider.
 		when('/annotations', {
 			templateUrl: 'partials/annotation-list.html',
@@ -81,7 +89,18 @@ app.config(['$routeProvider',
 			controller: 'AnnotationCtrl'
 		});
 		
-		// Home
+		
+		// resize
+		
+		$routeProvider.
+		when('/resize/:urn',{
+			templateUrl: 'partials/resize.html',
+			controller: 'ResizeCtrl'
+		});
+		
+		
+		// home
+		
 		$routeProvider.
 		when('/home', {
 			templateUrl: 'partials/home.html',
