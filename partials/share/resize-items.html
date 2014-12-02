@@ -3,7 +3,7 @@
 	<ul class="resize">
 		<li ng-if="items.length == 0">No resize URNs</li>
 		<li ng-repeat="item in resize">
-			<a href="{{ item.urn }}">{{ item.urn }}</a><span class="img-px">{{ item.width }} x {{ item.height }}</span>
+			<a href="#/resize/{{ item.urn }}">{{ item.urn }}</a><span class="img-px">{{ item.width }} x {{ item.height }}</span>
 		</li>
 	</ul>
 </div>

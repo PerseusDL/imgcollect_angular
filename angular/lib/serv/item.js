@@ -6,7 +6,8 @@ app.service( 'item', ['sparql', function( sparql ) {
 	
 	function prefix() {
 	return "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
+	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
+	PREFIX cite: <http://www.homermultitext.org/cite/rdf/>";
 	}
 	
 	function query( where ){
@@ -28,7 +29,7 @@ app.service( 'item', ['sparql', function( sparql ) {
 			return results( data );
 		});
 	}
-	
+
 	function upload_query( urn ){
 	return query( "?urn this:upload <"+urn+">" );
 	}
@@ -44,7 +45,7 @@ app.service( 'item', ['sparql', function( sparql ) {
 	}
 	
 	function collection_query( urn ){
-		return query();		
+		return query( "?urn cite:belongsTo <"+urn+">" );		
 	}
 	
 	

@@ -1,4 +1,4 @@
-app.service( 'collections', ['sparql', function( sparql ) {
+app.service( 'collection', ['sparql', function( sparql ) {
 	return({
 		get:get
 	})

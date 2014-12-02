@@ -5,10 +5,48 @@
 	</div>
 </div>
 
-<!-- Uploads -->
-<div id="item-upload" class="box">
-	<h3>Upload</h3>
-	<a href="#/upload/{{ json['this:upload']['@id'] }}">{{ json['this:upload']['@id'] }}</a>
+<div class="row">
+	<div class="columns small-12 medium-6">
+
+		<!-- Uploads -->
+		<div id="item-upload" class="box">
+			<h3>upload</h3>
+			<ul class="items">
+				<li><a href="#/upload/{{ json['this:upload']['@id'] }}">{{ json['this:upload']['@id'] }}</a></li>
+			</ul>
+		</div>
+	
+	</div>
+	<div class="columns small-12 medium-6">
+		
+		<!-- Collection -->
+		<div id="item-collection" class="box">
+			<h3>collection</h3>
+			<ul class="items">
+				<li ng-repeat="item in collections">
+					<a href="#/collection/{{ item.urn }}">{{ item.urn }}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="columns small-12">
+		
+		<!-- Annotations -->
+		<div id="item-annotation" class="box">
+			<h3>annotation</h3>
+			<ul class="items">
+				<li ng-repeat="item in annotations">
+					<a href="#/annotation/{{ item.urn }}">{{ item.urn }}</a>
+				</li>
+			</ul>
+			<!-- Add Annotation -->
+			<a class="button secondary" href="#/new/annotation/{{ urn }}">add annotation</a>
+		</div>
+		
+	</div>
 </div>
 
 <!-- Item -->

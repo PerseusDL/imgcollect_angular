@@ -16,7 +16,7 @@
 		<th>{{ key }}</th>
 		<!-- urn -->
 		<td ng-switch-when="urn">
-			<a href="#/collection/{{ item[key].value }}">{{ item[key].value }}</a>
+			<a href="#/{{ item['type'].value }}/{{ item[key].value }}">{{ item[key].value }}</a>
 		</td>
 		<!-- user -->
 		<td ng-switch-when="user">

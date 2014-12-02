@@ -109,8 +109,8 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector',
 
 // collection/:urn
 
-appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
-	function( $scope, $injector ){
+appControllers.controller( 'CollectionCtrl', ['$scope','$injector','item',
+	function( $scope, $injector, item ){
 		$scope.title = "Collection";
 		$scope.form = {
 			'rdf:label':'',
@@ -119,6 +119,11 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		// Retrieve Collection Items
+		item.by_collection( $scope.urn ).then(
+			function( data ){ $scope.items = data }
+		);
 	}
 ]);
 
@@ -319,13 +324,19 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
+		
+		// collection URN
+		var collection = {}
+		collection['urn'] = $scope.urn.substring( 0, $scope.urn.indexOf('.') )
+		$scope.collections = [];
+		$scope.collections[0] = collection;
 	}
 ]);
 
 
 // new/item/:urn
 
-appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collections',
+appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collection',
 	'$location','json','stdout','user',
 	function( $scope, urnServ, $routeParams, collections, $location, json, stdout,user ){
 		$scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
@@ -333,6 +344,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		$scope.title = "Item New";
 		$scope.urn = null;
 		$scope.ready = false;
+		$scope.collection = null;
 		
 		// Path to default item JSON
 		
@@ -341,7 +353,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		// Get collections for the collection selector
 		
 		$scope.collections = [];
-		collections.get().then(
+		collection.get().then(
 			function( data ){ $scope.collections = data }
 		);
 		
@@ -349,6 +361,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		// User clicks collection to add upload
 		
 		$scope.add_to = function( urn ){
+			$scope.collection = urn;
 			
 			// Create a new item URN
 			
@@ -398,6 +411,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			$scope.json['@id'] = $scope.urn;
 			$scope.json['this:upload']['@id'] = $scope.upload_urn;
 			$scope.json['user']['@id'] = 'user:'+user.id;
+			$scope.json['cite:belongsTo']['@id'] = $scope.collection;
 			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
 		}
 	

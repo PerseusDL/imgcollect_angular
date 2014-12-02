@@ -7,5 +7,5 @@
 		</li>
 	</ul>
 	<!-- Add Upload to Collection -->
-	<a class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
+	<a ng-if="title != 'Collection'" class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
 </div>
