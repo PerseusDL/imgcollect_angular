@@ -1,8 +1,18 @@
-<!-- Info -->
-<div>{{ title }}</h4>
-
-<!-- URN uniq checker -->
-<div urn-uniq-box></div>
-
-<!-- Link to collection edit -->
-<a class="button secondary" ng-show="ready" href="#/collection/{{ urn }}">edit {{ urn }}</a>
+<div class="row">
+	<div class="columns small-12">
+		<div id="collection-new-form" class="box">
+			
+			<!-- Info -->
+			<h3>New Collection</h3>
+			
+			<!-- URN uniq checker -->
+			<div urn-uniq-box></div>
+			
+			<!-- Link to collection edit -->
+			<div ng-show="ready">
+				<div>{{ urn }} claimed</div>
+				<a class="button secondary" href="#/collection/{{ urn }}">edit</a>
+			</div>
+		</div>
+	</div>
+</div>

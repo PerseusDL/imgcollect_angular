@@ -1,20 +1,18 @@
-<!-- STDOUT -->
-<pre>{{ stdout }}</pre>
-
-<!-- Info -->
-<div>{{ title }}</div>
-
-<!-- Upload -->
-<form ng-show="ready">
-	<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
-	<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
-	<input type="text" ng-change="change('this:src')" ng-model="form['this:src']" placeholder="src" />
-	<input class="button secondary" type="submit" value="Save" ng-click="save()" />
-</form>
-
-<!-- JSON -->
-<label>object</label>
-<pre>{{ json_string }}</pre>
-
-<label>context</label>
-<pre>{{ context }}</pre>
+<div class="row">
+	<div class="columns small-12">
+		
+		<div id="upload-new-form" class="box">
+			<h3>{{ title }}</h3>
+			<!-- Upload -->
+			<form ng-show="ready">
+				<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
+				<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+				<input type="text" ng-change="change('this:src')" ng-model="form['this:src']" placeholder="src" />
+				<input class="button secondary" type="submit" value="save" ng-click="save()" />
+			</form>
+		</div>
+	</div>
+</div>
+		
+<!-- JSON output -->
+<div json-out></div>

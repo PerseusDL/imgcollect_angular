@@ -11,28 +11,12 @@
 <div class="row">
 	<div class="columns small-12 medium-6">
 		<!-- Associated Collection Items -->
-		<div id="collection-items" class="box">
-			<h3>collection item</h3>
-			<ul class="items">
-				<li ng-repeat="item in items">
-					<a href="#/item/{{ item.urn }}">{{ item.urn }}</a>
-				</li>
-			</ul>
-			<!-- Add Upload to Collection -->
-			<a class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
-		</div>
+		<div collection-items></div>
 	</div>
 
 	<div class="columns small-12 medium-6">
 		<!-- Resized Images -->
-		<div id="resize-items" class="box">
-			<h3>resize</h3>
-			<ul class="resize">
-				<li ng-repeat="item in resize">
-					<a href="{{ item.urn }}">{{ item.urn }}</a><span class="img-px">{{ item.width }} x {{ item.height }}</span>
-				</li>
-			</ul>
-		</div>
+		<div resize-items></div>
 	</div>
 </div>
 
@@ -44,7 +28,7 @@
 			<form>
 				<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
 				<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
-				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+				<input class="button secondary" type="submit" value="save" ng-click="save()" />
 			</form>
 		</div>
 	</div>

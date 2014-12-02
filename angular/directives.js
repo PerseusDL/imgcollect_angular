@@ -43,7 +43,19 @@ appDirectives.directive('urnInfo', function(){
 	return {
 		templateUrl: 'partials/share/urn-info.html'
 	}
-})
+});
+
+appDirectives.directive('collectionItems', function(){
+	return {
+		templateUrl: 'partials/share/collection-items.html'
+	}
+});
+
+appDirectives.directive('resizeItems', function(){
+	return {
+		templateUrl: 'partials/share/resize-items.html'
+	}
+});
 
 
 // Builds a box for checking URN uniqueness
