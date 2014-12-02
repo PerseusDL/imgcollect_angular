@@ -72,6 +72,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 			$scope.json = data;
 			json_to_str( $scope.json );
 			form();
+			if ( $scope.run != undefined ){
+				$scope.run();
+			}
 		});
 	}
 	

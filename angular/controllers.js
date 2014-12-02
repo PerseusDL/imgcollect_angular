@@ -121,6 +121,7 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector','item',
 		$scope.init();
 		
 		// Retrieve Collection Items
+		
 		item.by_collection( $scope.urn ).then(
 			function( data ){ $scope.items = data }
 		);
@@ -314,8 +315,8 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 
 // item/:urn
 
-appControllers.controller( 'ItemCtrl', ['$scope','$injector',
-	function( $scope, $injector ){
+appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation',
+	function( $scope, $injector, annotation ){
 		$scope.title = "Item";
 		$scope.form = {
 			'rdf:label':"",
@@ -325,11 +326,19 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector',
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		$scope.init();
 		
-		// collection URN
+		// Collection URN
+		
 		var collection = {}
-		collection['urn'] = $scope.urn.substring( 0, $scope.urn.indexOf('.') )
+		collection.urn = $scope.urn.substring( 0, $scope.urn.indexOf('.') )
 		$scope.collections = [];
 		$scope.collections[0] = collection;
+		
+		// Annotation URNs
+		
+		$scope.annotations = [];
+		annotation.by_item( $scope.urn ).then(
+			function( data ){ $scope.annotations = data }
+		);
 	}
 ]);
 
@@ -465,6 +474,21 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
 	function( $scope, $injector ){
 		$scope.title = "Annotation";
+		$scope.form = {
+			'rdf:label':"",
+			'rdf:description':"",
+			'this:keyword':[]
+		};
+		$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		
+		// Item URN
+		
+		$scope.run = function() {
+			$scope.items = [];
+			$scope.items[0] = { urn: $scope.json['cite:belongsTo']['@id'] };
+		}
+		
+		$scope.init();
 	}
 ]);
 

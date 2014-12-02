@@ -1,1 +1,30 @@
-<h4>{{ title }}</h4>
+<div class="row">
+	<div class="columns small-12">
+		<!-- Info -->
+		<div urn-info></div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="columns small-12">
+		<div collection-items></div>
+	</div>
+</div>
+
+<!-- Annotation -->
+<div class="row">
+	<div class="columns small-12">
+		<!-- Metadata -->
+		<div id="annotation-form" class="box">
+			<h3>metadata</h3>
+			<form>
+				<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
+				<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- JSON output -->
+<div json-out></div>

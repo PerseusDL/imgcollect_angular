@@ -1,5 +1,5 @@
 <div id="collection-items" class="box">
-	<h3>collection item</h3>
+	<h3>item</h3>
 	<ul class="items">
 		<li ng-if="items.length == 0">No item URNs</li>
 		<li ng-repeat="item in items">
@@ -7,5 +7,5 @@
 		</li>
 	</ul>
 	<!-- Add Upload to Collection -->
-	<a ng-if="title != 'Collection'" class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
+	<a ng-if="title == 'Upload'" class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
 </div>
