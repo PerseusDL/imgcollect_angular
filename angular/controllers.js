@@ -347,24 +347,18 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation',
 
 appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collection',
 	'$location','json','stdout','user',
-	function( $scope, urnServ, $routeParams, collections, $location, json, stdout,user ){
+	function( $scope, urnServ, $routeParams, collection, $location, json, stdout,user ){
 		$scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 		$scope.type = "item";
 		$scope.title = "Item New";
 		$scope.urn = null;
 		$scope.ready = false;
 		$scope.collection = null;
+		$scope.form = {};
 		
 		// Path to default item JSON
 		
-		$scope.src = 'default/'+$scope.type+'.json';
-				
-		// Get collections for the collection selector
-		
-		$scope.collections = [];
-		collection.get().then(
-			function( data ){ $scope.collections = data }
-		);
+		$scope.src = 'default/'+$scope.type+'.json';		
 		
 		
 		// User clicks collection to add upload
@@ -375,6 +369,17 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			// Create a new item URN
 			
 			urnServ.fresh( urn+".{{ id }}", fresh_callback );
+		}
+		
+		
+		// Get collections for the collection selector
+		
+		$scope.search = function(){
+			var str = $scope.form.search;
+			$scope.collections = [];
+			collection.search( str ).then(
+				function( data ){ $scope.collections = data }
+			);
 		}
 		
 		
