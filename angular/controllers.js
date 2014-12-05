@@ -211,6 +211,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			json.get( $scope.src ).then(
 			function( data ){
 				$scope.json = data;
+				json_to_str( $scope.json );
 				stdout.log( "Default JSON loaded from: "+$scope.src );
 				$scope.ready = true;
 			});
@@ -410,7 +411,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 			json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
 			function( data ){
 				
-				// Congruatulations!
+				// Congratulations!
 				// You've added an upload to a collection
 				// Go to Edit item view
 				
@@ -476,8 +477,8 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector',
 
 // annotation/:urn
 
-appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
-	function( $scope, $injector ){
+appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
+	function( $scope, $injector, annotation ){
 		$scope.title = "Annotation";
 		$scope.form = {
 			'rdf:label':"",
@@ -486,11 +487,23 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector',
 		};
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
 		
-		// Item URN
+		
+		// Run once data is retrieved
 		
 		$scope.run = function() {
+			
+			// Item URN
+			
 			$scope.items = [];
 			$scope.items[0] = { urn: $scope.json['cite:belongsTo']['@id'] };
+			
+			// Get the upload
+			
+			annotation.upload_src( $scope.urn ).then(
+				function( data ){
+					$scope.src = data[0].src;
+				}
+			);
 		}
 		
 		$scope.init();

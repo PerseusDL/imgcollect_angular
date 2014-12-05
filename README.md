@@ -1,79 +1,103 @@
-# Foundation Compass Template
+# Development Installation
 
-The easiest way to get started with Foundation + Compass.
+Fresh Install of Ubuntu 12.04
 
-## Requirements
+	Note I used VirtualBox for testing
+	This reminder is for me...
+		fn+shift UP and DOWN to terminal scroll with Macbook
 
-  * Ruby 1.9+
-  * [Node.js](http://nodejs.org)
-  * [compass](http://compass-style.org/): `gem install compass`
-  * [bower](http://bower.io): `npm install bower -g`
+### Foundation
 
-## Quickstart
+	sudo apt-get update
+	sudo apt-get install build-essential zlib1g-dev libssl1.0.0 libssl-dev git 
 
-  * [Download this starter compass project and unzip it](https://github.com/zurb/foundation-compass-template/archive/master.zip)
-  * Run `bower install` to install the latest version of Foundation
-  
-Then when you're working on your project, just run the following command:
+### Setup JackSON directory
 
-```bash
-bundle exec compass watch
-```
+	sudo mkdir -p /var/www
+	sudo chown -R user:group /var/www
+	git clone https://github.com/caesarfeta/JackSON /var/www/JackSON
 
-## Upgrading
+### Build Ruby
 
-If you'd like to upgrade to a newer version of Foundation down the road just run:
+	cd /var/www/JackSON
+	./rbenv.sh
+	source ~/.bash_profile
+	rbenv rehash
 
-```bash
-bower update
-```
+### Install JackSON
 
-## Notes
-Get all collections URNs.
+	sudo apt-get install rubygems
+	gem install bundler
+	bundle install
 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>
-	SELECT ?s
-	WHERE { ?s this:type 'collection' }
+### Install JackRDF
 
-Get all collection labels and description.
+	git clone https://github.com/caesarfeta/JackRDF /var/www/JackRDF
+	cd /var/www/JackRDF
+	rake install
 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-	SELECT ?s ?label ?desc
-	WHERE { 
-		?s this:type 'collection'; 
-			rdf:label ?label;
-			rdf:description ?desc
-	}
+### Install JackRDFs coupled fuseki server
 
+	cd /var/www/JackRDF
+	sudo apt-get install default-jre
+	sudo apt-get install default-jdk
+	rake server:install
 
-Get all collection labels and description, user, keywords, and time.
+### Start fuseki
 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>
-	PREFIX user: <http://data.perseus.org/sosol/users/>
-	SELECT ?s ?label ?desc ?time ?user
-	WHERE { 
-		?s this:type 'collection'; 
-		OPTIONAL { ?s rdf:label ?label . }
-		OPTIONAL { ?s rdf:description ?desc . }
-		OPTIONAL { ?s xml:dateTime ?time . }
-		OPTIONAL { ?s user ?user }
-	}
-	
+	cd /var/www/JackRDF
+	rake server:start
 
-Okay now how would I paginate this?
+Make sure JackRDF and fuseki are working
 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>
-	SELECT ?s ?label ?desc ?time ?user ?keyword
-	WHERE { 
-		?s this:type 'collection'; 
-		OPTIONAL { ?s rdf:label ?label . }
-		OPTIONAL { ?s rdf:description ?desc . }
-		OPTIONAL { ?s xml:dateTime ?time . }
-		OPTIONAL { ?s <http://data.perseus.org/sosol/users/> ?user . }
-		OPTIONAL { ?s this:keyword ?keyword }
-	}
+	rake test
+
+### Start JackSON
+
+	cd /var/www/JackSON
+	rake start
+
+Make sure JackSON is running properly
+
+	rake test
+
+### Install imgcollect_angular UI
+
+	git clone https://github.com/caesarfeta/imgcollect_angular /var/www/JackSON/public/apps/imgcollect
+	cd /var/www/JackSON/public/apps/imgcollect
+	gem install compass
+
+Install nodejs this funky way
+http://stackoverflow.com/questions/12913141/installing-from-npm-fails
+
+	curl -sL https://deb.nodesource.com/setup | sudo bash -
+	sudo apt-get install -y nodejs
+	sudo npm install bower -g
+	bower install
+
+Watch for changes
+
+	bundle exec compass watch
+
+### Get CITE-JSON-LD templates
+
+	git clone https://github.com/PerseusDL/CITE-JSON-LD /var/www/JackSON/templates/cite
+
+### Create fake development data
+
+	gem install faker
+	cd /var/www/JackSON/templates/cite/templates/img
+	ruby fake.rb
+
+### Your app is working?
+
+	http://localhost:4567/apps/imgcollect
+
+### Clearout fake data
+When the time comes...
+
+	cd /var/www/JackSON
+	rake data:destroy
+
+# Production Installation
+Coming soon!

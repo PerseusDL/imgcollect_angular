@@ -1,15 +1,16 @@
 app.service( 'annotation', ['sparql', function( sparql ){
 	return({
-		by_item:by_item
+		by_item:by_item,
+		upload_src:upload_src
 	})
 	
-	function prefix() {
+	function prefix(){
 	return "\
 	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
 	PREFIX cite: <http://www.homermultitext.org/cite/rdf/>";
 	}
 	
-	function query( where ) {
+	function query( where ){
 	return "\
 	"+prefix()+"\
 	SELECT ?urn\
@@ -19,15 +20,37 @@ app.service( 'annotation', ['sparql', function( sparql ){
 	}"
 	}
 	
-	function item_query( urn ){
-		return query( "?urn cite:belongsTo <"+urn+">" );
-	}
+	// Retrieve annotations related to item
 	
-	function by_item( urn ) {
+	function by_item( urn ){
 		return sparql.search( item_query( urn ) ).then(
 		function( data ){
 			return results( data );
 		});
+	}
+	
+	function item_query( urn ){
+		return query( "?urn cite:belongsTo <"+urn+">" );
+	}
+	
+	// Find upload_src
+	
+	function upload_src( urn ){
+		return sparql.search( upload_src_query( urn ) ).then(
+		function( data ){
+			return results( data );
+		});
+	}
+	
+	function upload_src_query( urn ){
+	return "\
+	"+prefix()+"\
+	SELECT ?src\
+	WHERE {\
+		<"+urn+"> cite:belongsTo ?item .\
+		?item this:upload ?upl .\
+		?upl this:src ?src\
+	}"
 	}
 	
 	
