@@ -28,6 +28,7 @@ Fresh Install of Ubuntu 12.04
 
 	sudo apt-get install rubygems
 	gem install bundler
+	rbenv rehash
 	bundle install
 
 ### Install JackRDF
@@ -36,9 +37,17 @@ Fresh Install of Ubuntu 12.04
 	cd /var/www/JackRDF
 	rake install
 
+You might get this error...
+
+	rake aborted!
+	Couldn't install gem...
+
+Just run this:
+
+	gem install /var/www/JackRDF/pkg/JackRDF-1.0.1.gem
+
 ### Install JackRDFs coupled fuseki server
 
-	cd /var/www/JackRDF
 	sudo apt-get install default-jre
 	sudo apt-get install default-jdk
 	rake server:install
@@ -65,7 +74,6 @@ Make sure JackSON is running properly
 
 	git clone https://github.com/caesarfeta/imgcollect_angular /var/www/JackSON/public/apps/imgcollect
 	cd /var/www/JackSON/public/apps/imgcollect
-	gem install compass
 
 Install nodejs this funky way
 http://stackoverflow.com/questions/12913141/installing-from-npm-fails
@@ -74,8 +82,9 @@ http://stackoverflow.com/questions/12913141/installing-from-npm-fails
 	sudo apt-get install -y nodejs
 	sudo npm install bower -g
 	bower install
+	bundle install
 
-Watch for changes
+Watch for changes / build CSS
 
 	bundle exec compass watch
 
@@ -86,8 +95,7 @@ Watch for changes
 ### Create fake development data
 
 	gem install faker
-	cd /var/www/JackSON/templates/cite/templates/img
-	ruby fake.rb
+	ruby /var/www/JackSON/templates/cite/templates/img/fake.rb
 
 ### Your app is working?
 
