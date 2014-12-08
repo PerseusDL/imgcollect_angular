@@ -148,7 +148,7 @@ img.preview {
   margin:0;
 }
 
-/* imgbit */
+/* img-bit */
 .img-bit {
   display:inline-block;
 }
@@ -162,4 +162,25 @@ img.preview {
   vertical-align:baseline;
   max-width:none;
   max-height:none;
+}
+
+/* img-spect */
+.img-spect {}
+.img-spect.frame {
+  position:relative;
+  overflow:hidden;
+}
+.img-spect.frame .canvas {
+  float:left;
+  position:absolute;
+  display:block;
+  vertical-align:baseline;
+  max-width:none;
+  max-height:none;
+  margin-right:10px;
+  background-size:cover;
+}
+.img-spect.nav {
+  float:left;
+  display:block;
 }

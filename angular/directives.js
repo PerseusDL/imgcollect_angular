@@ -76,6 +76,10 @@ appDirectives.directive('urnUniqBox', function(){
 	}
 });
 
+// img-bit functionality.
+
+// see .img-bit in app.scss
+
 appDirectives.directive('imgBit', function(){
 	return {
 		link: function( scope,elem,attr ){

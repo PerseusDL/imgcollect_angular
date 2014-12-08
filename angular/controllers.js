@@ -511,6 +511,25 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 ]);
 
 
+// new/annotation/:urn
+
+appControllers.controller( 'AnnotationNew', ['$scope','$injector',
+	function( $scope, $injector ){
+		$scope.title = "Annotation New"
+		
+		$scope.src = "http://placecage.com/900/1100";
+		$scope.frame_w = 900;
+		$scope.frame_h = 325;
+		$scope.draw_w = 900;
+		$scope.draw_h = 1100;
+		$scope.draw_l = -100;
+		$scope.draw_t = 0;
+		$scope.nav_h = 325;
+		
+	}
+]);
+
+
 // resize/:urn
 
 appControllers.controller( 'ResizeCtrl', ['$scope','$injector',
