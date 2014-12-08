@@ -513,9 +513,12 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 
 // new/annotation/:urn
 
-appControllers.controller( 'AnnotationNew', ['$scope','$injector',
-	function( $scope, $injector ){
-		$scope.title = "Annotation New"
+appControllers.controller( 'AnnotationNew', ['$scope','$injector','$routeParams','json','annotation',
+	function( $scope, $injector, $routeParams, json, annotation ){
+		$scope.title = "Annotation New";
+		$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+		
+		// Test data
 		
 		$scope.src = "http://placecage.com/900/1100";
 		$scope.frame_w = 900;
@@ -526,6 +529,55 @@ appControllers.controller( 'AnnotationNew', ['$scope','$injector',
 		$scope.draw_t = 0;
 		$scope.nav_h = 325;
 		
+		// Stores all the JSON data
+		
+		$scope.json = {};
+		
+		// Get the item JSON
+		
+		json.urn( $scope.urn ).then( function( data ){
+			var src = data.src[0];
+			json.get( src ).then( function( data ){
+				$scope.json.item = data;
+				upload_json( data['this:upload']['@id'] );
+			});
+		});
+		
+		
+		// get the upload JSON
+		
+		function upload_json( urn ){
+			json.urn( urn ).then( function( data ){
+				var src = data.src[0];
+				json.get( src ).then( function( data ){
+					$scope.json.upload = data;
+					annotations( $scope.urn );
+				});
+			});
+		}
+		
+		function annotations( urn ){
+			annotation.by_item( urn ).then( function( data ){
+				$scope.json.annotations = [];
+				for ( var i=0; i<data.length; i++ ){
+					var urn = data[i].urn
+					var params = urn.split(',');
+					$scope.json.annotations.push({ 
+						urn: urn, 
+						x: params[1],
+						y: params[2],
+						w: params[3],
+						h: params[4]
+					});
+				}
+			})
+			ready();
+		}
+		
+		function ready(){
+			$scope.src = $scope.json.upload['this:src'];
+			console.log( $scope.json );
+		}
 	}
 ]);
 

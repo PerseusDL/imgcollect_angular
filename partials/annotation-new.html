@@ -10,6 +10,8 @@
 				left:{{ draw_l }}px;
 				top:{{ draw_t }}px;
 				background-image: url('{{ src }}')">
+				
+		<!-- hilites -->
 	</div>
 	
 </div>
@@ -21,3 +23,8 @@
 		 style="height:{{ nav_h }}px"
 	/>
 </div>
+
+<!-- imgbits -->
+<img ng-repeat="item in json.annotations" src="{{ src }}" 
+	 ng-param="{{ item.x }},{{ item.y }},{{ item.w }},{{ item.h }}"
+img-bit />
