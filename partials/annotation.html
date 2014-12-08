@@ -7,7 +7,10 @@
 
 <div class="row">
 	<div class="columns small-12">
-		<img src="{{ src }}" />
+		<!-- imgbit -->
+		<img src="{{ src }}" 
+			 ng-param="{{ json.roi_x }},{{ json.roi_y }},{{ json.roi_width }},{{ json.roi_height }}"
+		img-bit />
 	</div>
 </div>
 

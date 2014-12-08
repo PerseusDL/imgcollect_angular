@@ -147,3 +147,19 @@ img.preview {
 #top-row .button {
   margin:0;
 }
+
+/* imgbit */
+.img-bit {
+  display:inline-block;
+}
+.img-bit .frame {
+  position:relative;
+  overflow:hidden;
+}
+.img-bit .frame img {
+  position:absolute;
+  display:block;
+  vertical-align:baseline;
+  max-width:none;
+  max-height:none;
+}

@@ -490,7 +490,7 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 		
 		// Run once data is retrieved
 		
-		$scope.run = function() {
+		$scope.run = function(){
 			
 			// Item URN
 			

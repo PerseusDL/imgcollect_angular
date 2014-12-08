@@ -75,3 +75,28 @@ appDirectives.directive('urnUniqBox', function(){
 		templateUrl: 'partials/share/urn-uniq-box.html'
 	}
 });
+
+appDirectives.directive('imgBit', function(){
+	return {
+		link: function( scope,elem,attr ){
+			elem.bind('load', function(e){
+				elem.wrap( '<div class="frame">' );
+				var frame = elem.parent();
+				frame.wrap( '<div class="img-bit">' );
+				var height = this.naturalHeight;
+				var width = this.naturalWidth;
+				var param = attr.ngParam.split(',');
+				frame.css({
+					width: parseInt( width*param[2] ),
+					height: parseInt( height*param[3] )
+				});
+				elem.css({
+					width: width,
+					height: height,
+					top: parseInt( param[1]*height*-1 ),
+					left: parseInt( param[0]*width*-1 )
+				});
+			});
+		},
+	}
+});
