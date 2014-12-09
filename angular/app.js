@@ -89,8 +89,8 @@ app.config(['$routeProvider',
 			controller: 'AnnotationCtrl'
 		}).
 		when('/new/annotation/:urn', {
-			templateUrl: 'partials/annotation-new.html',
-			controller: 'AnnotationNew'
+			templateUrl: 'partials/imgspect.html',
+			controller: 'imgspect'
 		});
 		
 		

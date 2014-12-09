@@ -165,22 +165,36 @@ img.preview {
 }
 
 /* img-spect */
-.img-spect {}
-.img-spect.frame {
+.imgspect {}
+.imgspect.frame {
   position:relative;
   overflow:hidden;
 }
-.img-spect.frame .canvas {
+.imgspect.frame .canvas {
   float:left;
   position:absolute;
   display:block;
   vertical-align:baseline;
   max-width:none;
   max-height:none;
-  margin-right:10px;
   background-size:cover;
+  overflow:hidden;
 }
-.img-spect.nav {
+.imgspect.nav {
   float:left;
   display:block;
+}
+.imgspect .drag {
+  position:absolute;
+  z-index:100;
+  background-color:#FFF;
+  opacity:.3;
+  outline:1px solid #444;
+  border:1px solid #BBB;
+}
+.imgspect.imgbits {
+  clear:both;
+}
+.imgspect .lite {
+  position:absolute;
 }

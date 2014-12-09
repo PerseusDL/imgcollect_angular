@@ -1,0 +1,64 @@
+<!-- frame -->
+<div class="imgspect frame"
+	 ng-style="{
+	   'width':frame_w+'px',
+	   'height':frame_h+'px' }">
+	
+	<!-- canvas --> 
+	<div class="canvas"
+		 ng-style="{
+		   'width':canvas_w+'px',
+		   'height':canvas_h+'px',
+		   'left':canvas_x+'px',
+		   'top':canvas_y+'px',
+		   'background-image': 'url('+src+')' }">
+				
+		<!-- lite -->
+		<div ng-repeat="item in json.annotations"
+			 class="lite"
+			 style="width:{{ to_canvas_x( item.w ) }}px;
+					height:{{ to_canvas_y( item.h )}}px;
+					left:{{ to_canvas_x( item.x ) }}px;
+					top:{{ to_canvas_y( item.y ) }}px;
+					opacity: {{ config.lite.opa }};
+					background-color:{{ config.lite.color }}">
+		 </div>
+	</div>
+	
+</div>
+
+<!-- nav -->
+<div class="imgspect nav"
+	 style="height:{{ nav_h }}px">
+	<div class="drag"
+		 style="width:{{ drag_w() }}px;
+		 		height:{{ drag_h() }}px;
+				left:{{ drag_x }}px;
+				top:{{ drag_y }}px">
+	 </div>
+	<img src="{{ src }}"
+		 style="height:{{ nav_h }}px"/>
+</div>
+
+<div style="clear:both"></div>
+
+<div>zoom</div>
+<input type="text" 
+       ng-model="zoom" />
+
+<div>color</div>
+<input type="text" 
+       ng-model="config.lite.color" />
+
+<div>opacity</div>
+<input type="text" 
+       ng-model="config.lite.opa" />
+
+<!-- imgbits -->
+<!--
+<div class="imgspect imgbits">
+	<img ng-repeat="item in json.annotations" src="{{ src }}" 
+		 ng-param="{{ item.x }},{{ item.y }},{{ item.w }},{{ item.h }}"
+	img-bit />
+</div>
+-->
