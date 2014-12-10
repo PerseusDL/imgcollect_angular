@@ -74,7 +74,6 @@ Make sure JackSON is running properly
 
 ### Install imgcollect_angular UI
 
-	git clone https://github.com/caesarfeta/imgcollect_angular /var/www/JackSON/public/apps/imgcollect
 	cd /var/www/JackSON/public/apps/imgcollect
 
 Install nodejs this funky way
