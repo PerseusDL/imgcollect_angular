@@ -31,8 +31,8 @@ function( $scope, $injector, $routeParams, json, annotation ){
 
 	$scope.config = {
 		lite: {
-			color:'#FF00FF',
-			opa:0.4
+			color:'#FF0',
+			opa:0.75
 		}
 	};	
 	var orig = {};
@@ -198,19 +198,37 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	});
 	
 	function lite_start(){
-		canvas.on('touchstart mousedown', function(e){
+		canvas
+		.on('touchstart mousedown', function(e){
 			lite_down( e );
-		});
-		canvas.on('touchmove mousemove', function(e){
+		})
+		.on('touchmove mousemove', function(e){
 			lite_move( e );
-		});
-		canvas.on('touchend mouseup', function(e){
+		})
+		.on('mouseout', function(e){
+			$scope.lite_reset();
+		})
+		.on('touchend mouseup', function(e){
 			lite_up( e );
 		});
-		canvas.on('mouseout', function(e){
-			lite_cancel();
-		})
 	}
+	
+	// The temp_lite object
+	
+	var clear_pos = { x:null, y:null, w:null, h:null };
+	$scope.temp_lite = clear_pos;
+	$scope.lite_reset = function(){
+		$scope.temp_lite = clear_pos;
+	}
+	$scope.lite_cancel = function(){ 
+		$scope.lite_reset();
+	}
+	$scope.lites = [];
+	$scope.lite_stash = function(){
+		$scope.lites.push( angular.copy( $scope.temp_lite ) );
+	}
+	
+	// The temp_lite points
 	
 	var _p1 = { x:null, y:null };
 	var p1 = function( pos ){
@@ -230,11 +248,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		_p2.y = pos.y;
 	}
 	
-	$scope.temp_lite = null;
-	lite_cancel();
-	
 	function lite_down( e ){
-		lite_cancel();
 		p1( mouse_rel( e ) );
 	}
 	
@@ -256,24 +270,13 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	function lite_move( e ){
 		lite_pos( e );
-		console.log( pressed );
 		if ( pressed ) {
 			$scope.refresh();
-			console.log( 'lite_move' );
 		}
 	}
 	
 	function lite_up( e ){
-		console.log( 'lite_up' );
 		lite_pos( e );
-		
-		// Do something with that lite!
-		
-		lite_cancel();
-	}
-	
-	function lite_cancel(){ 
-		$scope.temp_lite = { x:null, y:null, w:null, h:null } 
 	}
 	
 	function mouse_rel( e ){
@@ -282,6 +285,10 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		var y = (e.pageY - pos.top);
 		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
 	}
+	
+	// temp_lite controls
+	
+	
 	
 	
 	

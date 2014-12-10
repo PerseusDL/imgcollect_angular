@@ -208,3 +208,21 @@ img.preview {
 .imgspect .lite {
   position:absolute;
 }
+.imgspect .lite.temp {
+  overflow:hidden;
+}
+.imgspect .lite.temp .ctrl {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+.imgspect .lite.temp .ctrl .button {
+  margin:0;
+}
+.imgspect .lite.temp .words * {
+  margin:0;
+  border:0;
+}
+.imgspect .lite.temp .words *:focus {
+  outline:0;
+}

@@ -30,13 +30,26 @@
 		 </div>
 		 
 		 <!-- temp lite -->
-		 <div class="lite"
+		 <div class="lite temp"
 			 style="width:{{ to_canvas_x( temp_lite.w ) }}px;
 					height:{{ to_canvas_y( temp_lite.h )}}px;
 					left:{{ to_canvas_x( temp_lite.x ) }}px;
 					top:{{ to_canvas_y( temp_lite.y ) }}px;
 					opacity: {{ config.lite.opa }};
 					background-color:{{ config.lite.color }}">
+					<div class="words">
+						<input type="text" 
+							   style="background-color:{{ config.lite.color }}"
+							   placeholder="label" />
+						<textarea placeholder="description"
+							 	  style="background-color:{{ config.lite.color }}" />
+					</div>
+					<div class="ctrl">
+						<a ng-click="lite_stash()" class="no-select button secondary tiny">ok</a>
+						<a ng-click="lite_cancel()" class="no-select button secondary tiny">cancel</a>
+						<a ng-click="lite_clear_text()" class="no-select button secondary tiny">clear text</a>
+						<a class="no-select button secondary tiny resize">*</a>
+					</div>
 		 </div>
 	</div>
 	
