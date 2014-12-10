@@ -16,6 +16,7 @@ Fresh Install of Ubuntu 12.04
 	sudo mkdir -p /var/www
 	sudo chown -R user:group /var/www
 	git clone https://github.com/caesarfeta/JackSON /var/www/JackSON
+	cd /var/www/JackSON
 	git submodule update --init
 
 ### Build Ruby
