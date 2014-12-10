@@ -30,19 +30,22 @@
 		 </div>
 		 
 		 <!-- temp lite -->
-		 <div class="lite temp"
+		 <div class="lite temp no-select"
 			 style="width:{{ to_canvas_x( temp_lite.w ) }}px;
 					height:{{ to_canvas_y( temp_lite.h )}}px;
 					left:{{ to_canvas_x( temp_lite.x ) }}px;
 					top:{{ to_canvas_y( temp_lite.y ) }}px;
 					opacity: {{ config.lite.opa }};
 					background-color:{{ config.lite.color }}">
+					
 					<div class="words">
-						<input type="text" 
+						<input type="text"
+							   ng-model="temp_label"
 							   style="background-color:{{ config.lite.color }}"
 							   placeholder="label" />
-						<textarea placeholder="description"
-							 	  style="background-color:{{ config.lite.color }}" />
+						<textarea ng-model="temp_desc"
+								  style="background-color:{{ config.lite.color }}"
+						          placeholder="description" />
 					</div>
 					<div class="ctrl">
 						<a ng-click="lite_stash()" class="no-select button secondary tiny">ok</a>

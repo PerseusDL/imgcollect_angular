@@ -12,7 +12,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	var nav = $( '.imgspect.nav' );
 	var drag = $( '.imgspect.nav .drag' );
 	var img = $('.imgspect img')
-	
+    var sizer = $('.imgspect.frame .canvas .lite.temp .resize');
 	
 	
 	// CONFIGURATION
@@ -200,33 +200,43 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	function lite_start(){
 		canvas
 		.on('touchstart mousedown', function(e){
-			lite_down( e );
+			( event_match(e) ) ? lite_down( e ) : null;
 		})
 		.on('touchmove mousemove', function(e){
-			lite_move( e );
-		})
-		.on('mouseout', function(e){
-			$scope.lite_reset();
+			( event_match(e) ) ? lite_move( e ) : null;
 		})
 		.on('touchend mouseup', function(e){
-			lite_up( e );
+			( event_match(e) ) ? lite_up( e ) : null;
 		});
+	}
+	
+	function event_match( e ){
+		return ( e.originalEvent.srcElement == canvas[0] ) ? true : false
 	}
 	
 	// The temp_lite object
 	
 	var clear_pos = { x:null, y:null, w:null, h:null };
 	$scope.temp_lite = clear_pos;
+	
 	$scope.lite_reset = function(){
 		$scope.temp_lite = clear_pos;
 	}
+	
 	$scope.lite_cancel = function(){ 
 		$scope.lite_reset();
+//		$scope.refresh();
 	}
+	
 	$scope.lites = [];
 	$scope.lite_stash = function(){
+		console.log( $scope.temp_label );
+		console.log( $scope.temp_desc );
 		$scope.lites.push( angular.copy( $scope.temp_lite ) );
 	}
+	
+	$scope.temp_label = '';
+	$scope.temp_desc = '';
 	
 	// The temp_lite points
 	
@@ -250,6 +260,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	function lite_down( e ){
 		p1( mouse_rel( e ) );
+		console.log( 'lite_down' );
 	}
 	
 	function min_x(){ return Math.min( p1().x, p2().x ) }
@@ -273,10 +284,12 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		if ( pressed ) {
 			$scope.refresh();
 		}
+		console.log( 'lite_move' );
 	}
 	
 	function lite_up( e ){
 		lite_pos( e );
+		console.log( 'lite_up' );
 	}
 	
 	function mouse_rel( e ){
