@@ -184,6 +184,16 @@ img.preview {
   float:left;
   display:block;
 }
+.imgspect.nav .canvas {
+  float:left;
+  position:absolute;
+  display:block;
+  vertical-align:baseline;
+  max-width:none;
+  max-height:none;
+  background-size:contain;
+  overflow:hidden;
+}
 .imgspect .drag {
   position:absolute;
   z-index:100;

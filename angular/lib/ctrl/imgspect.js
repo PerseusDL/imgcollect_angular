@@ -5,6 +5,16 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	
 	
+	// SELECTORS
+	
+	var frame = $( '.imgspect.frame' );
+	var canvas = $( '.imgspect.frame .canvas' );
+	var nav = $( '.imgspect.nav' );
+	var drag = $( '.imgspect.nav .drag' );
+	var img = $('.imgspect img')
+	
+	
+	
 	// CONFIGURATION
 	
 	// Current URN
@@ -16,33 +26,71 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	$scope.json = {};
 	
+	
+	// Application state
 
 	$scope.config = {
 		lite: {
 			color:'#FF00FF',
 			opa:0.4
 		}
-	};
-	
-	// state
+	};	
 	var orig = {};
-	
-	$scope.zoom = 1
 
-	$scope.frame_w = 900;
+
+	// Frame Size
+	
+	$scope.frame_w = function(){
+		return frame.width();
+	};
 	$scope.frame_h = 325;
+	
+	
+	// Canvas Size and position
 
 	$scope.canvas_w = 900;
 	$scope.canvas_h = 1100;
 	$scope.canvas_x = 0;
 	$scope.canvas_y = 0;
+	$scope.zoom = 1
 	
-	$scope.drag_w = 0;
-	$scope.drag_h = 0;
+	
+	// Ratios
+	
+	$scope.wr = function(){
+		var wr = $scope.frame_w() / $scope.canvas_w;
+		wr = ( wr > 1 ) ? 1 : wr;
+		return wr;
+	}
+	
+	$scope.hr = function(){
+		var hr = $scope.frame_h / $scope.canvas_h;
+		hr = ( hr > 1 ) ? 1 : hr;
+		return hr;
+	}
+	
+	
+	// Dragger Position
+	
 	$scope.drag_x = 0;
 	$scope.drag_y = 0;
+	$scope.drag_w = function(){
+		return $scope.nav_w() * $scope.wr();
+	}
+	$scope.drag_h = function(){
+		return $scope.nav_h * $scope.hr();
+	}
+	
+	
+	// Navigation Size
 	
 	$scope.nav_h = 325;
+	$scope.nav_w = function(){
+		return $scope.nav_scale() * orig.width
+	}
+	$scope.nav_scale = function(){
+		return $scope.nav_h / orig.height
+	}
 	
 	
 	
@@ -71,6 +119,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		});
 	}
 	
+	
+	// get the annotations
+	
 	function annotations( urn ){
 		annotation.by_item( urn ).then( function( data ){
 			$scope.json.annotations = [];
@@ -89,6 +140,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		ready();
 	}
 	
+	
+	// Start the party
+	
 	function ready(){
 		$scope.src = $scope.json.upload['this:src'];
 		start();
@@ -98,34 +152,42 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// USER INTERACTION
 		
-	// selectors
-	
-	var frame = $( '.imgspect.frame' );
-	var canvas = $( '.imgspect .canvas' );
-	var nav = $( '.imgspect.nav' );
-	var drag = $( '.imgspect.nav .drag' );
-	var img = $('.imgspect.nav img')
-		
-	// once the image loads get started
+	// Once the image loads get started
 		
 	function start(){
 		img.load( function(){
 			orig.width = this.width;
 			orig.height = this.height;
-
-			drag_start();
 			
+			// Start it up
+			
+			drag_start();
 			lite_start();
+			
+			// Image you are no longer needed!
+			
+			img.detach();
+			
+			// Initial display
+			
+			dragging();
 		});
 	}
 	
-	// convert relative coordinates
+	// Convert relative coordinates
 	
 	$scope.to_canvas_x = function( n ){ return n*$scope.canvas_w }
 	$scope.to_canvas_y = function( n ){ return n*$scope.canvas_h }
 	
+	$scope.to_nav_x = function( n ){ return n*$scope.nav_w() }
+	$scope.to_nav_y = function( n ){ return n*$scope.nav_h }
+	
+	
+	// Start the hi-liter
+	
 	function lite_start(){
 		canvas.on('touchstart mousedown', function(e){
+			lite_down( e );
 			console.log( 'mousedown' );
 		});
 		canvas.on('touchmove mousemove', function(e){
@@ -136,6 +198,21 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		})
 	}
 	
+	function lite_down( e ){
+		var pos = canvas_rel( e );
+		console.log( pos );
+	}
+	
+	function canvas_rel( e ){
+		var pos = canvas.offset();
+		var x = (e.pageX - pos.left) + $(window).scrollLeft();
+		var y = (e.pageY - pos.top) + $(window).scrollTop();
+		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
+	}
+	
+	
+	// Start the dragger
+	
 	function drag_start(){
 		drag.draggable({
 			containment:'parent',
@@ -143,53 +220,33 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			drag:function(){ dragging() },
 			stop:function(){ nav_diff() }
 		});
-		dragging();
 	}
 	
-	function wr(){
-		var wr = $scope.frame_w / $scope.canvas_w;
-		wr = ( wr > 1 ) ? 1 : wr;
-		return wr;
-	}
 	
-	function hr(){
-		var hr = $scope.frame_h / $scope.canvas_h;
-		hr = ( hr > 1 ) ? 1 : hr;
-		return hr;
-	}
+	// Move the canvas
 	
-	$scope.drag_w = function(){
-		return img.width() * wr();
-	}
-	
-	$scope.drag_h = function(){
-		return img.height() * hr();
-	}
-	
-	function drag_move( nav, drag ){
-		var x = drag.left - nav.left;
-		var y = drag.top - nav.top;
-		var left = x * $scope.zoom;
-		var top = y * $scope.zoom;
-		canvas_move( left, top );
-	}
-	
-	function canvas_move( x, y ){
-		$scope.canvas_x = x*-1;
-		$scope.canvas_y = y*-1;
+	function canvas_move(){
+		var pos = drag.position();
+		var x =  pos.left/$scope.nav_scale();
+		var y =  pos.top/$scope.nav_scale();
+		$scope.canvas_x = x*-1*$scope.zoom;
+		$scope.canvas_y = y*-1*$scope.zoom;
 		$scope.refresh();
 	}
+	
+	// What happens when dragger is moved
+	
+	function dragging(){
+		$scope.canvas_w = orig.width*$scope.zoom;
+		$scope.canvas_h = orig.height*$scope.zoom;
+		canvas_move();
+	}
+	
+	function nav_diff(){}
+	
 	
 	$scope.refresh = function(){
 		$scope.$digest();
 	}
-	
-	function dragging(){
-		$scope.canvas_w = orig.width * $scope.zoom;
-		$scope.canvas_h = orig.height * $scope.zoom;
-		drag_move( nav.position(), drag.position() );
-	}
-	
-	function nav_diff(){}
 	
 }]);
