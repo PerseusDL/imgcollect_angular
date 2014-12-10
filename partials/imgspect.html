@@ -18,13 +18,23 @@
 		   'top':canvas_y+'px',
 		   'background-image': 'url('+src+')' }">
 				
-		<!-- lite -->
+		<!-- lites -->
 		<div ng-repeat="item in json.annotations"
 			 class="lite"
 			 style="width:{{ to_canvas_x( item.w ) }}px;
 					height:{{ to_canvas_y( item.h )}}px;
 					left:{{ to_canvas_x( item.x ) }}px;
 					top:{{ to_canvas_y( item.y ) }}px;
+					opacity: {{ config.lite.opa }};
+					background-color:{{ config.lite.color }}">
+		 </div>
+		 
+		 <!-- temp lite -->
+		 <div class="lite"
+			 style="width:{{ to_canvas_x( temp_lite.w ) }}px;
+					height:{{ to_canvas_y( temp_lite.h )}}px;
+					left:{{ to_canvas_x( temp_lite.x ) }}px;
+					top:{{ to_canvas_y( temp_lite.y ) }}px;
 					opacity: {{ config.lite.opa }};
 					background-color:{{ config.lite.color }}">
 		 </div>
@@ -54,7 +64,7 @@
   		 			'top': drag_y+'px' }">
   		 </div>
 		   
-	   	 <!-- nav lite -->
+	   	 <!-- nav lites -->
 	   	 <div ng-repeat="item in json.annotations"
 	   		 class="lite"
 	   		 style="width:{{ to_nav_x( item.w ) }}px;

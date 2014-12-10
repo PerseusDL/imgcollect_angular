@@ -183,33 +183,97 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	$scope.to_nav_y = function( n ){ return n*$scope.nav_h }
 	
 	
+	
+	// LITE
+	
 	// Start the hi-liter
 	
 	function lite_start(){
 		canvas.on('touchstart mousedown', function(e){
 			lite_down( e );
-			console.log( 'mousedown' );
 		});
 		canvas.on('touchmove mousemove', function(e){
-			console.log( 'mousemove' );	
+			lite_move( e );
 		});
 		canvas.on('touchend mouseup', function(e){
-			console.log( 'mouseup' );
+			lite_up( e );
+		});
+		canvas.on('mouseout', function(e){
+			lite_cancel();
 		})
 	}
 	
-	function lite_down( e ){
-		var pos = canvas_rel( e );
-		console.log( pos );
+	var _p1 = { x:null, y:null };
+	var p1 = function( pos ){
+		if ( ! angular.isDefined( pos ) ){
+			return _p1
+		}
+		_p1.x = pos.x;
+		_p1.y = pos.y;
 	}
 	
-	function canvas_rel( e ){
+	var _p2 = { x:null, y:null };
+	var p2 = function( pos ){
+		if ( ! angular.isDefined( pos ) ){
+			return _p2
+		}
+		_p2.x = pos.x;
+		_p2.y = pos.y;
+	}
+	
+	$scope.temp_lite = null;
+	lite_cancel();
+	
+	function lite_down( e ){
+		lite_cancel();
+		p1( mouse_rel( e ) );
+	}
+	
+	function min_x(){ return Math.min( p1().x, p2().x ) }
+	
+	function min_y(){ return Math.min( p1().y, p2().y ) }
+	
+	function max_x(){ return Math.max( p1().x, p2().x ) }
+	
+	function max_y(){ return Math.max( p1().y, p2().y ) }
+	
+	function lite_pos( e ){
+		p2( mouse_rel( e ) );
+		$scope.temp_lite.x = min_x().toFixed(4);
+		$scope.temp_lite.y = min_y().toFixed(4);
+		$scope.temp_lite.w = (max_x()-$scope.temp_lite.x).toFixed(4);
+		$scope.temp_lite.h = (max_y()-$scope.temp_lite.y).toFixed(4);
+		$scope.refresh();
+	}
+	
+	function lite_move( e ){
+		console.log( 'lite_move' );
+		lite_pos( e );
+	}
+	
+	function lite_up( e ){
+		console.log( 'lite_up' );
+		lite_pos( e );
+		
+		// Do something with that lite!
+		
+		lite_cancel();
+	}
+	
+	function lite_cancel(){ 
+		$scope.temp_lite = { x:null, y:null, w:null, h:null } 
+	}
+	
+	function mouse_rel( e ){
 		var pos = canvas.offset();
-		var x = (e.pageX - pos.left) + $(window).scrollLeft();
-		var y = (e.pageY - pos.top) + $(window).scrollTop();
+		var x = (e.pageX - pos.left);
+		var y = (e.pageY - pos.top);
 		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
 	}
 	
+	
+	
+	// DRAGGER
 	
 	// Start the dragger
 	
@@ -218,10 +282,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			containment:'parent',
 			scroll:false,
 			drag:function(){ dragging() },
-			stop:function(){ nav_diff() }
+			stop:function(){}
 		});
 	}
-	
 	
 	// Move the canvas
 	
@@ -241,8 +304,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		$scope.canvas_h = orig.height*$scope.zoom;
 		canvas_move();
 	}
-	
-	function nav_diff(){}
 	
 	
 	$scope.refresh = function(){
