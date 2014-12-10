@@ -11,7 +11,7 @@ Fresh Install of Ubuntu 12.04
 	sudo apt-get update
 	sudo apt-get install build-essential zlib1g-dev libssl1.0.0 libssl-dev git 
 
-### Setup JackSON directory
+### Setup JackSON
 
 	sudo mkdir -p /var/www
 	sudo chown -R user:group /var/www
