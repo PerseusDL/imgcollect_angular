@@ -188,6 +188,15 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// Start the hi-liter
 	
+	var pressed = false;
+	$( document )
+	.on( 'touchstart mousedown', function(){
+		pressed = true;
+	})
+	.on( 'touchend mouseup', function(){
+		pressed = false;
+	});
+	
 	function lite_start(){
 		canvas.on('touchstart mousedown', function(e){
 			lite_down( e );
@@ -243,12 +252,15 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		$scope.temp_lite.y = min_y().toFixed(4);
 		$scope.temp_lite.w = (max_x()-$scope.temp_lite.x).toFixed(4);
 		$scope.temp_lite.h = (max_y()-$scope.temp_lite.y).toFixed(4);
-		$scope.refresh();
 	}
 	
 	function lite_move( e ){
-		console.log( 'lite_move' );
 		lite_pos( e );
+		console.log( pressed );
+		if ( pressed ) {
+			$scope.refresh();
+			console.log( 'lite_move' );
+		}
 	}
 	
 	function lite_up( e ){
