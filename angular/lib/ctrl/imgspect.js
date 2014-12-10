@@ -43,13 +43,13 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	$scope.frame_w = function(){
 		return frame.width();
 	};
-	$scope.frame_h = 325;
+	$scope.frame_h = 600;
 	
 	
 	// Canvas Size and position
 
-	$scope.canvas_w = 900;
-	$scope.canvas_h = 1100;
+	$scope.canvas_w = 0;
+	$scope.canvas_h = 0;
 	$scope.canvas_x = 0;
 	$scope.canvas_y = 0;
 	$scope.zoom = 1
@@ -84,7 +84,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// Navigation Size
 	
-	$scope.nav_h = 325;
+	$scope.nav_h = 300;
 	$scope.nav_w = function(){
 		return $scope.nav_scale() * orig.width
 	}
@@ -225,8 +225,13 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	$scope.lite_cancel = function(){ 
 		$scope.lite_reset();
-//		$scope.refresh();
 	}
+	
+	$scope.lite_clear_text = function(){
+		$scope.temp_label = '';
+		$scope.temp_desc = '';
+	}
+	$scope.lite_clear_text();
 	
 	$scope.lites = [];
 	$scope.lite_stash = function(){
@@ -234,9 +239,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		console.log( $scope.temp_desc );
 		$scope.lites.push( angular.copy( $scope.temp_lite ) );
 	}
-	
-	$scope.temp_label = '';
-	$scope.temp_desc = '';
 	
 	// The temp_lite points
 	
@@ -297,11 +299,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		var x = (e.pageX - pos.left);
 		var y = (e.pageY - pos.top);
 		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
-	}
-	
-	// temp_lite controls
-	
-	
+	}	
 	
 	
 	

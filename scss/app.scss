@@ -169,6 +169,7 @@ img.preview {
 .imgspect.frame {
   position:relative;
   overflow:hidden;
+  background-color:$vapor;
 }
 .imgspect.frame .canvas {
   float:left;
@@ -180,9 +181,17 @@ img.preview {
   background-size:cover;
   overflow:hidden;
 }
+/*
 .imgspect.nav {
   float:left;
   display:block;
+}
+*/
+.imgspect.nav {
+  outline: 1px $vapor;
+  position:absolute;
+  top:0;
+  right:5px;
 }
 .imgspect.nav .canvas {
   float:left;
