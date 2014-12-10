@@ -6,7 +6,7 @@ Fresh Install of Ubuntu 12.04
 	This reminder is for me...
 		fn+shift UP and DOWN to terminal scroll with Macbook
 
-### Foundation
+### Basic Environment
 
 	sudo apt-get update
 	sudo apt-get install build-essential zlib1g-dev libssl1.0.0 libssl-dev git 
@@ -16,6 +16,7 @@ Fresh Install of Ubuntu 12.04
 	sudo mkdir -p /var/www
 	sudo chown -R user:group /var/www
 	git clone https://github.com/caesarfeta/JackSON /var/www/JackSON
+	git submodule update --init
 
 ### Build Ruby
 
