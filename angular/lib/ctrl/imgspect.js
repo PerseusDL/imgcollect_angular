@@ -7,12 +7,23 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// SELECTORS
 	
+	var img = $('.imgspect img')
+	
+	// Canvas
+	
 	var frame = $( '.imgspect.frame' );
 	var canvas = $( '.imgspect.frame .canvas' );
+	
+	// Nav
+	
 	var nav = $( '.imgspect.nav' );
 	var drag = $( '.imgspect.nav .drag' );
-	var img = $('.imgspect img')
-    var sizer = $('.imgspect.frame .canvas .lite.temp .resize');
+	
+	// Hi-Lite
+
+    var resize = $( '.imgspect.frame .canvas .lite.temp .resize' );
+    var save = $( '.imgspect.frame .canvas .lite.temp .save' );
+    var cancel = $( '.imgspect.frame .canvas .lite.temp .cancel' );
 	
 	
 	// CONFIGURATION
@@ -197,34 +208,22 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		pressed = false;
 	});
 	
-	function lite_start(){
-		canvas
-		.on('touchstart mousedown', function(e){
-			( event_match(e) ) ? lite_down( e ) : null;
-		})
-		.on('touchmove mousemove', function(e){
-			( event_match(e) ) ? lite_move( e ) : null;
-		})
-		.on('touchend mouseup', function(e){
-			( event_match(e) ) ? lite_up( e ) : null;
-		});
-	}
-	
 	function event_match( e ){
 		return ( e.originalEvent.srcElement == canvas[0] ) ? true : false
 	}
 	
 	// The temp_lite object
 	
-	var clear_pos = { x:null, y:null, w:null, h:null };
-	$scope.temp_lite = clear_pos;
+	function clear_pos(){ return { x:null, y:null, w:null, h:null } };
+	$scope.temp_lite = clear_pos();
 	
 	$scope.lite_reset = function(){
-		$scope.temp_lite = clear_pos;
+		$scope.temp_lite = clear_pos();
 	}
 	
 	$scope.lite_cancel = function(){ 
 		$scope.lite_reset();
+		$scope.refresh();
 	}
 	
 	$scope.lite_clear_text = function(){
@@ -233,10 +232,11 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	}
 	$scope.lite_clear_text();
 	
+	
+	// Stash the lite
+	
 	$scope.lites = [];
 	$scope.lite_stash = function(){
-		console.log( $scope.temp_label );
-		console.log( $scope.temp_desc );
 		$scope.lites.push( angular.copy( $scope.temp_lite ) );
 	}
 	
@@ -260,18 +260,53 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		_p2.y = pos.y;
 	}
 	
-	function lite_down( e ){
-		p1( mouse_rel( e ) );
-		console.log( 'lite_down' );
+	// Set p1 to upper-left and p2 to lower-right
+	
+	function point_clean(){
+		p1({ x:min_x(), y:min_y() });
+		p2({ x:max_x(), y:max_y() });
+	}
+	function min_x(){ return Math.min( p1().x, p2().x ) }
+	function min_y(){ return Math.min( p1().y, p2().y ) }
+	function max_x(){ return Math.max( p1().x, p2().x ) }
+	function max_y(){ return Math.max( p1().y, p2().y ) }
+	
+	function ctrl_start(){
+		save.on('touchstart click', function(e){
+			$scope.lite_stash();
+		});
+		cancel.on('touchstart click', function(e){
+			$scope.lite_cancel();
+		});
 	}
 	
-	function min_x(){ return Math.min( p1().x, p2().x ) }
+	function resize_start(){
+		resize
+		.on('touchstart mousedown', function(e){
+			console.log( 'resize down' );
+		})
+		.on('touchmove mousemove', function(e){
+			console.log( 'resize move' );
+		})
+		.on('touchend mouseup', function(e){
+			console.log( 'resize up' );
+		});
+	}
 	
-	function min_y(){ return Math.min( p1().y, p2().y ) }
-	
-	function max_x(){ return Math.max( p1().x, p2().x ) }
-	
-	function max_y(){ return Math.max( p1().y, p2().y ) }
+	function lite_start(){
+		canvas
+		.on('touchstart mousedown', function(e){
+			( event_match(e) ) ? lite_down( e ) : null;
+		})
+		.on('touchmove mousemove', function(e){
+			lite_move( e );
+		})
+		.on('touchend mouseup', function(e){
+			lite_up( e );
+		});
+		resize_start();
+		ctrl_start();
+	}
 	
 	function lite_pos( e ){
 		p2( mouse_rel( e ) );
@@ -281,16 +316,21 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		$scope.temp_lite.h = (max_y()-$scope.temp_lite.y).toFixed(4);
 	}
 	
+	function lite_down( e ){
+		p1( mouse_rel( e ) );
+		console.log( 'lite_down' );
+	}
+	
 	function lite_move( e ){
-		lite_pos( e );
 		if ( pressed ) {
+			lite_pos( e );
 			$scope.refresh();
 		}
 		console.log( 'lite_move' );
 	}
 	
 	function lite_up( e ){
-		lite_pos( e );
+		point_clean();
 		console.log( 'lite_up' );
 	}
 	

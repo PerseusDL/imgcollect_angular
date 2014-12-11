@@ -221,6 +221,7 @@ img.preview {
   overflow:hidden;
 }
 .imgspect .lite.temp .ctrl {
+  text-align:right;
   position:absolute;
   bottom:0;
   right:0;
@@ -235,12 +236,14 @@ img.preview {
 .imgspect .lite.temp .words *:focus {
   outline:0;
 }
-
+.imgspect .lite.temp .words textarea {
+  height:2rem;
+}
 .no-select {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
