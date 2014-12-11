@@ -16,42 +16,44 @@
 		   'height':canvas_h+'px',
 		   'left':canvas_x+'px',
 		   'top':canvas_y+'px',
-		   'background-image': 'url('+src+')' }">
+		   'background-image':'url('+src+')' }">
 				
 		<!-- lites -->
 		<div ng-repeat="item in json.annotations"
 			 class="lite"
 			 ng-style="{
-			   'width': to_canvas_x( item.w )+'px',
-			   'height': to_canvas_y( item.h )+'px',
-			   'left': to_canvas_x( item.x )+'px',
-			   'top': to_canvas_y( item.y )+'px',
-			   'opacity': config.lite.opa,
-			   'background-color': config.lite.color }">
+			   'width':to_canvas_x( item.w )+'px',
+			   'height':to_canvas_y( item.h )+'px',
+			   'left':to_canvas_x( item.x )+'px',
+			   'top':to_canvas_y( item.y )+'px',
+			   'opacity':config.lite.opa,
+			   'background-color':config.lite.color }">
 		 </div>
 		 
 		 <!-- temp lite -->
 		 <div class="lite temp no-select"
 			  ng-style="{
-				 	'width': to_canvas_x( temp_lite.w )+'px',
-					'height': to_canvas_y( temp_lite.h )+'px',
-					'left': to_canvas_x( temp_lite.x )+'px',
-					'top': to_canvas_y( temp_lite.y )+'px',
-					'opacity': config.lite.opa,
-					'background-color': config.lite.color }">
+				 	'width':to_canvas_x( temp_lite.w )+'px',
+					'height':to_canvas_y( temp_lite.h )+'px',
+					'left':to_canvas_x( temp_lite.x )+'px',
+					'top':to_canvas_y( temp_lite.y )+'px',
+					'opacity':config.lite.opa,
+					'background-color':config.lite.color }">
 					
+					<a class="button secondary tiny nudge"></a>
+
 					<div class="words">
 						<input type="text"
 							   ng-model="temp_label"
-							   ng-style="{ 'background-color': config.lite.color }"
+							   ng-style="{ 'background-color':config.lite.color }"
 							   placeholder="label" />
 						<textarea ng-model="temp_desc"
-								  ng-style="{ 'background-color': config.lite.color }"
+								  ng-style="{ 'background-color':config.lite.color }"
 						          placeholder="description" />
 					</div>
 					
 					<div class="ctrl">
-						<a class="no-select button secondary tiny save">save</a>
+						<a class="no-select button secondary tiny add">add</a>
 						<a class="no-select button secondary tiny cancel">cancel</a>
 						<!--
 						<a ng-click="lite_clear_text()" 
@@ -67,35 +69,36 @@
 <!-- nav -->
 <div class="imgspect nav"
 	 ng-style="{
-	   'width': nav_w()+'px',
-	   'height': nav_h+'px' }">
+	   'width':nav_w()+'px',
+	   'height':nav_h+'px' }">
 	 
 	 <!-- nav canvas -->
 	 <div class="canvas"
  		 ng-style="{
- 		   'width': nav_w()+'px',
- 		   'height': nav_h+'px',
- 		   'background-image': 'url('+src+')' }">
+ 		   'width':nav_w()+'px',
+ 		   'height':nav_h+'px',
+ 		   'background-image':'url('+src+')' }">
 		   
   		 <!-- dragger -->
   		 <div class="drag"
   		 	 ng-style="{
-			   'width': drag_w()+'px',
-			   'height': drag_h()+'px',
-			   'left': drag_x+'px',
-			   'top': drag_y+'px' }">
+			   'width':drag_w()+'px',
+			   'height':drag_h()+'px',
+			   'left':drag_x+'px',
+			   'top':drag_y+'px',
+		   	   'opacity': config.nav.opa }">
   		 </div>
 		   
 	   	 <!-- nav lites -->
 	   	 <div ng-repeat="item in json.annotations"
 	   		 class="lite"
 	   		 ng-style="{
-			   'width': to_nav_x( item.w )+'px',
-			   'height': to_nav_y( item.h )+'px',
-			   'left': to_nav_x( item.x )+'px',
-			   'top': to_nav_y( item.y )+'px',
-			   'opacity': config.lite.opa,
-			   'background-color': config.lite.color }">
+			   'width':to_nav_x( item.w )+'px',
+			   'height':to_nav_y( item.h )+'px',
+			   'left':to_nav_x( item.x )+'px',
+			   'top':to_nav_y( item.y )+'px',
+			   'opacity':config.lite.opa,
+			   'background-color':config.lite.color }">
 	   	 </div>
 	 </div>
 </div>

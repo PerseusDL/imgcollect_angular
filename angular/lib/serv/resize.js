@@ -1,4 +1,4 @@
-app.service( 'resize', ['sparql', function( sparql ) {
+app.service( 'resize', ['sparql','results', function( sparql, results ) {
 	return ({
 		get:get
 	})
@@ -23,15 +23,7 @@ app.service( 'resize', ['sparql', function( sparql ) {
 	function get( urn ) {
 		return sparql.search( query(urn) ).then( 
 		function( data ){
-			var out = []
-			for ( var i=0; i<data.length; i++ ){
-				var item = {}
-				for ( var key in data[i] ){
-					item[key] = data[i][key].value;
-				}
-				out.push( item );
-			}
-			return out;
+			return results.list( data );
 		});
 	}
 }]);

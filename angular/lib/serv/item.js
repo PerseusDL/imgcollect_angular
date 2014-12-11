@@ -1,4 +1,4 @@
-app.service( 'item', ['sparql', function( sparql ) {
+app.service( 'item', ['sparql', 'results', function( sparql, results ) {
 	return({
 		by_upload:by_upload,
 		by_collection:by_collection
@@ -26,7 +26,7 @@ app.service( 'item', ['sparql', function( sparql ) {
 	function by_upload( urn ){
 		return sparql.search( upload_query(urn) ).then( 
 		function( data ){
-			return results( data );
+			return results.list( data );
 		});
 	}
 
@@ -40,26 +40,12 @@ app.service( 'item', ['sparql', function( sparql ) {
 	function by_collection( urn ){
 		return sparql.search( collection_query(urn) ).then(
 		function( data ){
-			return results( data );
+			return results.list( data );
 		});
 	}
 	
 	function collection_query( urn ){
 		return query( "?urn cite:belongsTo <"+urn+">" );		
 	}
-	
-	
-	// Process results
-	
-	function results( data ){
-		var out = []
-		for ( var i=0; i<data.length; i++ ){
-			var item = {}
-			for ( var key in data[i] ){
-				item[key] = data[i][key].value;
-			}
-			out.push( item );
-		}
-		return out;
-	}
+		
 }]);

@@ -22,8 +22,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	// Hi-Lite
 
     var resize = $( '.imgspect.frame .canvas .lite.temp .resize' );
-    var save = $( '.imgspect.frame .canvas .lite.temp .save' );
+    var add = $( '.imgspect.frame .canvas .lite.temp .add' );
     var cancel = $( '.imgspect.frame .canvas .lite.temp .cancel' );
+	var nudge = $( '.imgspect.frame .canvas .lite.temp .nudge' );
 	
 	
 	// CONFIGURATION
@@ -44,6 +45,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		lite: {
 			color:'#FF0',
 			opa:0.75
+		},
+		nav: {
+			opa:0.5
 		}
 	};	
 	var orig = {};
@@ -134,6 +138,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	// get the annotations
 	
 	function annotations( urn ){
+		annotation.by_item_more( urn ).then( function( data ){
+			console.log( data );
+		});
 		annotation.by_item( urn ).then( function( data ){
 			$scope.json.annotations = [];
 			for ( var i=0; i<data.length; i++ ){
@@ -147,7 +154,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 					h: params[4]
 				});
 			}
-		})
+		});
 		ready();
 	}
 	
@@ -170,10 +177,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			orig.width = this.width;
 			orig.height = this.height;
 			
-			// Start it up
+			// Start event listeners
 			
-			drag_start();
-			lite_start();
+			event_start();
 			
 			// Image you are no longer needed!
 			
@@ -232,7 +238,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	}
 	$scope.lite_clear_text();
 	
-	
 	// Stash the lite
 	
 	$scope.lites = [];
@@ -266,18 +271,48 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		p1({ x:min_x(), y:min_y() });
 		p2({ x:max_x(), y:max_y() });
 	}
+	
 	function min_x(){ return Math.min( p1().x, p2().x ) }
 	function min_y(){ return Math.min( p1().y, p2().y ) }
 	function max_x(){ return Math.max( p1().x, p2().x ) }
 	function max_y(){ return Math.max( p1().y, p2().y ) }
 	
 	function ctrl_start(){
-		save.on('touchstart click', function(e){
+		add.on('touchstart click', function(e){
 			$scope.lite_stash();
 		});
 		cancel.on('touchstart click', function(e){
 			$scope.lite_cancel();
 		});
+	}
+	
+	function point_diff( p1, p2 ){
+		return { x:p1.x-p2.x, y:p1.y-p2.y }
+	}
+	
+	function point_add( p1, p2 ){
+		return { x:p1.x+p2.x, y:p1.y+p2.y }
+	}
+	
+	var nudge_clear = function(){ return { x:null, y:null } }
+	var nudge_diff = nudge_clear();
+	function nudge_start(){
+		nudge
+		.on('touchstart mousedown', function(e){
+			nudge_diff = point_diff( mouse_rel( e ), p1() );
+		})
+		.on('touchend mouseup', function(e){
+			nudge_diff = nudge_clear();
+		});
+		
+		// See lite_move()
+	}
+	
+	function nudge_check(){
+		if ( nudge_diff.x == null && nudge_diff.y == null ){
+			return false;
+		}
+		return true;
 	}
 	
 	function resize_start(){
@@ -304,34 +339,54 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		.on('touchend mouseup', function(e){
 			lite_up( e );
 		});
-		resize_start();
+	}
+	
+	function event_start(){
+		drag_start();
+		lite_start();
+		nudge_start();
+		// resize_start();
 		ctrl_start();
 	}
 	
 	function lite_pos( e ){
 		p2( mouse_rel( e ) );
+		lite_size();
+	}
+	
+	function lite_size(){
 		$scope.temp_lite.x = min_x().toFixed(4);
 		$scope.temp_lite.y = min_y().toFixed(4);
 		$scope.temp_lite.w = (max_x()-$scope.temp_lite.x).toFixed(4);
 		$scope.temp_lite.h = (max_y()-$scope.temp_lite.y).toFixed(4);
 	}
 	
+	function nudge_pos( e ){
+		var pos = mouse_rel( e )
+		var size = point_diff( p2(), p1() );
+		p1( point_diff( pos, nudge_diff ) );
+		p2( point_add( p1(), size ) );
+		lite_size();
+	}
+	
 	function lite_down( e ){
 		p1( mouse_rel( e ) );
-		console.log( 'lite_down' );
 	}
 	
 	function lite_move( e ){
 		if ( pressed ) {
-			lite_pos( e );
+			if ( nudge_check() ) {
+				nudge_pos( e );
+			}
+			else {
+				lite_pos( e );
+			}
 			$scope.refresh();
 		}
-		console.log( 'lite_move' );
 	}
 	
 	function lite_up( e ){
 		point_clean();
-		console.log( 'lite_up' );
 	}
 	
 	function mouse_rel( e ){

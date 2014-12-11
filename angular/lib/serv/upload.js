@@ -1,4 +1,4 @@
-app.service( 'upload', ['sparql', function( sparql ){
+app.service( 'upload', ['sparql', 'results', function( sparql, results ){
 	return({
 		by_annotation:by_annotation
 	})
@@ -12,7 +12,7 @@ app.service( 'upload', ['sparql', function( sparql ){
 	function by_annotation( urn ) {
 		return sparql.search( annotation_query( urn ) ).then(
 		function( data ){
-			return results( data );
+			return results.list( data );
 		});
 	}
 	
@@ -24,19 +24,5 @@ app.service( 'upload', ['sparql', function( sparql ){
 		<"+urn+"> cite:belongsTo ?item .\
 		?item this:upload ?urn\
 	}"
-	}
-	
-	// Process results
-	
-	function results( data ){
-		var out = []
-		for ( var i=0; i<data.length; i++ ){
-			var item = {}
-			for ( var key in data[i] ){
-				item[key] = data[i][key].value;
-			}
-			out.push( item );
-		}
-		return out;
 	}
 }]);

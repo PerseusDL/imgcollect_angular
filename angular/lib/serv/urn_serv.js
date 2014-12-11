@@ -17,7 +17,9 @@ app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host 
 		return sparql.search( query(urn) ).then(
 		function( data ){
 			var check = data[0]['.1']['value'];
+			
 			// urn already exists
+			
 			if ( check > 0 ) {
 				callback( false, urn );
 				return;

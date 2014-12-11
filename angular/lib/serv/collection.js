@@ -1,4 +1,4 @@
-app.service( 'collection', ['sparql', function( sparql ) {
+app.service( 'collection', ['sparql','results', function( sparql, results ) {
 	return({
 		get:get,
 		search:search
@@ -15,7 +15,7 @@ app.service( 'collection', ['sparql', function( sparql ) {
 	function get(){
 		return sparql.search( get_query() ).then( 
 		function( data ){
-			return process( data );
+			return results.list( data );
 		});
 	}
 	
@@ -34,7 +34,7 @@ app.service( 'collection', ['sparql', function( sparql ) {
 	function search( str ){
 		return sparql.search( search_query( str ) ).then( 
 		function( data ){
-			return process( data );
+			return results.list( data );
 		});
 	}
 	
@@ -48,15 +48,4 @@ app.service( 'collection', ['sparql', function( sparql ) {
 	}"
 	}
 	
-	function process( data ){
-		var out = []
-		for ( var i=0; i<data.length; i++ ){
-			var item = {}
-			for ( var key in data[i] ){
-				item[key] = data[i][key].value;
-			}
-			out.push( item );
-		}
-		return out;
-	}
 }]);

@@ -207,7 +207,6 @@ img.preview {
   position:absolute;
   z-index:100;
   background-color:#FFF;
-  opacity:.3;
   outline:1px solid #444;
   border:1px solid #BBB;
 }
@@ -220,6 +219,13 @@ img.preview {
 .imgspect .lite.temp {
   overflow:hidden;
 }
+.imgspect .lite.temp .nudge {
+  display:block;
+  width:100%;
+  margin:0;
+  padding:0;
+  height:.5rem;
+}
 .imgspect .lite.temp .ctrl {
   text-align:right;
   position:absolute;
@@ -228,6 +234,7 @@ img.preview {
 }
 .imgspect .lite.temp .ctrl .button {
   margin:0;
+  padding:.5rem 2rem;
 }
 .imgspect .lite.temp .words * {
   margin:0;
@@ -236,9 +243,7 @@ img.preview {
 .imgspect .lite.temp .words *:focus {
   outline:0;
 }
-.imgspect .lite.temp .words textarea {
-  height:2rem;
-}
+.imgspect .lite.temp .words textarea {}
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
