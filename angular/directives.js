@@ -63,6 +63,12 @@ appDirectives.directive('uploadItems', function(){
 	}
 });
 
+appDirectives.directive('imgUploader', function(){
+	return {
+		templateUrl: 'partials/share/img-uploader.html'
+	}
+});
+
 
 // Builds a box for checking URN uniqueness
 // You must implement a $scope.urn_uniq function

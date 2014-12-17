@@ -10,7 +10,7 @@
 	   'height':frame_h+'px' }">
 	
 	<!-- canvas --> 
-	<div class="canvas"
+	<div class="canvas no-select"
 		 ng-style="{
 		   'width':canvas_w+'px',
 		   'height':canvas_h+'px',
@@ -22,16 +22,18 @@
 		<div ng-repeat="item in json.annotations"
 			 class="lite"
 			 ng-style="{
-			   'width':to_canvas_x( item.w )+'px',
-			   'height':to_canvas_y( item.h )+'px',
-			   'left':to_canvas_x( item.x )+'px',
-			   'top':to_canvas_y( item.y )+'px',
+			   'width':to_canvas_x( item['this:roi_width'] )+'px',
+			   'height':to_canvas_y( item['this:roi_height'] )+'px',
+			   'left':to_canvas_x( item['this:roi_x'] )+'px',
+			   'top':to_canvas_y( item['this:roi_y'] )+'px',
 			   'opacity':config.lite.opa,
 			   'background-color':config.lite.color }">
+			   <p>{{ item['rdf:label'] }}</p>
+			   <p>{{ item['rdf:description'] }}</p>
 		 </div>
 		 
 		 <!-- temp lite -->
-		 <div class="lite temp no-select"
+		 <div class="lite temp"
 			  ng-style="{
 				 	'width':to_canvas_x( temp_lite.w )+'px',
 					'height':to_canvas_y( temp_lite.h )+'px',
@@ -93,10 +95,10 @@
 	   	 <div ng-repeat="item in json.annotations"
 	   		 class="lite"
 	   		 ng-style="{
-			   'width':to_nav_x( item.w )+'px',
-			   'height':to_nav_y( item.h )+'px',
-			   'left':to_nav_x( item.x )+'px',
-			   'top':to_nav_y( item.y )+'px',
+			   'width':to_nav_x( item['this:roi_width'] )+'px',
+			   'height':to_nav_y( item['this:roi_height'] )+'px',
+			   'left':to_nav_x( item['this:roi_x'] )+'px',
+			   'top':to_nav_y( item['this:roi_y'] )+'px',
 			   'opacity':config.lite.opa,
 			   'background-color':config.lite.color }">
 	   	 </div>

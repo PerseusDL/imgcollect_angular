@@ -21,14 +21,23 @@ app.service( 'results', [ function( sparql ) {
 		return out;
 	}
 	
+	function key_swap( swap, config ){
+		for ( var key in config ){
+			if ( swap.indexOf( config[key] ) == 0 ) {
+				return swap.replace( config[key], key+":" );
+			}
+		}
+		return swap;
+	}
+	
 	// More than the URN list
 	
-	function more( data ){
+	function more( data, config ){
 		var out = [];
 		var urns = {};
 		for ( var i=0; i<data.length; i++ ){
 			var urn = data[i].urn.value;
-			var p = data[i].p.value;
+			var p = key_swap( data[i].p.value, config );
 			var o = data[i].o.value;
 			if ( ! ( urn in urns ) ){
 				urns[ urn ] = {};

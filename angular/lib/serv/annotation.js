@@ -6,14 +6,22 @@ app.service( 'annotation', [ 'sparql', 'results', function( sparql, results ){
 		upload_src:upload_src
 	});
 	
-	var config = {}
+	function config() {
+		return {
+		'this': 'https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#',
+		cite: 'http://www.homermultitext.org/cite/rdf/',
+		rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+		user: 'http://data.perseus.org/sosol/users/'
+		};
+	}
 	
 	function prefix(){
-	return "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
-	PREFIX cite: <http://www.homermultitext.org/cite/rdf/>\
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
-	PREFIX user: <http://data.perseus.org/sosol/users/>";
+		var pre = [];
+		var conf = config();
+		for ( var key in conf ){
+			pre.push( 'PREFIX '+key+': <'+conf[key]+'>' );
+		}
+		return pre.join(" ");
 	}
 	
 	
@@ -45,7 +53,7 @@ app.service( 'annotation', [ 'sparql', 'results', function( sparql, results ){
 	function by_item_more( urn ){
 		return sparql.search( more_query( urn ) ).then(
 		function( data ){
-			return results.more( data );
+			return results.more( data, config() );
 		});
 	}
 	

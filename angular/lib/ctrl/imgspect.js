@@ -27,17 +27,16 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	var nudge = $( '.imgspect.frame .canvas .lite.temp .nudge' );
 	
 	
+	
 	// CONFIGURATION
 	
 	// Current URN
 	
 	$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 	
-	
 	// Stores all the JSON data
 	
 	$scope.json = {};
-	
 	
 	// Application state
 
@@ -59,7 +58,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		return frame.width();
 	};
 	$scope.frame_h = 600;
-	
 	
 	// Canvas Size and position
 
@@ -84,7 +82,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		return hr;
 	}
 	
-	
 	// Dragger Position
 	
 	$scope.drag_x = 0;
@@ -95,7 +92,6 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	$scope.drag_h = function(){
 		return $scope.nav_h * $scope.hr();
 	}
-	
 	
 	// Navigation Size
 	
@@ -139,27 +135,13 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	function annotations( urn ){
 		annotation.by_item_more( urn ).then( function( data ){
-			console.log( data );
-		});
-		annotation.by_item( urn ).then( function( data ){
-			$scope.json.annotations = [];
-			for ( var i=0; i<data.length; i++ ){
-				var urn = data[i].urn
-				var params = urn.split(',');
-				$scope.json.annotations.push({ 
-					urn: urn, 
-					x: params[1],
-					y: params[2],
-					w: params[3],
-					h: params[4]
-				});
-			}
+			$scope.json.annotations = data;
 		});
 		ready();
 	}
 	
 	
-	// Start the party
+	// Start the party once everything is loaded
 	
 	function ready(){
 		$scope.src = $scope.json.upload['this:src'];
@@ -174,6 +156,9 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		
 	function start(){
 		img.load( function(){
+			
+			// Stash image dimensions
+			
 			orig.width = this.width;
 			orig.height = this.height;
 			
@@ -375,12 +360,21 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	function lite_move( e ){
 		if ( pressed ) {
+			
+			// Are you nudging the temp-lite?
+			
 			if ( nudge_check() ) {
 				nudge_pos( e );
 			}
+			
+			// No you're drawing it.
+			
 			else {
 				lite_pos( e );
 			}
+			
+			// update styles
+			
 			$scope.refresh();
 		}
 	}
@@ -391,8 +385,8 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	function mouse_rel( e ){
 		var pos = canvas.offset();
-		var x = (e.pageX - pos.left);
-		var y = (e.pageY - pos.top);
+		var x = (e.clientX - pos.left);
+		var y = (e.clientY - pos.top);
 		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
 	}	
 	

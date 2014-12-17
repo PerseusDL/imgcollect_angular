@@ -3,7 +3,8 @@
 var app = angular.module('app',[
 	'ngRoute',
 	'appControllers',
-	'appDirectives'
+	'appDirectives',
+	'angularFileUpload'
 ]);
 
 app.config(['$routeProvider',

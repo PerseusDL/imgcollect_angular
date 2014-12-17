@@ -131,8 +131,8 @@ appControllers.controller( 'CollectionCtrl', ['$scope','$injector','item',
 
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user',
-	function( $scope, $injector, urnServ, json, stdout, user ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload',
+	function( $scope, $injector, urnServ, json, stdout, user, $upload ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
 		$scope.form = {
@@ -217,6 +217,37 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			});
 		}
 		default_json();
+		
+		
+		// Image Uploader
+		
+		$scope.file = '';
+		$scope.upload_out = false;
+		$scope.upload = function(){
+		    $scope.upload = $upload.upload({
+				url: 'http://localhost:1234/upload', 
+				method: 'POST',
+				file: $scope.file
+		 	})
+			.error( function( ){
+				$scope.upload_out = "There was an error uploading";
+		 	})
+			.then( function( data ){
+				$scope.upload_out = "Uploaded successfully";
+				post_upload( data );
+		 	});
+		}
+		
+		function post_upload( data ){
+			var exif = data.data.exif;
+			for ( var key in exif ) {
+				$scope.json[ 'exif:'+key.toCamel() ] = exif[key];
+			}
+			json_to_str( $scope.json );
+		}
+		
+		
+		// Copy Image
 	}
 ]);
 
