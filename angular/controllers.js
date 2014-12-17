@@ -230,20 +230,22 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 				file: $scope.file
 		 	})
 			.error( function( ){
-				$scope.upload_out = "There was an error uploading";
+				$scope.upload_out = "There was an error upload";
 		 	})
 			.then( function( data ){
 				$scope.upload_out = "Uploaded successfully";
-				post_upload( data );
+				exif_json( data );
+				$scope.json[ 'this:src' ] = data.data.src;
+				$scope.json[ 'this:orig' ] = data.data.orig;
+				json_to_str( $scope.json );
 		 	});
 		}
 		
-		function post_upload( data ){
+		function exif_json( data ){
 			var exif = data.data.exif;
 			for ( var key in exif ) {
 				$scope.json[ 'exif:'+key.toCamel() ] = exif[key];
 			}
-			json_to_str( $scope.json );
 		}
 		
 		

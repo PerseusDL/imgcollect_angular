@@ -386,7 +386,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	function mouse_rel( e ){
 		var pos = canvas.offset();
 		var x = (e.clientX - pos.left);
-		var y = (e.clientY - pos.top);
+		var y = (e.clientY - pos.top + $(document).scrollTop() );
 		return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
 	}	
 	
