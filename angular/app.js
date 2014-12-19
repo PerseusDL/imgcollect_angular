@@ -139,7 +139,7 @@ app.config(['$routeProvider',
 			// All is well
 			
 			function(){
-				console.log( 'yes' );
+				$rootScope.$emit( user.events.ok )
 			},
 			
 			// User is not logged in

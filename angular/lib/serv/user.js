@@ -4,6 +4,7 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 	var error = null;
 	var ping = 'http://sosol.perseids.org/sosol/dmm_api/ping';
 	var ping = 'conf/ping.js';
+	var ns = 'USER-';
 	
 	// Make things available
 	
@@ -19,6 +20,9 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 		},
 		url: function(){ 
 			return ( data != null ) ? data.uri : null 
+		},
+		events: {
+			ok: ns+"OK"
 		},
 		error: function(){ return error },
 		check: check,

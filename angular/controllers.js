@@ -579,17 +579,25 @@ appControllers.controller( 'ResizeCtrl', ['$scope','$injector',
 
 // User
 
-appControllers.controller( 'UserCtrl', ['$scope','$injector','user',
-	function( $scope, $injector, user ){
-		$scope.switch = function( bool ){
-			user.only = bool;
+appControllers.controller( 'UserCtrl', ['$scope','$injector','user','$rootScope',
+	function( $scope, $injector, user, $rootScope ){
+		
+		
+		// Start once user event fires 
+		
+		$rootScope.$on( user.events.ok, function(){
 			init();
-		}
+		});
+		
 		function init(){
 			$scope.only = user.only;
 			$scope.user = user.id();
 		}
-		init();
+		
+		$scope.switch = function( bool ){
+			user.only = bool;
+			init();
+		}
 	}
 ]);
 
