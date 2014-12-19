@@ -61,7 +61,7 @@ function( $scope, urnServ, json, stdout, user ){
 	
 	var touch = function(){
 		$scope.json['@id'] = $scope.urn;
-		$scope.json['user']['@id'] = 'user:'+user.id;
+		$scope.json['user']['@id'] = 'user:'+user.id();
 		$scope.json['dateTime'] = ( new TimeStamp ).xsd();
 	}
 	

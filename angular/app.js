@@ -104,6 +104,15 @@ app.config(['$routeProvider',
 		});
 		
 		
+		// login
+		
+		$routeProvider.
+		when('/login', {
+			templateUrl: 'partials/login.html',
+			controller: 'LoginCtrl'
+		});
+		
+		
 		// home
 		
 		$routeProvider.
@@ -119,4 +128,25 @@ app.config(['$routeProvider',
 			redirectTo: '/home'
 		});
 	}
-]);
+])
+.run( function( $rootScope, $location, user ){
+	
+	// Run everytime scope changes
+	
+	$rootScope.$on('$routeChangeSuccess', function(){
+		user.check().then(
+
+			// All is well
+			
+			function(){
+				console.log( 'yes' );
+			},
+			
+			// User is not logged in
+			
+			function(){
+				$location.path('/login');
+			}
+		);
+	})
+} );

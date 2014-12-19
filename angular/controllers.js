@@ -13,13 +13,13 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 		$scope.number = "\
 		SELECT count( distinct ?urn )\
 		WHERE {\
-			?urn <"+user.base+"/> <"+user.url+">\
+			?urn <"+user.dir()+"/> <"+user.url()+">\
 		}";
 		
 		$scope.select = "\
 		SELECT ?urn ?type ?label ?desc ?time\
 		WHERE {\
-			?urn <"+user.base+"/> <"+user.url+">\
+			?urn <"+user.dir()+"/> <"+user.url()+">\
 			OPTIONAL { ?urn this:type ?type . }\
 			OPTIONAL { ?urn rdf:label ?label . }\
 			OPTIONAL { ?urn rdf:description ?desc . }\
@@ -29,6 +29,17 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 		$scope.hide = true; // Hide default pagination buttons
 		
 		$scope.init();
+		
+		$scope.apply_filter = function(){
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
+	}
+]);
+
+appControllers.controller( 'LoginCtrl', ['$scope', 'user',
+	function( $scope, user ){
+		
 	}
 ]);
 
@@ -160,7 +171,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		
 		function touch (){
 			$scope.json['@id'] = $scope.urn;
-			$scope.json['user']['@id'] = 'user:'+user.id;
+			$scope.json['user']['@id'] = 'user:'+user.id();
 			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
 		}
 		
@@ -266,7 +277,7 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
-		//
+		
 		// See lib/list_ctr.js: filter()
 		
 		$scope.filter = {
@@ -458,7 +469,7 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		var touch = function(){
 			$scope.json['@id'] = $scope.urn;
 			$scope.json['this:upload']['@id'] = $scope.upload_urn;
-			$scope.json['user']['@id'] = 'user:'+user.id;
+			$scope.json['user']['@id'] = 'user:'+user.id();
 			$scope.json['cite:belongsTo']['@id'] = $scope.collection;
 			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
 		}
@@ -570,13 +581,13 @@ appControllers.controller( 'ResizeCtrl', ['$scope','$injector',
 
 appControllers.controller( 'UserCtrl', ['$scope','$injector','user',
 	function( $scope, $injector, user ){
-		$scope.user = user.id;
 		$scope.switch = function( bool ){
 			user.only = bool;
 			init();
 		}
 		function init(){
 			$scope.only = user.only;
+			$scope.user = user.id();
 		}
 		init();
 	}

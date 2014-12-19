@@ -14,6 +14,6 @@
 		"language_prefs": null,
 		"name": "Adam Tavares",
 		"updated_at": "2013-11-04T18:03:35Z",
-		"uri": "http://data.perseus.org/sosol/users/Adam%20Tavares"
+		"uri": "http://data.perseus.org/sosol/users/adamt"
 	}
 }
