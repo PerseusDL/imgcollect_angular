@@ -4,7 +4,7 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 	var error = null;
 	var ping = 'http://sosol.perseids.org/sosol/dmm_api/ping';
 	var ping = 'conf/ping.js';
-	var ns = 'USER-';
+	var ns = 'SERVICE.USER.';
 	
 	
 	// What gets made available?
@@ -23,7 +23,8 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 			return ( data != null ) ? data.uri : null 
 		},
 		events: {
-			ok: ns+"OK"
+			ok: ns+'OK',
+			error: ns+'ERROR'
 		},
 		error: function(){ return error },
 		check: check,

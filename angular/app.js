@@ -15,19 +15,19 @@ app.config(['$routeProvider',
 		
 		$routeProvider.
 		when('/uploads', {
-			templateUrl: 'partials/upload-list.html',
+			templateUrl: 'partials/upload/list.html',
 			controller: 'UploadListCtrl'
 		}).
 		when('/uploads/:page', {
-			templateUrl: 'partials/upload-list.html',
+			templateUrl: 'partials/upload/list.html',
 			controller: 'UploadListCtrl'
 		}).
 		when('/upload/:urn', {
-			templateUrl: 'partials/upload.html',
+			templateUrl: 'partials/upload/edit.html',
 			controller: 'UploadCtrl'
 		}).
 		when('/new/upload', {
-			templateUrl: 'partials/upload-new.html',
+			templateUrl: 'partials/upload/new.html',
 			controller: 'UploadNew'
 		});
 		
@@ -36,19 +36,19 @@ app.config(['$routeProvider',
 		
 		$routeProvider.
 		when('/items', {
-			templateUrl: 'partials/item-list.html',
+			templateUrl: 'partials/item/list.html',
 			controller: 'ItemListCtrl'
 		}).
 		when('/items/:page', {
-			templateUrl: 'partials/item-list.html',
+			templateUrl: 'partials/item/list.html',
 			controller: 'ItemListCtrl'
 		}).
 		when('/item/:urn', {
-			templateUrl: 'partials/item.html',
+			templateUrl: 'partials/item/edit.html',
 			controller: 'ItemCtrl'
 		}).
 		when('/new/item/:urn', {
-			templateUrl: 'partials/item-new.html',
+			templateUrl: 'partials/item/new.html',
 			controller: 'ItemNew'
 		});
 		
@@ -57,19 +57,19 @@ app.config(['$routeProvider',
 		
 		$routeProvider.
 		when('/collections', {
-			templateUrl: 'partials/collection-list.html',
+			templateUrl: 'partials/collection/list.html',
 			controller: 'CollectionListCtrl'
 		}).
 		when('/collections/:page', {
-			templateUrl: 'partials/collection-list.html',
+			templateUrl: 'partials/collection/list.html',
 			controller: 'CollectionListCtrl'
 		}).
 		when('/collection/:urn', {
-			templateUrl: 'partials/collection.html',
+			templateUrl: 'partials/collection/edit.html',
 			controller: 'CollectionCtrl'
 		}).
 		when('/new/collection', {
-			templateUrl: 'partials/collection-new.html',
+			templateUrl: 'partials/collection/new.html',
 			controller: 'CollectionNew'
 		});
 		
@@ -78,15 +78,15 @@ app.config(['$routeProvider',
 		
 		$routeProvider.
 		when('/annotations', {
-			templateUrl: 'partials/annotation-list.html',
+			templateUrl: 'partials/annotation/list.html',
 			controller: 'AnnotationListCtrl'
 		}).
 		when('/annotations/:page', {
-			templateUrl: 'partials/annotation-list.html',
+			templateUrl: 'partials/annotation/list.html',
 			controller: 'AnnotationListCtrl'
 		}).
 		when('/annotation/:urn', {
-			templateUrl: 'partials/annotation.html',
+			templateUrl: 'partials/annotation/edit.html',
 			controller: 'AnnotationCtrl'
 		}).
 		when('/new/annotation/:urn', {
@@ -142,12 +142,13 @@ app.config(['$routeProvider',
 			// All is well
 			
 			function(){
-				$rootScope.$emit( user.events.ok )
+				$rootScope.$emit( user.events.ok );
 			},
 			
 			// User is not logged in
 			
 			function(){
+				$rootScope.$emit( user.events.error );
 				$location.path('/login');
 			}
 		);
