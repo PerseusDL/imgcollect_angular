@@ -1,14 +1,10 @@
-app.service( 'sparql', ['$http', '$q', 'host', function( $http, $q, host ) {
+app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
 
 	// Publicly accessible methods
 	
 	return ({
 		search: search
 	});
-	
-	function url() {
-		return host.url+'/query';
-	}
 	
 	
 	// SPARQL search
@@ -25,7 +21,7 @@ app.service( 'sparql', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// JackSON wrapper
 	
 	function get( search ) {
-		var query = url()+'?query='+encodeURIComponent( search );
+		var query = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
 		return $http({
 			method: 'GET',
 			url: query,

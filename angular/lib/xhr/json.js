@@ -1,4 +1,10 @@
-app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
+app.service( 'json', ['$http', '$q', 'config', function( $http, $q, config ) {
+	
+	// Avoid typos with constants
+	
+	var GET = 'GET';
+	var POST = 'POST';
+	var PUT = 'PUT';
 	
 	// Publicly accessible methods
 	
@@ -15,7 +21,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// Retrieve a JSON file by URN
 	
 	function urn( urn ){
-		var request = api( 'GET', host.url+'/src?urn='+urn );
+		var request = api( GET, config.xhr.json.url+'/src?urn='+urn );
 		return( request.then( 
 			success, 
 			error 
@@ -42,7 +48,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// Create a new JSON file if it doesn't already exist.
 	
 	function post( url, data ){
-		var request = api( 'POST', rel(url), data );
+		var request = api( POST, rel(url), data );
 		return( request.then(
 			success, 
 			function( r ){ return put( rel(url), data ) } 
@@ -53,7 +59,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// Update data on server
 	
 	function put( url, data ){
-		var request = api( 'PUT', rel(url), data );
+		var request = api( PUT, rel(url), data );
 		return( request.then( 
 			success, 
 			error 
@@ -64,7 +70,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// GET the JSON
 	
 	function get( url ){
-		var request = api( 'GET', rel(url) );
+		var request = api( GET, rel(url) );
 		return( request.then( 
 			success, 
 			error 
@@ -75,7 +81,7 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 	// Run the ls command
 	
 	function ls( url ){
-		var request = api( 'GET', rel(url)+"?cmd=ls" );
+		var request = api( GET, rel(url)+"?cmd=ls" );
 		return( request.then(
 			success,
 			error
@@ -96,11 +102,13 @@ app.service( 'json', ['$http', '$q', 'host', function( $http, $q, host ) {
 		});
 	}
 	
+	// Properly resolve relative URLs
+	
 	function rel( url ){
 		if ( url.indexOf('http://') == 0 ){
 			return url;
 		}
-		return host.url+'/data/'+url;
+		return config.xhr.json.url+'/data/'+url;
 	}
 	
 	

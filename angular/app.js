@@ -129,7 +129,7 @@ app.config(['$routeProvider',
 		});
 	}
 ])
-.run( function( $rootScope, $location, user ){
+.run(['$rootScope', '$location', 'user', function( $rootScope, $location, user ){
 	
 	// Run everytime scope changes
 	
@@ -153,4 +153,4 @@ app.config(['$routeProvider',
 			}
 		);
 	})
-} );
+}]);

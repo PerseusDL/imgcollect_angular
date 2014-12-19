@@ -1,10 +1,10 @@
-app.service( 'urnServ', ['sparql', 'json', 'host', function( sparql, json, host ) {
+app.service( 'urnServ', ['sparql', 'json', 'host', 'config', function( sparql, json, host, config ) {
 	
 	return ({
 		uniq: uniq,
 		fresh: fresh,
 		claim: claim,
-		base: 'urn:cite:perseus:'
+		base: config.serv.urn_serv.base
 	})
 	
 	function query( urn ) {

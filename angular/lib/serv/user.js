@@ -1,10 +1,13 @@
-app.service( 'user', [ '$http', '$q', function( $http, $q ) {
+app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
+	
+	// Event namespace
+	
+	var ns = 'SERVICE.USER.';
+	
+	// Variables
 	
 	var data = null;
 	var error = null;
-	var ping = 'http://sosol.perseids.org/sosol/dmm_api/ping';
-	var ping = 'conf/ping.js';
-	var ns = 'SERVICE.USER.';
 	
 	
 	// What gets made available?
@@ -48,7 +51,7 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 		
 		// Ping Perseids to get user data
 		
-		$http.get( ping ).then( 
+		$http.get( config.serv.user.ping ).then( 
 			function( res ){
 				data = res.data.user;
 				def.resolve();
