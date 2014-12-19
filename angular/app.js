@@ -134,6 +134,9 @@ app.config(['$routeProvider',
 	// Run everytime scope changes
 	
 	$rootScope.$on('$routeChangeSuccess', function(){
+		
+		// Check for user data.
+		
 		user.check().then(
 
 			// All is well

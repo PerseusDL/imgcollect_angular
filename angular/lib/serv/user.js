@@ -6,7 +6,8 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 	var ping = 'conf/ping.js';
 	var ns = 'USER-';
 	
-	// Make things available
+	
+	// What gets made available?
 	
 	return({
 		data: function(){ 
@@ -40,8 +41,11 @@ app.service( 'user', [ '$http', '$q', function( $http, $q ) {
 		// don't request new user data
 		
 		if ( data != null ){
+			def.resolve();
 			return def.promise
 		}
+		
+		// Ping Perseids to get user data
 		
 		$http.get( ping ).then( 
 			function( res ){

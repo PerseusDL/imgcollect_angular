@@ -3,32 +3,41 @@ var appControllers = angular.module('appControllers',[]);
 
 // home
 
-appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
-	function( $scope, $injector, user ){
+appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope',
+	function( $scope, $injector, user, $rootScope ){
+		
 		$scope.title = "Home";
 		$scope.type = "home";
 		$scope.keys = [ 'urn', 'type', 'label', 'desc', 'time' ];
-		$injector.invoke( ListCtrl, this, { $scope: $scope } );
 		
-		$scope.number = "\
-		SELECT count( distinct ?urn )\
-		WHERE {\
-			?urn <"+user.dir()+"/> <"+user.url()+">\
-		}";
 		
-		$scope.select = "\
-		SELECT ?urn ?type ?label ?desc ?time\
-		WHERE {\
-			?urn <"+user.dir()+"/> <"+user.url()+">\
-			OPTIONAL { ?urn this:type ?type . }\
-			OPTIONAL { ?urn rdf:label ?label . }\
-			OPTIONAL { ?urn rdf:description ?desc . }\
-			OPTIONAL { ?urn xml:dateTime ?time . }\
-		}";
+		// Make sure user is logged in.
+		
+		$rootScope.$on( user.events.ok, function(){
+			ok();
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		});
+		
+		function ok(){
+			$scope.number = "\
+			SELECT count( distinct ?urn )\
+			WHERE {\
+				?urn <"+user.dir()+"> <"+user.url()+">\
+			}";
+			
+			$scope.select = "\
+			SELECT ?urn ?type ?label ?desc ?time\
+			WHERE {\
+				?urn <"+user.dir()+"> <"+user.url()+">\
+				OPTIONAL { ?urn this:type ?type . }\
+				OPTIONAL { ?urn rdf:label ?label . }\
+				OPTIONAL { ?urn rdf:description ?desc . }\
+				OPTIONAL { ?urn xml:dateTime ?time . }\
+			}";
+		}
 		
 		$scope.hide = true; // Hide default pagination buttons
-		
-		$scope.init();
 		
 		$scope.apply_filter = function(){
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
@@ -38,9 +47,7 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user',
 ]);
 
 appControllers.controller( 'LoginCtrl', ['$scope', 'user',
-	function( $scope, user ){
-		
-	}
+	function( $scope, user ){}
 ]);
 
 
