@@ -39,7 +39,11 @@ app.service( 'config', [ 'host', function( host ){
 				// URL to JackSON server
 				// JackSON server hosts JSON data and the application by default
 				
-				url: host.url 
+				url: host.url,
+				
+				// Add user value to data
+				
+				tack_on: [ 'user' ]
 			}
 		},
 	})

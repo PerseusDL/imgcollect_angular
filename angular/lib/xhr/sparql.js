@@ -21,6 +21,9 @@ app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
 	// JackSON wrapper
 	
 	function get( search ) {
+		
+		console.log( search );
+		
 		var query = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
 		return $http({
 			method: 'GET',

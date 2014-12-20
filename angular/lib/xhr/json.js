@@ -1,4 +1,4 @@
-app.service( 'json', ['$http', '$q', 'config', function( $http, $q, config ) {
+app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, config, user ) {
 	
 	// Avoid typos with constants
 	
@@ -89,9 +89,37 @@ app.service( 'json', ['$http', '$q', 'config', function( $http, $q, config ) {
 	}
 	
 	
+	// Add 'user' field potentially.
+	// Others in the future.
+	
+	function tack_on( data ){
+		
+		if ( tack('user') ){
+			data['user'] = { '@id': user.url() }
+		}
+		
+		return data;
+	}
+	
+	function tack( key ){
+		var tacks = config.xhr.json.tack_on;
+		if ( tacks.indexOf( key ) == -1 ) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	// API
 	
 	function api( method, url, data ){
+		
+		// tack on standard data fields
+		
+		if ( data != undefined ){
+			data = tack_on( data );
+		}
+		
 		return $http({
 			method: method.toUpperCase(),
 			url: url,
