@@ -160,9 +160,16 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	}
 	
 	function save_annotation( annot ){
+		
+		// save into default template
+		
 		var def = angular.copy( $scope.default );
 		annot = angular.extend( def, annot );
 		annot['@id'] = annotation_urn( annot );
+		annot['cite:belongsTo'] = { "@id": $scope.urn };
+		
+		// save on the server
+		
 		json.post( 'annotation/'+annot['@id'], annot ).then( 
 			function( data ){
 				console.log( data );
