@@ -28,6 +28,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		));
 	}
 	
+	
 	// Turn JSON into pretty-printed string
 	
 	function disp( data ) {
@@ -93,11 +94,9 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	// Others in the future.
 	
 	function tack_on( data ){
-		
 		if ( tack('user') ){
 			data['user'] = { '@id': user.url() }
 		}
-		
 		return data;
 	}
 	
@@ -129,6 +128,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 			data: wrap( data )
 		});
 	}
+	
 	
 	// Properly resolve relative URLs
 	

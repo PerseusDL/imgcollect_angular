@@ -107,6 +107,40 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// SERVER COMMUNICATION
 	
+	// Add the current temp-lite to annotations
+	
+	$scope.add = function(){
+		
+		var fresh = {
+			'rdf:label': $scope.temp_label,
+			'rdf:description': $scope.temp_desc,
+			'this:roi_height': $scope.temp_lite.h,
+			'this:roi_width': $scope.temp_lite.w,
+			'this:roi_x': $scope.temp_lite.x,
+			'this:roi_y': $scope.temp_lite.y
+		};
+		var annots = annotations();
+		annots.push( fresh );
+	}
+	
+	// Save new annotations to database
+	
+	$scope.save = function(){
+		var annots = annotations();
+		for ( var i=0; i<annots.length; i++ ){
+			
+			// any annotation without a URN gets its data POSTED
+			
+			if ( ! ( 'urn' in annots[i] ) ){
+				console.log( annots[i] );
+			}
+		}
+	}
+	
+	function annotations(){
+		return $scope.json.annotations;
+	}
+	
 	// Get the item JSON
 	
 	json.urn( $scope.urn ).then( function( data ){
@@ -125,7 +159,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			var src = data.src[0];
 			json.get( src ).then( function( data ){
 				$scope.json.upload = data;
-				annotations( $scope.urn );
+				get_annotations( $scope.urn );
 			});
 		});
 	}
@@ -133,7 +167,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// get the annotations
 	
-	function annotations( urn ){
+	function get_annotations( urn ){
 		annotation.by_item_more( urn ).then( function( data ){
 			$scope.json.annotations = data;
 		});

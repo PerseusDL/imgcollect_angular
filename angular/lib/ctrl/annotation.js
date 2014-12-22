@@ -44,35 +44,35 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 		
 		$rootScope.$on( user.events.ok, function(){ go() });
 		
-		function go(){
-			$scope.title = "Annotation";
-			$scope.form = {
-				'rdf:label':"",
-				'rdf:description':"",
-				'this:keyword':[]
-			};
-			$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		$scope.title = "Annotation";
+		$scope.form = {
+			'rdf:label':"",
+			'rdf:description':"",
+			'this:keyword':[]
+		};
+		
+		
+		// Run once data is retrieved
+		
+		$scope.run = function(){
 			
+			// Item URN
 			
-			// Run once data is retrieved
+			$scope.items = [];
+			$scope.items[0] = { urn: $scope.json['cite:belongsTo']['@id'] };
 			
-			$scope.run = function(){
-				
-				// Item URN
-				
-				$scope.items = [];
-				$scope.items[0] = { urn: $scope.json['cite:belongsTo']['@id'] };
-				
-				// Get the upload
-				
-				annotation.upload_src( $scope.urn ).then(
-					function( data ){
-						$scope.src = data[0].src;
-					}
-				);
-			}
+			// Get the upload
+			
+			annotation.upload_src( $scope.urn ).then(
+				function( data ){
+					$scope.src = data[0].src;
+				}
+			);
 		}
 		
-		$scope.init();
+		function go(){
+			$injector.invoke( EditCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
 	}
 ]);

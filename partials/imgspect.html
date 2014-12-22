@@ -55,7 +55,7 @@
 					</div>
 					
 					<div class="ctrl">
-						<a class="no-select button secondary tiny add">add</a>
+						<a ng-click="add()" class="no-select button secondary tiny add">add</a>
 						<a class="no-select button secondary tiny cancel">cancel</a>
 						<!--
 						<a ng-click="lite_clear_text()" 
@@ -118,6 +118,8 @@
 <div>opacity</div>
 <input type="text" 
        ng-model="config.lite.opa" />
+	   
+<input ng-click="save()" type="submit" class="button secondary" value="Save" />
 
 <!-- imgbits -->
 <!--
