@@ -70,8 +70,9 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 			);
 		}
 		
+		$injector.invoke( EditCtrl, this, { $scope: $scope } );
+		
 		function go(){
-			$injector.invoke( EditCtrl, this, { $scope: $scope } );
 			$scope.init();
 		}
 	}

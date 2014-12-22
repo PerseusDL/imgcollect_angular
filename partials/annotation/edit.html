@@ -9,7 +9,7 @@
 	<div class="columns small-12">
 		<!-- imgbit -->
 		<img src="{{ src }}" 
-			 ng-param="{{ json.roi_x }},{{ json.roi_y }},{{ json.roi_width }},{{ json.roi_height }}"
+			 ng-param="{{ json['this:roi_x'] }},{{ json['this:roi_y'] }},{{ json['this:roi_width'] }},{{ json['this:roi_height'] }}"
 		img-bit />
 	</div>
 </div>
@@ -26,9 +26,21 @@
 		<div id="annotation-form" class="box">
 			<h3>metadata</h3>
 			<form>
-				<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
-				<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
-				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+				<input type="text" 
+					   ng-change="change('rdf:label')" 
+					   ng-model="form['rdf:label']" 
+					   placeholder="label" 
+				/>
+				<input type="text" 
+					   ng-change="change('rdf:description')" 
+					   ng-model="form['rdf:description']" 
+					   placeholder="description" 
+				/>
+				<input class="button secondary" 
+					   type="submit" 
+					   value="Save" 
+					   ng-click="save()" 
+				/>
 			</form>
 		</div>
 	</div>
