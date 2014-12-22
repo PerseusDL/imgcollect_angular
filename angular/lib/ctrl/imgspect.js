@@ -104,6 +104,19 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	}
 	
 	
+	// Get default annotation data
+	
+	$scope.default = null;
+	json.get( 'default/annotation.json' ).then(
+		function( data ){
+			$scope.default = data;
+		},
+		function( err ){
+			console.log( 'error' );
+		}
+	)
+	
+	
 	
 	// SERVER COMMUNICATION
 	
@@ -132,9 +145,32 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			// any annotation without a URN gets its data POSTED
 			
 			if ( ! ( 'urn' in annots[i] ) ){
-				console.log( annots[i] );
+				save_annotation( annots[i] );
 			}
 		}
+	}
+	
+	function annotation_urn( annot ){
+		return $scope.urn+[ 
+			annot['this:roi_height'], 
+			annot['this:roi_width'], 
+			annot['this:roi_x'], 
+			annot['this:roi_y'] 
+		].join(',')
+	}
+	
+	function save_annotation( annot ){
+		var def = angular.copy( $scope.default );
+		annot = angular.extend( def, annot );
+		annot['@id'] = annotation_urn( annot );
+		json.post( 'annotation/'+annot['@id'], annot ).then( 
+			function( data ){
+				console.log( data );
+			},
+			function( err ){
+				console.log( err );
+			}
+		)
 	}
 	
 	function annotations(){

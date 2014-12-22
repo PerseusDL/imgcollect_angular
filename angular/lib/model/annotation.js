@@ -1,4 +1,4 @@
-app.service( 'annotation', [ 'sparql', 'results', function( sparql, results ){
+app.service( 'annotation', [ 'sparql', 'results', 'json', function( sparql, results, json ){
 	
 	return({
 		by_item:by_item,
