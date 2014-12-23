@@ -244,3 +244,17 @@
 
 	query()
 		SELECT terms
+
+
+Improve CITE_JSON_LD templates
+Remove templating.
+Create a new fake data creation system.
+
+JackSON
+/data/default/context.json
+
+Create code that will prefix a context.json object to any uploaded JSON.
+Not sure where this can be added...
+Can do this in validators?
+
+

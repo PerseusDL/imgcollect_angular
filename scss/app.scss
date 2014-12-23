@@ -238,7 +238,7 @@ img.preview {
 }
 .imgspect .lite.temp .ctrl .button {
   margin:0;
-  padding:.5rem 2rem;
+  padding:.5rem .5rem;
 }
 .imgspect .lite.temp .words * {
   margin:0;
@@ -255,4 +255,14 @@ img.preview {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.imgspect .annot .button {
+  margin:0;
+}
+.imgspect .annot {
+  -webkit-border-radius: .25rem;
+  -moz-border-radius: .25rem;
+  position:absolute;
+  padding:.5rem;
+  width:15rem;
 }

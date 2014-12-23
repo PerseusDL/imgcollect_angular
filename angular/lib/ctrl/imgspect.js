@@ -38,6 +38,14 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	$scope.json = {};
 	
+	// Annotation popout
+	
+	var popout = false;
+	$scope.popout = function( bool ){
+		popout = ( bool == undefined ) ? popout : bool;
+		return popout
+	}
+	
 	// Application state
 
 	$scope.config = {
@@ -47,6 +55,14 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		},
 		nav: {
 			opa:0.5
+		},
+		annot: {
+			color: '#F2F2F2',
+			opa:0.9,
+			offset:15,
+			input: {
+				color: '#FDFDFD'
+			}
 		}
 	};	
 	var orig = {};
