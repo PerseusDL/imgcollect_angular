@@ -10,13 +10,16 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope'
 		$scope.type = "home";
 		$scope.keys = [ 'urn', 'type', 'label', 'desc', 'time' ];
 		
+		$scope.apply_filter = function(){
+			$injector.invoke( ListCtrl, this, { $scope: $scope } );
+			$scope.init();
+		}
 		
 		// Make sure user is logged in.
 		
 		$rootScope.$on( user.events.ok, function(){
 			go();
-			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.apply_filter();
 		});
 		
 		function go(){
@@ -38,11 +41,6 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope'
 		}
 		
 		$scope.hide = true; // Hide default pagination buttons
-		
-		$scope.apply_filter = function(){
-			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
-		}
 	}
 ]);
 

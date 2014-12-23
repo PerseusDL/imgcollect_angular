@@ -34,7 +34,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	function disp( data ) {
 		var json = {};
 		var out = [];
-		for ( var key in data ) {
+		for ( var key in data ){
 			if ( key == '@context' ){ 
 				out[0] = angular.toJson( data[key], true );
 				continue;
@@ -102,7 +102,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	
 	function tack( key ){
 		var tacks = config.xhr.json.tack_on;
-		if ( tacks.indexOf( key ) == -1 ) {
+		if ( tacks.indexOf( key ) == -1 ){
 			return false;
 		}
 		return true;
@@ -153,7 +153,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		if (
 			! angular.isObject( r.data ) ||
 			! r.data.error
-		) {
+		){
 			var unknown = "An unknown error occurred."
 			return( $q.reject( unknown ) );
 		}

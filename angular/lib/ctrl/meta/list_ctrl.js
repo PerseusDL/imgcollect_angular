@@ -35,7 +35,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		"rdf:description": "?desc",
 		"xml:dateTime": "?time",
 	};
-	$scope.items["<"+user.dir()+"/>"] = "?user";
+	$scope.items["<"+user.dir()+">"] = "?user";
 	
 	
 	// Build the SPARQL SELECT query
@@ -89,7 +89,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	function where() {
 		if ( user.only == true ){
 			return "?urn this:type '"+$scope.type+"'.\
-			?urn <"+user.dir()+"/> <"+user.url()+">;";
+			?urn <"+user.dir()+"> <"+user.url()+">;";
 		}
 		return "?urn this:type '"+$scope.type+"';";
 	}

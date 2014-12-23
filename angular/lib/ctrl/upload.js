@@ -1,7 +1,7 @@
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload',
-	function( $scope, $injector, urnServ, json, stdout, user, $upload ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config',
+	function( $scope, $injector, urnServ, json, stdout, user, $upload, config ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
 		$scope.form = {
@@ -94,7 +94,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		$scope.upload_out = false;
 		$scope.upload = function(){
 		    $scope.upload = $upload.upload({
-				url: 'http://localhost:1234/upload', 
+				url: config.imgup.url, 
 				method: 'POST',
 				file: $scope.file
 		 	})
@@ -125,13 +125,11 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 
 // uploads
 
-appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
-	function( $scope, $injector ){
+appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope','user',
+	function( $scope, $injector, $rootScope, user ){
 		$scope.type = "upload";
 		$scope.title = "Upload List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
-		$injector.invoke( ListCtrl, this, { $scope: $scope } );
-		$scope.init();
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
@@ -143,6 +141,10 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 			"rdf:description": null
 		}
 		
+		// Start once user event fires 
+		
+		$rootScope.$on( user.events.ok, function(){ $scope.apply_filter() });
+		
 		
 		// Applying the filter is the same as initializing..
 		
@@ -150,6 +152,8 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector',
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
 			$scope.init();
 		}
+		
+		$scope.apply_filter();
 	}
 ]);
 

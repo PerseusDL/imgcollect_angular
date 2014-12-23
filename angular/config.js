@@ -7,7 +7,6 @@ app.service( 'config', [ 'host', function( host ){
 		
 		serv: {
 			
-			
 			user: {
 				
 				// URL to Perseids user data object
@@ -46,5 +45,8 @@ app.service( 'config', [ 'host', function( host ){
 				tack_on: [ 'user' ]
 			}
 		},
+		imgup: {
+			url: 'http://localhost:1234/upload'	
+		}
 	})
 }])
