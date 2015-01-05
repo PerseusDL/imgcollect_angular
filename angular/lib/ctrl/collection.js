@@ -108,12 +108,12 @@ appControllers.controller( 'CollectionCtrl', [ '$scope','$injector','item', 'use
 		function go(){
 			$injector.invoke( EditCtrl, this, { $scope: $scope } );
 			$scope.init();
+			
+			// Retrieve Collection Items
+		
+			item.by_collection( $scope.urn ).then(
+				function( data ){ $scope.items = data }
+			);
 		}
-		
-		// Retrieve Collection Items
-		
-		item.by_collection( $scope.urn ).then(
-			function( data ){ $scope.items = data }
-		);
 	}
 ]);

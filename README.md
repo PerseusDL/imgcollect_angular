@@ -93,6 +93,11 @@ Watch for changes / build CSS
 
 	git clone https://github.com/PerseusDL/CITE-JSON-LD /var/www/JackSON/templates/cite
 
+
+### Install imgup server
+
+	git clone https://github.com/caesarfeta/imgup
+
 ### Create fake development data
 
 	gem install faker
