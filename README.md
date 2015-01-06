@@ -14,7 +14,7 @@ Fresh Install of Ubuntu 12.04
 ### Setup JackSON
 
 	sudo mkdir -p /var/www
-	sudo chown -R user:group /var/www
+	sudo chown -R user /var/www
 	git clone https://github.com/caesarfeta/JackSON /var/www/JackSON
 	cd /var/www/JackSON
 	git submodule update --init
@@ -26,7 +26,7 @@ Fresh Install of Ubuntu 12.04
 	source ~/.bash_profile
 	rbenv rehash
 
-### Install JackSON
+### Install JackSON dependencies
 
 	sudo apt-get install rubygems
 	gem install bundler
@@ -76,8 +76,7 @@ Make sure JackSON is running properly
 
 	cd /var/www/JackSON/public/apps/imgcollect
 
-Install nodejs this funky way
-http://stackoverflow.com/questions/12913141/installing-from-npm-fails
+Install nodejs this funky way.  [Taken from stackoverflow](http://stackoverflow.com/questions/12913141/installing-from-npm-fails)
 
 	curl -sL https://deb.nodesource.com/setup | sudo bash -
 	sudo apt-get install -y nodejs
@@ -89,14 +88,13 @@ Watch for changes / build CSS
 
 	bundle exec compass watch
 
-### Get CITE-JSON-LD templates
-
-	git clone https://github.com/PerseusDL/CITE-JSON-LD /var/www/JackSON/templates/cite
-
-
 ### Install imgup server
 
 	git clone https://github.com/caesarfeta/imgup
+
+### Get CITE-JSON-LD templates
+
+	git clone https://github.com/PerseusDL/CITE-JSON-LD /var/www/JackSON/templates/cite
 
 ### Create fake development data
 
@@ -104,6 +102,8 @@ Watch for changes / build CSS
 	ruby /var/www/JackSON/templates/cite/templates/img/fake.rb
 
 ### Your app is working?
+
+Take a quick peak.
 
 	http://localhost:4567/apps/imgcollect
 
@@ -114,4 +114,7 @@ When the time comes...
 	rake data:destroy
 
 # Production Installation
-Coming soon!
+Things to consider.
+What is necessary to install?
+You might have to share a host with other services.
+You don't want to break those services by unncessarily installing.
