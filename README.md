@@ -1,3 +1,23 @@
+# Overview
+
+imgcollect uses three servers.
+Here are their GitHub repos.
+
+* [JackSON](https://github.com/caesarfeta/JackSON)
+* [JackRDF](https://github.com/caesarfeta/JackRDF)
+* [imgup](https://github.com/caesarfeta/imgup)
+
+imgcollect is primarily written in...
+
+* Ruby -- 1.9.2 or above
+* Javascript
+
+It's built on top of these technologies...
+
+* Sinatra
+* AngularJS
+* Fuseki
+
 # Development Installation
 
 Fresh Install of Ubuntu 12.04
@@ -50,8 +70,7 @@ Just run this:
 
 ### Install JackRDFs coupled fuseki server
 
-	sudo apt-get install default-jre
-	sudo apt-get install default-jdk
+	sudo apt-get install default-jre default-jdk
 	rake server:install
 
 ### Start fuseki
@@ -90,7 +109,10 @@ Watch for changes / build CSS
 
 ### Install imgup server
 
-	git clone https://github.com/caesarfeta/imgup
+	git clone https://github.com/caesarfeta/imgup /var/www/imgup
+	cd /var/www/imgup
+	bundle install
+	rake start
 
 ### Get CITE-JSON-LD templates
 
@@ -98,8 +120,11 @@ Watch for changes / build CSS
 
 ### Create fake development data
 
+Make sure JackSON and Fuseki are running
+
 	gem install faker
-	ruby /var/www/JackSON/templates/cite/templates/img/fake.rb
+	cd /var/www/JackSON/templates/cite/templates/img
+	ruby fake.rb
 
 ### Your app is working?
 
@@ -114,7 +139,68 @@ When the time comes...
 	rake data:destroy
 
 # Production Installation
-Things to consider.
-What is necessary to install?
-You might have to share a host with other services.
-You don't want to break those services by unncessarily installing.
+
+You'll need to install everything needed for development, see "Development Installation" above.
+
+## Install Apache 2
+
+...and some necessary development headers.
+
+	sudo apt-get install apache2 apache2-threaded-dev libcurl4-openssl-dev
+
+## Install Phusion Passenger
+
+	gem install passenger
+	rbenv rehash
+
+Okay here's something funky you need to know about Phusion Passenger.
+If you're using rbenv for Ruby versioning then your gems are installed in your home directory.
+Apache doesn't run as you.
+So you have to give Apache permissions to your home directory.
+Here's the easiest way to do that.
+
+	sudo chmod -R o+x ~
+
+Warning: This could be an issue for you if you need your user directory secure.
+
+	passenger-install-apache2-module
+
+This will compile Phusion Passenger.
+Copy the LoadModule directive the installer gives you after it finishes compiling.
+It looks like this most likely...
+
+	LoadModule passenger_module /home/user/.rbenv/versions/1.9.3-p0/lib/ruby/gems/1.9.1/gems/passenger-4.0.57/buildout/apache2/mod_passenger.so
+	<IfModule mod_passenger.c>
+		PassengerRoot /home/user/.rbenv/versions/1.9.3-p0/lib/ruby/gems/1.9.1/gems/passenger-4.0.57
+		PassengerDefaultRuby /home/user/.rbenv/versions/1.9.3-p0/bin/ruby
+	</IfModule>
+
+Paste that at the end of...
+
+	/etc/apache2/apache2.conf
+
+Try starting up Apache to see if anything is broken
+
+	sudo apachectl start
+	sudo apachectl stop
+
+Configure VHOST
+
+# Configuration files
+
+If you have a non-standard installation ( one where the servers are running on different hosts or non-standard ports ) you must change the configuration directives listed here.
+
+/var/www/JackSON/JackSON.config.yml
+
+	sparql: 'http://localhost:4321/ds'
+
+/var/www/imgup/imgup.config.url
+
+	allow_origin: 'http://localhost:4567'
+
+/var/www/JackSON/public/apps/imgcollect/angular/config.js
+
+	serv.user
+	xhr.sparql.url
+	xhr.json.url
+	imgup.url
