@@ -65,14 +65,13 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
 			
 			annotation.upload_src( $scope.urn ).then(
 				function( data ){
-					$scope.src = data[0].src;
+					$scope.img_src = data[0].src;
 				}
 			);
 		}
 		
-		$injector.invoke( EditCtrl, this, { $scope: $scope } );
-		
 		function go(){
+			$injector.invoke( EditCtrl, this, { $scope: $scope } );
 			$scope.init();
 		}
 	}
