@@ -107,7 +107,7 @@ appControllers.controller( 'UserCtrl', ['$scope','$injector','user','$rootScope'
 ]);
 
 
-// STDOUT
+// StdOut
 
 appControllers.controller( 'StdOut', ['$scope','stdout',
 	function( $scope, stdout ) {
@@ -115,5 +115,17 @@ appControllers.controller( 'StdOut', ['$scope','stdout',
 		$scope.$watch('stdout.msg', function(){
 			$scope.msg = stdout.msg;
 		});
+	}
+]);
+
+
+// JsonMsg
+
+appControllers.controller( 'JsonMsg', ['$scope','json',
+	function( $scope, json ) {
+		var update = function( msg ){
+			$scope.msg = msg;
+		}
+		json.on_change( update );
 	}
 ]);

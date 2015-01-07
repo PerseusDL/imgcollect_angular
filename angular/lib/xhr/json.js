@@ -1,5 +1,16 @@
 app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, config, user ) {
 	
+	// output
+	
+	this.msg = ">>";
+	var events = [];
+	function on_change( event ){ events.push( event ) }
+	function run_events() {
+		angular.forEach( events, function( event ){
+			event( this.msg );
+		});
+	}
+	
 	// Avoid typos with constants
 	
 	var GET = 'GET';
@@ -14,9 +25,10 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		get: get,
 		ls: ls,
 		urn: urn,
-		disp: disp
+		disp: disp,
+		msg: this.msg,
+		on_change: on_change
 	});
-	
 	
 	// Retrieve a JSON file by URN
 	
@@ -150,6 +162,8 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	// Error handler
 	
 	function error( r ){
+		this.msg = angular.fromJson( r.data );
+		run_events();
 		if (
 			! angular.isObject( r.data ) ||
 			! r.data.error
@@ -164,6 +178,8 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	// Success handler
 	
 	function success( r ){
+		this.msg = angular.fromJson( r.data );
+		run_events();
 		return( r.data );
 	}
 }]);

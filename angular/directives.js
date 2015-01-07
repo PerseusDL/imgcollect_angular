@@ -39,6 +39,12 @@ appDirectives.directive('jsonOut', function(){
 	}
 });
 
+appDirectives.directive('jsonMsg', function(){
+	return {
+		templateUrl: 'partials/share/json-msg.html'
+	}
+});
+
 appDirectives.directive('urnInfo', function(){
 	return {
 		templateUrl: 'partials/share/urn-info.html'
