@@ -53,24 +53,11 @@ Fresh Install of Ubuntu 12.04
 	rbenv rehash
 	bundle install
 
-### Install JackRDF
-
-	git clone https://github.com/caesarfeta/JackRDF /var/www/JackRDF
-	cd /var/www/JackRDF
-	rake install
-
-You might get this error...
-
-	rake aborted!
-	Couldn't install gem...
-
-Just run this:
-
-	gem install /var/www/JackRDF/pkg/JackRDF-1.0.1.gem
-
 ### Install JackRDFs coupled fuseki server
 
 	sudo apt-get install default-jre default-jdk
+	git clone https://github.com/caesarfeta/JackRDF /var/www/JackRDF
+	cd /var/www/JackRDF
 	rake server:install
 
 ### Start fuseki
@@ -133,6 +120,7 @@ Take a quick peak.
 	http://localhost:4567/apps/imgcollect
 
 ### Clearout fake data
+
 When the time comes...
 
 	cd /var/www/JackSON
@@ -184,7 +172,82 @@ Try starting up Apache to see if anything is broken
 	sudo apachectl start
 	sudo apachectl stop
 
-Configure VHOST
+
+## Deployment mode for Gems in JackSON and imgup
+
+	cd /var/www/JackSON
+	bundle --deployment
+
+	cd /var/www/imgup
+	bundle --deployment
+
+## Configure JackSON VHost
+
+	sudo vim /etc/apache2/sites-enabled/000-default
+
+	<VirtualHost *:80>
+		DocumentRoot /var/www/JackSON/public
+		<Directory /var/www/JackSON/public>
+			Allow from all
+			Options MultiViews
+		</Directory>
+	</VirtualHost>
+
+or use a sub URI
+
+	<VirtualHost *:80>
+		Alias /jackson /var/www/JackSON/public
+		<Location /jackson>
+			PassengerBaseURI /jackson
+			PassengerAppRoot /var/www/JackSON
+		</Location>
+		<Directory /var/www/JackSON/public>
+			Allow from all
+			Options MultiViews
+		</Directory>
+	</VirtualHost>
+
+## Configure imgup VHost
+
+You could use a second port
+
+	<VirtualHost *:8080>
+		DocumentRoot /var/www/imgup/public
+		<Directory /var/www/imgup/public>
+			Allow from all
+			Options MultiViews
+		</Directory>
+	</VirtualHost>
+
+or use a sub URI in conjunction with JackSON
+
+	<VirtualHost *:80>
+		
+		Alias /jackson /var/www/JackSON/public
+		<Location /jackson>
+			PassengerBaseURI /jackson
+			PassengerAppRoot /var/www/JackSON
+		</Location>
+		<Directory /var/www/JackSON/public>
+			Allow from all
+			Options MultiViews
+		</Directory>
+		
+		Alias /imgup /var/www/imgup/public
+		<Location /imgup>
+			PassengerBaseURI /imgup
+			PassengerAppRoot /var/www/imgup
+		</Location>
+		<Directory /var/www/imgup/public>
+			Allow from all
+			Options MultiViews
+		</Directory>
+		
+	</VirtualHost>
+
+Restart Apache
+
+	sudo apachectl restart
 
 # Configuration files
 
