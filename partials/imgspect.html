@@ -121,30 +121,25 @@
 	 </div>
 </div>
 
-<div style="clear:both"></div>
-
-<div>zoom</div>
-<input type="text" 
-       ng-model="zoom"
-/>
-
-<div>color</div>
-<input type="text" 
-       ng-model="config.lite.color" 
-/>
-
-<div>opacity</div>
-<input type="text" 
-       ng-model="config.lite.opa"
-/>
-	   
-<input ng-click="save()" type="submit" class="button secondary" value="Save" />
-
-<!-- imgbits -->
-<!--
-<div class="imgspect imgbits">
-	<img ng-repeat="item in json.annotations" src="{{ src }}" 
-		 ng-param="{{ item.x }},{{ item.y }},{{ item.w }},{{ item.h }}"
-	img-bit />
+<!-- controls -->
+<div class="imgspect controls">
+	
+	<div>zoom</div>
+	<input type="text" 
+	       ng-model="zoom"
+	/>
+	
+	<div>color</div>
+	<input type="text" 
+	       ng-model="config.lite.color" 
+	/>
+	
+	<div>opacity</div>
+	<input type="text" 
+	       ng-model="config.lite.opa"
+	/>
+	 
+	<input ng-click="save()" type="submit" class="button secondary" value="Save" />
+	<div json-msg></div>
+	
 </div>
--->

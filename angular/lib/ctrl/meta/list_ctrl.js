@@ -1,4 +1,5 @@
-var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, sparql, user, $routeParams ){
+var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', 
+function( $scope, sparql, user, $routeParams ){
 	
 	// Actual list data
 	
@@ -87,11 +88,12 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	// Only your data or everyones?
 	
 	function where() {
+		wheres = [];
 		if ( user.only == true ){
-			return "?urn this:type '"+$scope.type+"'.\
-			?urn <"+user.dir()+"> <"+user.url()+">;";
+			wheres.push( "?urn <"+user.dir()+"> <"+user.url()+">" );
 		}
-		return "?urn this:type '"+$scope.type+"';";
+		wheres.push( "?urn this:type '"+$scope.type+"'" );
+		return wheres.join('.')+";";
 	}
 	
 	
@@ -133,6 +135,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	
 	function list() {
 		$scope.query = $scope.prefix + $scope.select + $scope.paginate;
+		console.log( $scope.query );
 		return sparql.search( $scope.query ).then( 
 			function( data ){
 				$scope.json = data;
@@ -142,6 +145,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	
 	function count() {
 		var count = $scope.prefix + $scope.number;
+		console.log( count );
 		return sparql.search( count ).then(
 			function( data ){
 				$scope.count = data[0]['.1'].value;

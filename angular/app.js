@@ -29,7 +29,10 @@ app.config(['$routeProvider',
 		when('/new/upload', {
 			templateUrl: 'partials/upload/new.html',
 			controller: 'UploadNew'
-		});
+		}).
+		otherwise({
+			redirectTo: '/uploads'
+		});;
 		
 		
 		// items
@@ -110,22 +113,6 @@ app.config(['$routeProvider',
 		when('/login', {
 			templateUrl: 'partials/login.html',
 			controller: 'LoginCtrl'
-		});
-		
-		
-		// home
-		
-		$routeProvider.
-		when('/home', {
-			templateUrl: 'partials/home.html',
-			controller: 'HomeCtrl'
-		}).
-		when('/home/:page', {
-			templateUrl: 'partials/home.html',
-			controller: 'HomeCtrl'
-		}).
-		otherwise({
-			redirectTo: '/home'
 		});
 	}
 ])

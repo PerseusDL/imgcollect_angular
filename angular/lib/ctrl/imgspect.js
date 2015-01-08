@@ -152,6 +152,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		annots.push( fresh );
 	}
 	
+	
 	// Save new annotations to database
 	
 	$scope.save = function(){
@@ -166,6 +167,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		}
 	}
 	
+	
 	function annotation_urn( annot ){
 		return $scope.urn+[ 
 			annot['this:roi_height'], 
@@ -174,6 +176,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 			annot['this:roi_y'] 
 		].join(',')
 	}
+	
 	
 	function save_annotation( annot ){
 		
@@ -196,9 +199,11 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		)
 	}
 	
+	
 	function annotations(){
 		return $scope.json.annotations;
 	}
+	
 	
 	// Get the item JSON
 	
@@ -487,6 +492,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 	
 	// DRAGGER
 	
+	
 	// Start the dragger
 	
 	function drag_start(){
@@ -498,6 +504,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		});
 	}
 	
+	
 	// Move the canvas
 	
 	function canvas_move(){
@@ -508,6 +515,7 @@ function( $scope, $injector, $routeParams, json, annotation ){
 		$scope.canvas_y = y*-1*$scope.zoom;
 		$scope.refresh();
 	}
+	
 	
 	// What happens when dragger is moved
 	
