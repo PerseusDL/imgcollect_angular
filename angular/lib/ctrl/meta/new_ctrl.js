@@ -20,6 +20,7 @@ function( $scope, urnServ, json, stdout, user ){
 	// Output messages
 	
 	$scope.stdout = "";
+	$scope.saving = false;
 	
 	// Path to default JSON
 	
@@ -49,9 +50,13 @@ function( $scope, urnServ, json, stdout, user ){
 	
 	var save = function(){
 		touch();
+		$scope.saving = true;
 		json.put( $scope.data_path( $scope.urn ), $scope.json ).then(
 		function( data ){
 			stdout.log( data );
+			setTimeout( function(){
+				$scope.saving = false;
+			}, 5000 );
 			$scope.ready = true;
 		});
 	}

@@ -12,6 +12,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		$scope.type = 'upload';
 		$injector.invoke( NewCtrl, this, { $scope: $scope } );
 		$scope.change = function(key){ change(key) }
+		$scope.saving = false;
 		
 		
 		// Once you have a fresh item URN
@@ -21,6 +22,9 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			touch();
 			json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
 				function( data ){
+					setTimeout( function(){
+						$scope.saving = false;
+					}, 5000 );
 					stdout.log( data );
 				}
 			);
@@ -67,6 +71,8 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		// Save your new upload
 		
 		$scope.save = function(){
+			
+			$scope.saving = true;
 			
 			// Retrieve a new upload URN
 			

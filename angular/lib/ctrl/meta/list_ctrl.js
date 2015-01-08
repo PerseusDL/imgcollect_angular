@@ -135,7 +135,6 @@ function( $scope, sparql, user, $routeParams ){
 	
 	function list() {
 		$scope.query = $scope.prefix + $scope.select + $scope.paginate;
-		console.log( $scope.query );
 		return sparql.search( $scope.query ).then( 
 			function( data ){
 				$scope.json = data;
@@ -145,7 +144,6 @@ function( $scope, sparql, user, $routeParams ){
 	
 	function count() {
 		var count = $scope.prefix + $scope.number;
-		console.log( count );
 		return sparql.search( count ).then(
 			function( data ){
 				$scope.count = data[0]['.1'].value;
