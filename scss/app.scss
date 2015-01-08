@@ -149,8 +149,18 @@ img.preview {
 }
 
 /* jsonMsg */
+#jsonMsg .alert-box {
+  margin:0;
+  margin-top:.5rem;
+}
 #jsonMsgBut {
   float:right;
+}
+
+/* jsonMsgMini */
+#jsonMsgMini {
+  margin: .25rem;
+  font-size: .75rem;
 }
 
 /* img-bit */

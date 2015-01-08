@@ -1,7 +1,7 @@
 // new/collection
 
-appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ',
-	function( $scope, $injector, urnServ ){
+appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$rootScope', 'user',
+	function( $scope, $injector, urnServ, $rootScope, user ){
 		
 		$scope.title = "Collection New";
 		$scope.type = "collection";

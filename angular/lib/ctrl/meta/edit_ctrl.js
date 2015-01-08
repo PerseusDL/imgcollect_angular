@@ -15,6 +15,7 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	$scope.save = function(){ save() }
 	$scope.change = function( key ){ change(key) }
 	$scope.init = function(){ init() }
+	$scope.saving = false;
 	
 	
 	// Update JSON when form changes
@@ -41,11 +42,16 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	// Save JSON
 	
 	function save() {
+		$scope.saving = true;
 		json.put( $scope.src[0], $scope.json ).then(
 		function( msg ){ 
 			output( msg );
+			setTimeout( function(){
+				$scope.saving = false;
+			}, 5000 );
 		});
 	}
+	
 	
 	// Write output
 	
