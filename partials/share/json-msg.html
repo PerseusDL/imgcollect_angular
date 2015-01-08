@@ -1,1 +1,15 @@
-<pre id="json-msg" ng-controller="JsonMsg">{{ msg }}</pre>
+<div id="jsonMsg" ng-controller="JsonMsg">
+	
+	<!-- Alert Box -->
+	<div data-alert class="alert-box {{ mode }}">
+		{{ method }} {{ url }} {{ status }}
+		<a id="jsonMsgBut" data-reveal-id="jsonMsgWin">JSON</a>
+	</div>
+	
+	<!-- Pop Up Window -->
+	<div id="jsonMsgWin" class="reveal-modal" data-reveal>
+		<pre id="json-msg" >{{ msg }}</pre>
+	</div>
+	
+</div>
+<script type="text/javascript">$(document).foundation()</script>

@@ -2,12 +2,23 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	
 	// output
 	
-	this.msg = ">>";
+	this.msg = "";
+	this.method = "";
+	this.status = "";
+	this.url = "";
+	function state(){
+		return {
+			wait: 'WAIT',
+			success: 'SUCCESS',
+			error: 'ERROR'
+		}
+	};
+	
 	var events = [];
 	function on_change( event ){ events.push( event ) }
 	function run_events() {
 		angular.forEach( events, function( event ){
-			event( this.msg );
+			event( this.method, this.url, this.status, this.msg );
 		});
 	}
 	
@@ -26,8 +37,12 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		ls: ls,
 		urn: urn,
 		disp: disp,
+		on_change: on_change,
 		msg: this.msg,
-		on_change: on_change
+		method: this.method,
+		status: this.status,
+		state: state,
+		url: this.url
 	});
 	
 	// Retrieve a JSON file by URN
@@ -126,6 +141,10 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	function api( method, url, data ){
 		
 		// tack on standard data fields
+		this.method = method;
+		this.url = url;
+		this.status = state().wait;
+		run_events();
 		
 		if ( data != undefined ){
 			data = tack_on( data );
@@ -162,7 +181,8 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	// Error handler
 	
 	function error( r ){
-		this.msg = angular.fromJson( r.data );
+		this.status = state().error;
+		this.msg = angular.toJson( r.data, true );
 		run_events();
 		if (
 			! angular.isObject( r.data ) ||
@@ -178,7 +198,8 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	// Success handler
 	
 	function success( r ){
-		this.msg = angular.fromJson( r.data );
+		this.status = state().success;
+		this.msg = angular.toJson( r.data, true );
 		run_events();
 		return( r.data );
 	}
