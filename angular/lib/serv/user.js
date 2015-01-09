@@ -51,7 +51,7 @@ app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
 		
 		// Ping Perseids to get user data
 		
-		$http.get( config.serv.user.ping ).then( 
+		$http.get(config.serv.user.ping, { withCredentials: true} ).then( 
 			function( res ){
 				data = res.data.user;
 				def.resolve();
