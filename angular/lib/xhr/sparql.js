@@ -21,8 +21,12 @@ app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
 	// JackSON wrapper
 	
 	function get( search ) {
-		
-		var query = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
+	
+                // we add the request for json output explicitly to the query
+                // because if fuseki is deployed behind a proxy the content-type
+                // header in the request may not get forwarded and fuseki will
+                // return text - better safe than sorry here
+		var query = config.xhr.sparql.url+'?query='+encodeURIComponent( search )+"&output=json";
 		return $http({
 			method: 'GET',
 			url: query,
