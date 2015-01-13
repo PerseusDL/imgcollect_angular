@@ -14,6 +14,12 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		$scope.change = function(key){ change(key) }
 		$scope.saving = false;
 		
+		// Show disk
+		
+		$scope.show_disk = false;
+		$scope.disk = function( show ){
+			$scope.show_disk = show;
+		}
 		
 		// Once you have a fresh item URN
 		
@@ -71,12 +77,20 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		// Save your new upload
 		
 		$scope.save = function(){
-			
 			$scope.saving = true;
 			
-			// Retrieve a new upload URN
+			// Disk or URL?
 			
-			urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
+			if ( $scope.show_disk == true ){
+				if ( $scope.file ){
+					$scope.upload();
+				}
+			}
+			else {
+				if ( $scope.form['this:src'] ){
+					$scope.cp_http();
+				}
+			}
 		}
 		
 			
@@ -99,7 +113,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		$scope.file = '';
 		$scope.upload_out = false;
 		$scope.upload = function(){
-		    $scope.upload = $upload.upload({
+			$upload.upload({
 				url: config.imgup.url, 
 				method: 'POST',
 				file: $scope.file
@@ -113,7 +127,12 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 				$scope.json[ 'this:src' ] = data.data.src;
 				$scope.json[ 'this:orig' ] = data.data.orig;
 				json_to_str( $scope.json );
+				urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
 		 	});
+		}
+		
+		$scope.cp_http = function(){
+			console.log( 'ahahaha' );
 		}
 		
 		function exif_json( data ){

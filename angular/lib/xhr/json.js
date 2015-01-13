@@ -6,6 +6,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	this.method = "";
 	this.status = "";
 	this.url = "";
+	
 	function state(){
 		return {
 			wait: 'WAIT',
@@ -16,7 +17,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	
 	var events = [];
 	function on_change( event ){ events.push( event ) }
-	function run_events() {
+	function run_events(){
 		angular.forEach( events, function( event ){
 			event( this.method, this.url, this.status, this.msg );
 		});

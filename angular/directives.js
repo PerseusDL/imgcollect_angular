@@ -51,6 +51,12 @@ appDirectives.directive('jsonMsgMini', function(){
 	}
 });
 
+appDirectives.directive('sparqlMsg', function(){
+	return {
+		templateUrl: 'partials/share/sparql-msg.html'
+	}
+});
+
 appDirectives.directive('urnInfo', function(){
 	return {
 		templateUrl: 'partials/share/urn-info.html'

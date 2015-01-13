@@ -66,7 +66,7 @@ appControllers.controller( 'UserCtrl', ['$scope','$injector','user','$rootScope'
 // StdOut
 
 appControllers.controller( 'StdOut', ['$scope','stdout',
-	function( $scope, stdout ) {
+	function( $scope, stdout ){
 		$scope.stdout = stdout;
 		$scope.$watch('stdout.msg', function(){
 			$scope.msg = stdout.msg;
@@ -80,7 +80,7 @@ appControllers.controller( 'StdOut', ['$scope','stdout',
 // to the user.
 
 appControllers.controller( 'JsonMsg', ['$scope','json',
-	function( $scope, json ) {
+	function( $scope, json ){
 		
 		var update = function( method, url, stat, msg ){
 			$scope.method = method;
@@ -101,5 +101,23 @@ appControllers.controller( 'JsonMsg', ['$scope','json',
 		}
 		
 		json.on_change( update );
+	}
+]);
+
+
+// Sparql Msg
+
+appControllers.controller( 'SparqlMsg', ['$scope','sparql',
+	function( $scope, sparql ){
+		
+		$scope.msg = 'YARGH';
+		$scope.query = '';
+		
+		var update = function( status, query ){
+			$scope.query = query;
+		}
+		
+		sparql.on_change( update );
+		
 	}
 ]);

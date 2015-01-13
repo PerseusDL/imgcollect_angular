@@ -1,49 +1,42 @@
 <div class="row">
 	<div class="columns small-12">
 		
-		<!-- Upload image -->
-		<div id="img-disk" class="box">
-			<h3>Image on disk</h3>
-			
-			<!-- File system -->
+		<h3>Where is your image?</h3>
+		
+		
+		<!-- Type of upload? -->
+		
+		<a ng-click="disk(true)" 
+		   ng:class="{selected: show_disk==true}" 
+		   class="button secondary tiny">disk</a>
+		   
+		<a ng-click="disk(false)" 
+		   ng:class="{selected: show_disk==false}" 
+		   class="button secondary tiny">URL</a>
+		
+		
+		<!-- Upload from disk -->
+		
+		<div ng-show="show_disk" id="img-disk" class="box">
 			<input type="file"
 				   ng-file-select
 				   ng-model="file"
 				   accept="image/*"
 			/>
-			
-			<!-- Upload that image! -->
-			<input class="button secondary" 
-				   type="submit" 
-				   value="add" 
-				   ng-click="upload()" 
-			/>
-			
 			<pre ng-show="upload_out">{{ upload_out }}</pre>
-
 		</div>
 		
-	</div>
-</div>
-
-<div class="row">
-	<div class="columns small-12">
-		<div id="img-url" class="box">
-			<h3>Image by URL</h3>
-			
+		
+		<!-- Upload by URL -->
+		
+		<div ng-hide="show_disk" id="img-url" class="box">
 			<input type="text" 
 			       ng-change="change('this:src')" 
 				   ng-model="form['this:src']" 
-				   placeholder="src" 
+				   placeholder="URL" 
 			/>
-			
-			<input class="button secondary"
-				   type="submit"
-				   value="add"
-				   ng-click="cp_http()"
-			/>
-			
 		</div>
+		
 	</div>
 </div>
 
@@ -51,7 +44,7 @@
 	<div class="columns small-12">
 		
 		<div id="upload-new-form" class="box">
-			<h3>Update metadata</h3>
+			<h3>metadata</h3>
 			
 			<!-- Change metadata -->
 			<form ng-show="ready">

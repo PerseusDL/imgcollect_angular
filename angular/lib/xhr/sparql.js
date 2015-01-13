@@ -1,34 +1,63 @@
 app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
-
-	// Publicly accessible methods
 	
-	return ({
-		search: search
-	});
+	this.query = "";
 	
+	function state(){
+		return {
+			wait: 'WAIT',
+			success: 'SUCCESS',
+			error: 'ERROR'
+		}
+	};
+	
+	var events = [];
+	function on_change( event ){ events.push( event ) }
+	function run_events(){
+		angular.forEach( events, function( event ){
+			event( 'whoa', this.query );
+		});
+	}
 	
 	// SPARQL search
 	
 	function search( search ) {
 		var request = get( search );
 		return( request.then( 
-			function( r ){ return r.data.results.bindings  },
-			function( r ){ return r }
+			success,
+			error
 		));
+	}
+	
+	function success( r ){
+		run_events()
+		return r.data.results.bindings
+	}
+	
+	function error( r ){
+		run_events()
+		return r
 	}
 	
 	
 	// JackSON wrapper
 	
 	function get( search ) {
-		
-		var query = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
+		this.query = search.smoosh();
+		var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
 		return $http({
 			method: 'GET',
-			url: query,
+			url: url,
 		    headers: {
 		        'Content-Type': 'application/json'
 		    }
 		});
 	}
+	
+	
+	// Publicly accessible methods
+	
+	return ({
+		search: search,
+		on_change: on_change
+	});
 }]);
