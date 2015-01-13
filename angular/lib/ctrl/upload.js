@@ -1,7 +1,7 @@
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config',
-	function( $scope, $injector, urnServ, json, stdout, user, $upload, config ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config','$http',
+	function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
 		$scope.form = {
@@ -118,21 +118,38 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 				method: 'POST',
 				file: $scope.file
 		 	})
-			.error( function( ){
+			.error( function(){
 				$scope.upload_out = "There was an error upload";
 		 	})
 			.then( function( data ){
-				$scope.upload_out = "Uploaded successfully";
-				exif_json( data );
-				$scope.json[ 'this:src' ] = data.data.src;
-				$scope.json[ 'this:orig' ] = data.data.orig;
-				json_to_str( $scope.json );
-				urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
+				upload_success( data );
 		 	});
 		}
 		
 		$scope.cp_http = function(){
-			console.log( 'ahahaha' );
+			$http({
+				method: 'POST',
+				url: config.imgup.url,
+			    headers: {
+			        'Content-Type': 'application/json'
+			    },
+				data: { src: $scope.form['this:src'] }
+			})
+			.error( function(){
+				$scope.upload_out = "There was an error upload";
+			})
+			.then( function( data ){
+				upload_success( data );
+			})
+		}
+		
+		function upload_success( data ){
+			$scope.upload_out = "Uploaded successfully";
+			exif_json( data );
+			$scope.json[ 'this:src' ] = data.data.src;
+			$scope.json[ 'this:orig' ] = data.data.orig;
+			json_to_str( $scope.json );
+			urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
 		}
 		
 		function exif_json( data ){
