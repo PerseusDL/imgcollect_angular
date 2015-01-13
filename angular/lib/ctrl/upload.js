@@ -121,7 +121,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			.error( function(){
 				$scope.upload_out = "There was an error upload";
 		 	})
-			.then( function( data ){
+			.success( function( data ){
 				upload_success( data );
 		 	});
 		}
@@ -138,7 +138,7 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			.error( function(){
 				$scope.upload_out = "There was an error upload";
 			})
-			.then( function( data ){
+			.success( function( data ){
 				upload_success( data );
 			})
 		}
