@@ -25,6 +25,16 @@ app.service( 'onto', [
       }
     }
 
+    this.default_value = function(a_term) {
+      if (precheck(a_term)) {
+        // TODO we should allow the config to specify the type as well
+        return config.ontology[a_term].default_value || "";
+      } else {
+        console.log("Missing ontology term " + a_term);
+        return null;
+      }
+    }
+
     this.prefixes = function() {
       var pfx_query = "";
       var seen = {};
