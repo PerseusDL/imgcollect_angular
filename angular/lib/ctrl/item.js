@@ -1,29 +1,30 @@
 // items
 
-appControllers.controller( 'ItemListCtrl', ['$scope','$injector', 
-	function( $scope, $injector ){
+appControllers.controller( 'ItemListCtrl', ['$scope','$injector','onto',
+	function( $scope, $injector, onto ){
 		$scope.type = "item";	
 		$scope.title = "Item List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 		$injector.invoke( ListCtrl, this, { $scope: $scope } );
-		$scope.init();
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
 		//
 		// See lib/list_ctr.js: filter()
-		
-		$scope.filter = {
-			"rdf:label": null,
-			"rdf:description": null
-		}
+	
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+		$scope.init([label,desc]);
+		$scope.filter = { };
+		$scope.filter[label] = null;
+		$scope.filter[desc] = null;
 		
 		
 		// Applying the filter is the same as initializing..
 		
 		$scope.apply_filter = function(){
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.init([label,desc]);
 		}
 	}
 ]);
@@ -31,16 +32,20 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector',
 
 // item/:urn
 
-appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation',
-	function( $scope, $injector, annotation ){
+appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation', 'onto',
+	function( $scope, $injector, annotation, onto ){
 		$scope.title = "Item";
-		$scope.form = {
-			'rdf:label':"",
-			'rdf:description':"",
-			'this:keyword':[]
-		};
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+                var rep = onto.with_prefix('represents');
+                var keyword = onto.with_prefix('subject');
+		$scope.form = {};
+                $scope.form[label] = "";
+                $scope.form[desc] = "";
+                $scope.form[rep] = "";
+                $scope.form[keyword] = [];
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
-		$scope.init();
+		$scope.init([label,desc,rep]);
 		
 		// Collection URN
 		
@@ -51,10 +56,10 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation',
 		
 		// Annotation URNs
 		
-		$scope.annotations = [];
-		annotation.by_item( $scope.urn ).then(
-			function( data ){ $scope.annotations = data }
-		);
+		//$scope.annotations = [];
+		//annotation.by_item( $scope.urn ).then(
+		//	function( data ){ $scope.annotations = data }
+		//);
 	}
 ]);
 
@@ -62,8 +67,8 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation',
 // new/item/:urn
 
 appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collection',
-	'$location','json','stdout','user',
-	function( $scope, urnServ, $routeParams, collection, $location, json, stdout,user ){
+	'$location','json','stdout','user','$injector','onto',
+	function( $scope, urnServ, $routeParams, collection, $location, json, stdout, user, $injector, onto ){
 		$scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 		$scope.type = "item";
 		$scope.title = "Item New";
@@ -138,11 +143,15 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
 		// Set basic values
 	
 		var touch = function(){
+                  var src = onto.with_prefix('src');
+                  var creator = onto.with_prefix('creator');
+                  var memberOf = onto.with_prefix('memberOf');
+                  var created = onto.with_prefix('created');
 			$scope.json['@id'] = $scope.urn;
-			$scope.json['this:upload']['@id'] = $scope.upload_urn;
-			$scope.json['user']['@id'] = 'user:'+user.id();
-			$scope.json['cite:belongsTo']['@id'] = $scope.collection;
-			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
+			$scope.json[src]['@id'] = $scope.upload_urn;
+			$scope.json[creator]['@id'] = user.id();
+			$scope.json[memberOf]['@id'] = $scope.collection;
+			$scope.json[created] = ( new TimeStamp ).xsd();
 		}
 	
 	

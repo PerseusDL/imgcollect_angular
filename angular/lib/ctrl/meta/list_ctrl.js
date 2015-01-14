@@ -1,4 +1,4 @@
-var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, sparql, user, $routeParams ){
+var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', 'onto', function( $scope, sparql, user, $routeParams, onto ){
 	
 	// Actual list data
 	
@@ -7,10 +7,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	
 	// SPARQL prefixes
 	
-	$scope.prefix = "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
-	PREFIX xml: <http://www.w3.org/TR/xmlschema11-2/#>";
+	$scope.prefix = onto.prefixes();
 	
 	
 	// Needed for pagination
@@ -29,13 +26,17 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	// Needed to build SPARQL SELECT query
 	// that will populate $scope.json.
 	// See optionals() and handles()
+
+        var label = onto.with_prefix('label');
+        var desc = onto.with_prefix('description');
+        var created = onto.with_prefix('created');
 	
-	$scope.items = {
-		"rdf:label": "?label",
-		"rdf:description": "?desc",
-		"xml:dateTime": "?time",
-	};
-	$scope.items["<"+user.dir()+">"] = "?user";
+	$scope.items = {};
+        $scope.items[label] = "?label";
+        $scope.items[desc] = "?desc";
+        $scope.items[created] = "?time";
+
+	$scope.items["<"+onto.with_ns('creator')+">"] = "?user";
 	
 	
 	// Build the SPARQL SELECT query
@@ -88,10 +89,10 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 	
 	function where() {
 		if ( user.only == true ){
-			return "?urn this:type '"+$scope.type+"'.\
-			?urn <"+user.dir()+"> <"+user.url()+">;";
+			return "?urn <" + onto.with_ns('type') +"> '"+$scope.type+"'.\
+			?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">;";
 		}
-		return "?urn this:type '"+$scope.type+"';";
+		return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"';";
 	}
 	
 	
@@ -126,7 +127,7 @@ var ListCtrl = 	['$scope', 'sparql', 'user', '$routeParams', function( $scope, s
 		var out = [];
 		for ( var key in $scope.items ){
 			var obj = $scope.items[key];
-			out.push( "OPTIONAL { ?urn "+key+" "+obj+" . }" );
+                        out.push( "OPTIONAL { ?urn "+key+" "+obj+" . }" );
 		}
 		return out.join("\n");
 	}

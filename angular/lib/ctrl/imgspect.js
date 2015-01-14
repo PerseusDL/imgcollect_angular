@@ -1,7 +1,7 @@
 // new/annotation/:urn
 
-appControllers.controller( 'imgspect', ['$scope','$injector','$routeParams','json','annotation',
-function( $scope, $injector, $routeParams, json, annotation ){
+appControllers.controller( 'imgspect', ['$scope','$injector','$routeParams','json','annotation','onto',
+function( $scope, $injector, $routeParams, json, annotation, onto ){
 	
 	
 	

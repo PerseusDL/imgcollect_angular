@@ -32,9 +32,9 @@
 			<h3>Image by URL</h3>
 			
 			<input type="text" 
-			       ng-change="change('this:src')" 
-				   ng-model="form['this:src']" 
-				   placeholder="src" 
+			       ng-change="change(src_field)" 
+				   ng-model="form[src_field]" 
+				   placeholder="src_field" 
 			/>
 			
 			<input class="button secondary"
@@ -55,16 +55,7 @@
 			
 			<!-- Change metadata -->
 			<form ng-show="ready">
-				<input type="text" 
-					   ng-change="change('rdf:label')" 
-					   ng-model="form['rdf:label']" 
-					   placeholder="label" 
-				/>
-				<input type="text" 
-					   ng-change="change('rdf:description')"
-					   ng-model="form['rdf:description']" 
-					   placeholder="description" 
-				/>
+				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
 				<input class="button secondary" 
 					   type="submit" 
 					   value="save" 

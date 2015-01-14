@@ -1,14 +1,17 @@
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config',
-	function( $scope, $injector, urnServ, json, stdout, user, $upload, config ){
+appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config','onto',
+	function( $scope, $injector, urnServ, json, stdout, user, $upload, config, onto ){
 		$scope.title = "Upload New";
 		$scope.stdout = "";
-		$scope.form = {
-			'rdf:label':'',
-			'rdf:description':'',
-			'this:src':''
-		}
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+                var src = onto.with_prefix('src');
+		$scope.form = {};
+		$scope.form[label] = "";
+		$scope.form[desc] = "";
+		$scope.form[src] = "";
+                $scope.src_field = src;
 		$scope.type = 'upload';
 		$injector.invoke( NewCtrl, this, { $scope: $scope } );
 		$scope.change = function(key){ change(key) }
@@ -28,9 +31,11 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 		
 		
 		function touch (){
-			$scope.json['@id'] = $scope.urn;
-			$scope.json['user']['@id'] = 'user:'+user.id();
-			$scope.json['dateTime'] = ( new TimeStamp ).xsd();
+                  var creator = onto.with_prefix('creator');
+                  var created = onto.with_prefix('created');
+		  $scope.json['@id'] = $scope.urn;
+		  $scope.json[creator]['@id'] = 'user:'+user.id();
+		  $scope.json[created] = ( new TimeStamp ).xsd();
 		}
 		
 		
@@ -104,12 +109,13 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 			.then( function( data ){
 				$scope.upload_out = "Uploaded successfully";
 				exif_json( data );
-				$scope.json[ 'this:src' ] = data.data.src;
-				$scope.json[ 'this:orig' ] = data.data.orig;
+				$scope.json[ onto.with_prefix('src') ] = data.data.src;
+				$scope.json[ onto.with_prefix('orig') ] = data.data.orig;
 				json_to_str( $scope.json );
 		 	});
 		}
-		
+	
+                // TODO externalize exif ontology	
 		function exif_json( data ){
 			var exif = data.data.exif;
 			for ( var key in exif ) {
@@ -125,8 +131,8 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
 
 // uploads
 
-appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope','user',
-	function( $scope, $injector, $rootScope, user ){
+appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope','user','onto',
+	function( $scope, $injector, $rootScope, user, onto ){
 		$scope.type = "upload";
 		$scope.title = "Upload List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
@@ -136,10 +142,11 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope',
 		
 		// See lib/list_ctr.js: filter()
 		
-		$scope.filter = {
-			"rdf:label": null,
-			"rdf:description": null
-		}
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+		$scope.filter = {};
+                $scope.filter[label] = null;
+                $scope.filter[desc] = null;
 		
 		// Start once user event fires 
 		
@@ -150,7 +157,7 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope',
 		
 		$scope.apply_filter = function(){
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.init([label,desc]);
 		}
 		
 		$scope.apply_filter();
@@ -160,16 +167,19 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope',
 
 // upload/:urn
 
-appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item',
-	function( $scope, $injector, resize, item ){
+appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item', 'onto',
+	function( $scope, $injector, resize, item, onto ){
 		$scope.title = "Upload";
-		$scope.form = {
-			'rdf:label':"",
-			'rdf:description':"",
-			'this:keyword':[]
-		};
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+                var keyword = onto.with_prefix('subject');
+		$scope.form = {};
+		$scope.form[label] = null;
+		$scope.form[desc] = null;
+		$scope.form[keyword] = [];
+		
 		$injector.invoke( EditCtrl, this, { $scope: $scope } );
-		$scope.init();
+		$scope.init([label,desc]);
 		
 		// Resize
 		

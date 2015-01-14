@@ -1,13 +1,11 @@
-app.service( 'item', ['sparql', 'results', function( sparql, results ) {
+app.service( 'item', ['sparql', 'results', 'onto', function( sparql, results, onto ) {
 	return({
 		by_upload:by_upload,
 		by_collection:by_collection
 	})
 	
 	function prefix() {
-	return "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
-	PREFIX cite: <http://www.homermultitext.org/cite/rdf/>";
+	  return onto.prefixes();
 	}
 	
 	function query( where ){
@@ -15,7 +13,7 @@ app.service( 'item', ['sparql', 'results', function( sparql, results ) {
 	"+prefix()+"\
 	SELECT ?urn\
 	WHERE {\
-		?urn this:type 'item'.\
+		?urn " + onto.with_prefix('type') +" 'item'.\
 		"+where+"\
 	}"
 	}
@@ -31,7 +29,7 @@ app.service( 'item', ['sparql', 'results', function( sparql, results ) {
 	}
 
 	function upload_query( urn ){
-	return query( "?urn this:upload <"+urn+">" );
+	return query( "?urn " + onto.with_prefix('src') + " <"+urn+">" );
 	}
 	
 	
@@ -45,7 +43,7 @@ app.service( 'item', ['sparql', 'results', function( sparql, results ) {
 	}
 	
 	function collection_query( urn ){
-		return query( "?urn cite:belongsTo <"+urn+">" );		
+		return query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );		
 	}
 		
 }]);

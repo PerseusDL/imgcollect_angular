@@ -1,12 +1,11 @@
-app.service( 'collection', ['sparql','results', function( sparql, results ) {
+app.service( 'collection', ['sparql','results', 'onto', function( sparql, results, onto ) {
 	return({
 		get:get,
 		search:search
 	})
 	
 	function prefix(){
-	return "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
+	  return onto.prefixes();
 	}
 	
 	
@@ -24,7 +23,7 @@ app.service( 'collection', ['sparql','results', function( sparql, results ) {
 	"+prefix()+"\
 	SELECT ?urn\
 	WHERE {\
-		?urn this:type 'collection'\
+		?urn " + onto.with_prefix('type') + " 'collection'\
 	}"
 	}
 	
@@ -43,7 +42,7 @@ app.service( 'collection', ['sparql','results', function( sparql, results ) {
 	"+prefix()+"\
 	SELECT ?urn\
 	WHERE {\
-		?urn this:type 'collection'\
+		?urn " + onto.with_prefix('type') +" 'collection'\
 		FILTER regex( str(?urn), \""+str+"\" )\
 	}"
 	}

@@ -1,7 +1,7 @@
 // new/collection
 
-appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$rootScope', 'user',
-	function( $scope, $injector, urnServ, $rootScope, user ){
+appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$rootScope', 'user', 'onto',
+	function( $scope, $injector, urnServ, $rootScope, user, onto ){
 		
 		$scope.title = "Collection New";
 		$scope.type = "collection";
@@ -50,13 +50,16 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$
 
 // collections
 
-appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$rootScope',
-	function( $scope, $injector, user, $rootScope ){
+appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$rootScope', 'onto', 
+	function( $scope, $injector, user, $rootScope, onto ){
 		
 		$scope.type = "collection";
 		$scope.title = "Collection List";
 		$scope.keys = [ 'urn','label','desc','user','time' ];
 
+		
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
 		
 		// Run after user has been authorized
 		
@@ -66,25 +69,22 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$
 			// Inherit from parent
 
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.init([label,desc]);
 		}
 		
 		// The fields you allow users to filter
 		// are set with object keys in $scope.filter
 		
 		// See lib/list_ctr.js: filter()
-		
-		$scope.filter = {
-			"rdf:label": null,
-			"rdf:description": null
-		}
-		
+		$scope.filter = {};
+		$scope.filter[label] = null;
+		$scope.filter[desc] = null;
 		
 		// Applying the filter is the same as initializing..
 		
 		$scope.apply_filter = function(){
 			$injector.invoke( ListCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.init([label,desc]);
 		}
 	}
 ]);
@@ -92,22 +92,24 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$
 
 // collection/:urn
 
-appControllers.controller( 'CollectionCtrl', [ '$scope','$injector','item', 'user', '$rootScope',
-	function( $scope, $injector, item, user, $rootScope ){
+appControllers.controller( 'CollectionCtrl', [ '$scope','$injector','item', 'user', '$rootScope', 'onto', 
+	function( $scope, $injector, item, user, $rootScope, onto ){
 		
 		$scope.title = "Collection";
-		$scope.form = {
-			'rdf:label':'',
-			'rdf:description':'',
-			'this:keyword':[]
-		};
+                var label = onto.with_prefix('label');	
+                var desc = onto.with_prefix('description');
+                var keyword = onto.with_prefix('subject');
+		$scope.form = {};
+		$scope.form[label] = '';
+		$scope.form[desc] = '';
+		$scope.form[keyword] = [];
 		
 		// Run after user has been authorized
 		
 		$rootScope.$on( user.events.ok, function(){ go() });
 		function go(){
 			$injector.invoke( EditCtrl, this, { $scope: $scope } );
-			$scope.init();
+			$scope.init([label,desc]);
 			
 			// Retrieve Collection Items
 		

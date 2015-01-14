@@ -1,7 +1,7 @@
 // Base controller
 // http://blog.omkarpatil.com/2013/02/controller-inheritance-in-angularjs.html
 
-var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $routeParams ){
+var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json, $routeParams, onto ){
 	$scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 	$scope.stdout = "";
 	$scope.context = null;
@@ -12,9 +12,12 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	$scope.src = null;
 	$scope.json = {};
 	$scope.json_string = '';
+        $scope.upload_src = onto.with_prefix('upload_src');
+        $scope.upload_ref = onto.with_prefix('upload_ref');
+        
 	$scope.save = function(){ save() }
 	$scope.change = function( key ){ change(key) }
-	$scope.init = function(){ init() }
+	$scope.init = function(edit_fields){ init(edit_fields) }
 	
 	
 	// Update JSON when form changes
@@ -42,6 +45,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	
 	function save() {
 		json.put( $scope.src[0], $scope.json ).then(
+                // TODO we should update dct:contributor and dct:modified here
+                // checking to be sure the current user isn't already listed as a 
+                // contributor before adding them
 		function( msg ){ 
 			output( msg );
 		});
@@ -92,9 +98,10 @@ var EditCtrl = ['$scope', 'json', '$routeParams', function( $scope, json, $route
 	
 	
 	// Run when controller is initialized
-	
-	function init() {
+        // @param [Array] edit_fields array of editable fields for this item
+	function init(edit_fields) {
 		src();
+          $scope.edit_text_fields = edit_fields
 	}
 	
 }];

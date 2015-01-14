@@ -12,7 +12,7 @@
 		<div id="item-upload" class="box">
 			<h3>upload</h3>
 			<ul class="items">
-				<li><a href="#/upload/{{ json['this:upload']['@id'] }}">{{ json['this:upload']['@id'] }}</a></li>
+				<li><a href="#/upload/{{ json[upload_ref]['@id'] }}">{{ json[upload_ref]['@id'] }}</a></li>
 			</ul>
 		</div>
 	
@@ -31,33 +31,14 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="columns small-12">
-		
-		<!-- Annotations -->
-		<div id="item-annotation" class="box">
-			<h3>annotation</h3>
-			<ul class="items">
-				<li ng-repeat="item in annotations">
-					<a href="#/annotation/{{ item.urn }}">{{ item.urn }}</a>
-				</li>
-			</ul>
-			<!-- Add Annotation -->
-			<a class="button secondary" href="#/new/annotation/{{ urn }}">add annotation</a>
-		</div>
-		
-	</div>
-</div>
-
 <!-- Item -->
 <div class="row">
 	<div class="columns small-12">
 		<!-- Metadata -->
 		<div id="item-form" class="box">
 			<h3>metadata</h3>
-			<form>
-				<input type="text" ng-change="change('rdf:label')" ng-model="form['rdf:label']" placeholder="label" />
-				<input type="text" ng-change="change('rdf:description')" ng-model="form['rdf:description']" placeholder="description" />
+			<form> 
+				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
 				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
 			</form>
 		</div>

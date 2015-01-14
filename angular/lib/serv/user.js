@@ -20,7 +20,7 @@ app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
 			return ( data != null ) ? data.uri.dirname() : null 
 		},
 		id: function(){ 
-			return ( data != null ) ? data.uri.basename() : null 
+			return ( data != null ) ? data.uri : null 
 		},
 		url: function(){ 
 			return ( data != null ) ? data.uri : null 

@@ -3,8 +3,8 @@ var appControllers = angular.module('appControllers',[]);
 
 // home
 
-appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope',
-	function( $scope, $injector, user, $rootScope ){
+appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope','onto',
+	function( $scope, $injector, user, $rootScope, onto ){
 		
 		$scope.title = "Home";
 		$scope.type = "home";
@@ -21,22 +21,28 @@ appControllers.controller( 'HomeCtrl', ['$scope','$injector','user','$rootScope'
 			go();
 			$scope.apply_filter();
 		});
-		
+	
+
 		function go(){
+                        var creator = onto.with_ns('creator');
+                        var created = onto.with_ns('created');
+                        var type = onto.with_ns('type');
+                        var label = onto.with_ns('label');
+                        var description = onto.with_ns('description');
 			$scope.number = "\
 			SELECT count( distinct ?urn )\
 			WHERE {\
-				?urn <"+user.dir()+"> <"+user.url()+">\
+				?urn <" + creator + "> <"+user.url()+">\
 			}";
 			
 			$scope.select = "\
 			SELECT ?urn ?type ?label ?desc ?time\
 			WHERE {\
-				?urn <"+user.dir()+"> <"+user.url()+">\
-				OPTIONAL { ?urn this:type ?type . }\
-				OPTIONAL { ?urn rdf:label ?label . }\
-				OPTIONAL { ?urn rdf:description ?desc . }\
-				OPTIONAL { ?urn xml:dateTime ?time . }\
+				?urn <"+ creator +"> <"+user.url()+">\
+				OPTIONAL { ?urn <" + type +"> ?type . }\
+				OPTIONAL { ?urn <" + label +"> ?label . }\
+				OPTIONAL { ?urn <" + description +">?desc . }\
+				OPTIONAL { ?urn <" + created + "> ?time . }\
 			}";
 		}
 		
@@ -56,26 +62,27 @@ appControllers.controller( 'LoginCtrl', ['$scope', 'user',
 
 // resize/:urn
 
-appControllers.controller( 'ResizeCtrl', ['$scope','$injector','user','$rootScope',
-	function( $scope, $injector, user, $rootScope ){
+appControllers.controller( 'ResizeCtrl', ['$scope','$injector','user','$rootScope','onto',
+	function( $scope, $injector, user, $rootScope, onto ){
 		
 		// Start once user event fires 
 		
 		$rootScope.$on( user.events.ok, function(){ go() });
 		
 		function go(){
-		
+                        var label = onto.with_prefix('label');
+                        var desc = onto.with_prefix('description');
+                        var keyword = onto.with_prefix('subject');
 			$scope.title = "Resize";
-			$scope.form = {
-				'rdf:label':"",
-				'rdf:description':"",
-				'this:keyword':[]
-			};
+			$scope.form = {};
+			$scope.form[label] = "";
+			$scope.form[desc] = "";
+			$scope.form[subject] = [];
 			$injector.invoke( EditCtrl, this, { $scope: $scope } );
 			
 			$scope.run = function() {
 				$scope.uploads = [];
-				$scope.uploads[0] = { urn: $scope.json['this:upload']['@id'] };
+				$scope.uploads[0] = { urn: $scope.json[onto.with_prefix('src')]['@id'] };
 			}
 			
 			$scope.init();
