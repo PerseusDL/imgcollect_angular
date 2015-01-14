@@ -1,10 +1,9 @@
-var NewCtrl = ['$scope','urnServ','json', 'stdout','user', 
-function( $scope, urnServ, json, stdout, user ){
+var NewCtrl = ['$scope','urnServ','json', 'stdout','user', 'onto',
+function( $scope, urnServ, json, stdout, user, onto ){
   
   // Update data
   
   $scope.json = {};
-  $scope.form = {};
   $scope.ready = false;
   
   // Build CITE URN 
@@ -16,6 +15,7 @@ function( $scope, urnServ, json, stdout, user ){
     $scope.urn = $scope.base_urn+$scope.clean_id()
   }
   $scope.clean_id = function(){ return $scope.id.alphaOnly().toLowerCase() };
+  $scope.init = function(edit_fields){ init(edit_fields) }
   
   // Output messages
   
@@ -31,7 +31,7 @@ function( $scope, urnServ, json, stdout, user ){
   $scope.claim = function( urn ){
     urnServ.claim( $scope.data_path( urn ), urn ).then(
       function( data ){ 
-         stdout.log( data );
+        stdout.log( data );
         default_json();
       }
     );
@@ -61,8 +61,10 @@ function( $scope, urnServ, json, stdout, user ){
   
   var touch = function(){
     $scope.json['@id'] = $scope.urn;
-    $scope.json['user']['@id'] = 'user:'+user.id();
-    $scope.json['dateTime'] = ( new TimeStamp ).xsd();
+    var creator = onto.with_prefix('creator');
+    var created = onto.with_prefix('created');
+    $scope.json[creator]['@id'] = user.id();
+    $scope.json[created] = ( new TimeStamp ).xsd();
   }
   
   
@@ -75,5 +77,11 @@ function( $scope, urnServ, json, stdout, user ){
       stdout.log( "Default JSON loaded from: "+$scope.src );
       save();
     });
+  }
+
+  // Run when controller is initialized
+  // @param [Array] edit_fields array of editable fields for this item
+  function init(edit_fields) {
+    $scope.edit_text_fields = edit_fields;
   }
 }];
