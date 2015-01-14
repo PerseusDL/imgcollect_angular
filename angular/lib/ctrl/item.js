@@ -35,17 +35,19 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector','onto',
 appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation', 'onto',
   function( $scope, $injector, annotation, onto ){
     $scope.title = "Item";
-                var label = onto.with_prefix('label');  
-                var desc = onto.with_prefix('description');
-                var rep = onto.with_prefix('represents');
-                var keyword = onto.with_prefix('subject');
+    var label = onto.with_prefix('label');  
+    var desc = onto.with_prefix('description');
+    var rep = onto.with_prefix('represents');
+    var license = onto.with_prefix('rights');
+    var keyword = onto.with_prefix('subject');
     $scope.form = {};
-                $scope.form[label] = "";
-                $scope.form[desc] = "";
-                $scope.form[rep] = "";
-                $scope.form[keyword] = [];
+    $scope.form[label] = "";
+    $scope.form[desc] = "";
+    $scope.form[rep] = "";
+    $scope.form[license] = "";
+    $scope.form[keyword] = [];
     $injector.invoke( EditCtrl, this, { $scope: $scope } );
-    $scope.init([label,desc,rep]);
+    $scope.init([label,desc,rep,license]);
     
     // Collection URN
     
@@ -143,15 +145,19 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
     // Set basic values
   
     var touch = function(){
-                  var src = onto.with_prefix('src');
-                  var creator = onto.with_prefix('creator');
-                  var memberOf = onto.with_prefix('memberOf');
-                  var created = onto.with_prefix('created');
+      var src = onto.with_prefix('src');
+      var creator = onto.with_prefix('creator');
+      var memberOf = onto.with_prefix('memberOf');
+      var created = onto.with_prefix('created');
+      var license = onto.with_prefix('rights');
       $scope.json['@id'] = $scope.urn;
       $scope.json[src]['@id'] = $scope.upload_urn;
       $scope.json[creator]['@id'] = user.id();
       $scope.json[memberOf]['@id'] = $scope.collection;
       $scope.json[created] = ( new TimeStamp ).xsd();
+      // TODO this is a hack -- we want to read default values
+      // and data types from the config
+      $scope.json[license]['@id'] = onto.default_value('rights');
     }
   
   
