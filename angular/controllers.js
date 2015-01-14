@@ -70,9 +70,9 @@ appControllers.controller( 'ResizeCtrl', ['$scope','$injector','user','$rootScop
     $rootScope.$on( user.events.ok, function(){ go() });
     
     function go(){
-                        var label = onto.with_prefix('label');
-                        var desc = onto.with_prefix('description');
-                        var keyword = onto.with_prefix('subject');
+      var label = onto.with_prefix('label');
+      var desc = onto.with_prefix('description');
+      var keyword = onto.with_prefix('subject');
       $scope.title = "Resize";
       $scope.form = {};
       $scope.form[label] = "";
