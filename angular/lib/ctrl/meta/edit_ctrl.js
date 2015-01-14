@@ -12,8 +12,7 @@ var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json
   $scope.src = null;
   $scope.json = {};
   $scope.json_string = '';
-        $scope.upload_src = onto.with_prefix('upload_src');
-        $scope.upload_ref = onto.with_prefix('upload_ref');
+  $scope.upload_ref = onto.with_prefix('src');
         
   $scope.save = function(){ save() }
   $scope.change = function( key ){ change(key) }
@@ -24,7 +23,11 @@ var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json
   
   function change( key ) {
     if ( key in $scope.json ) {
-      $scope.json[key] = $scope.form[key];
+      if (angular.isDefined($scope.json[key]['@id'])) {
+        $scope.json[key]['@id'] = $scope.form[key];
+      } else {
+        $scope.json[key] = $scope.form[key];
+      }
       json_to_str( $scope.json );
     }
   }
@@ -35,7 +38,11 @@ var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json
   function form() {
     for ( var key in $scope.json ) {
       if ( key in $scope.form ) {
-        $scope.form[key] = $scope.json[key];
+        if (angular.isDefined($scope.json[key]['@id'])) {
+          $scope.form[key] = $scope.json[key]['@id'];
+        } else {
+          $scope.form[key] = $scope.json[key];
+        }
       }
     }
   }
@@ -98,10 +105,10 @@ var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json
   
   
   // Run when controller is initialized
-        // @param [Array] edit_fields array of editable fields for this item
+  // @param [Array] edit_fields array of editable fields for this item
   function init(edit_fields) {
     src();
-          $scope.edit_text_fields = edit_fields
+    $scope.edit_text_fields = edit_fields;
   }
   
 }];
