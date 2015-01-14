@@ -1,7 +1,7 @@
 app.service( 'onto', [ 
   'config',
   function(config) {
-    var self = this;	
+    var self = this;  
 
     function precheck(a_term) {
       return angular.isDefined(config.ontology[a_term]);
