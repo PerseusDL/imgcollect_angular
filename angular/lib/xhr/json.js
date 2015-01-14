@@ -102,7 +102,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
   
   function tack( key ){
     var tacks = config.xhr.json.tack_on;
-    if ( tacks.indexOf( key ) == -1 ){
+    if ( ! angular.isDefined(tacks) || tacks.indexOf( key ) == -1 ){
       return false;
     }
     return true;
