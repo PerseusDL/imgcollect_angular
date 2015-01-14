@@ -6,6 +6,11 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$
     $scope.title = "Collection New";
     $scope.type = "collection";
     $scope.show_uniq = true;
+    var label = onto.with_prefix('label');  
+    var desc = onto.with_prefix('description');
+    $scope.form = {};
+    $scope.form[label] = onto.default_value('label');
+    $scope.form[desc] = onto.default_value('description');
     
     
     // Run after user has been authorized
@@ -16,6 +21,7 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$
       // Inherit from parent
 
       $injector.invoke( NewCtrl, this, { $scope: $scope } );
+      $scope.init([label,desc]);
     }
 
 
@@ -58,8 +64,8 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$
     $scope.keys = [ 'urn','label','desc','user','time' ];
 
     
-                var label = onto.with_prefix('label');  
-                var desc = onto.with_prefix('description');
+    var label = onto.with_prefix('label');  
+    var desc = onto.with_prefix('description');
     
     // Run after user has been authorized
     
