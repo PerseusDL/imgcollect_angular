@@ -12,19 +12,22 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector','onto',
     //
     // See lib/list_ctr.js: filter()
   
-                var label = onto.with_prefix('label');  
-                var desc = onto.with_prefix('description');
-    $scope.init([label,desc]);
+    var label = onto.with_prefix('label');  
+    var desc = onto.with_prefix('description');
+    var rep = onto.with_prefix('represents');
+    $scope.init([label,desc,rep]);
     $scope.filter = { };
     $scope.filter[label] = null;
     $scope.filter[desc] = null;
+    $scope.filter[rep] = null;
     
     
     // Applying the filter is the same as initializing..
     
     $scope.apply_filter = function(){
+      debugger;
       $injector.invoke( ListCtrl, this, { $scope: $scope } );
-      $scope.init([label,desc]);
+      $scope.init([label,desc,rep]);
     }
   }
 ]);

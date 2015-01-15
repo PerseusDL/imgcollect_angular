@@ -27,14 +27,19 @@ var ListCtrl =   ['$scope', 'sparql', 'user', '$routeParams', 'onto', function( 
   // that will populate $scope.json.
   // See optionals() and handles()
 
-        var label = onto.with_prefix('label');
-        var desc = onto.with_prefix('description');
-        var created = onto.with_prefix('created');
-  
+  var label = onto.with_prefix('label');
+  var desc = onto.with_prefix('description');
+  var created = onto.with_prefix('created');
+  var represents = onto.with_prefix('represents');
+ 
+  // TODO these fields should be driven from the config
+  // and the query fields independent from how they are
+  // set on the filter
   $scope.items = {};
-        $scope.items[label] = "?label";
-        $scope.items[desc] = "?desc";
-        $scope.items[created] = "?time";
+  $scope.items[label] = "?label";
+  $scope.items[desc] = "?desc";
+  $scope.items[created] = "?time";
+  $scope.items[represents] = "?rep";
 
   $scope.items["<"+onto.with_ns('creator')+">"] = "?user";
   
