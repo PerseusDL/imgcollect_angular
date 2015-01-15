@@ -104,6 +104,7 @@ appControllers.controller( 'UserCtrl', ['$scope','$injector','user','$rootScope'
     function go(){
       $scope.only = user.only;
       $scope.user = user.id();
+      $scope.username = user.name();
     }
     
     $scope.switch = function( bool ){
