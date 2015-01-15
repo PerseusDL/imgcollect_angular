@@ -1,5 +1,5 @@
 <div id="user-box" ng-controller="UserCtrl" ng-switch on="only">
-	<h3 class="name">{{ user }}</h3>
+	<h3 class="name">{{ username }}</h3>
 	<input type="submit" ng-switch-when="false" ng-click="switch(true)" class="button secondary tiny" value="off" />
 	<input type="submit" ng-switch-when="true" ng-click="switch(false)" class="button secondary tiny" value="on" />
 </div>
