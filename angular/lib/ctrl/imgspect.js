@@ -1,9 +1,13 @@
 // new/annotation/:urn
 
-appControllers.controller( 'imgspect', ['$scope','$injector','$routeParams','json','annotation','onto',
+appControllers.controller( 'imgspect', [
+'$scope',
+'$injector',
+'$routeParams',
+'json',
+'annotation',
+'onto',
 function( $scope, $injector, $routeParams, json, annotation, onto ){
-  
-  
   
   // SELECTORS
   
@@ -21,12 +25,11 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   
   // Hi-Lite
 
-    var resize = $( '.imgspect.frame .canvas .lite.temp .resize' );
-    var add = $( '.imgspect.frame .canvas .lite.temp .add' );
-    var cancel = $( '.imgspect.frame .canvas .lite.temp .cancel' );
+  var resize = $( '.imgspect.frame .canvas .lite.temp .resize' );
+  var add = $( '.imgspect.frame .canvas .lite.temp .add' );
+  var cancel = $( '.imgspect.frame .canvas .lite.temp .cancel' );
   var nudge = $( '.imgspect.frame .canvas .lite.temp .nudge' );
-  
-  
+
   
   // CONFIGURATION
   

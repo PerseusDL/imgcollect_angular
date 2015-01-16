@@ -1,4 +1,9 @@
-app.service( 'item', ['sparql', 'results', 'onto', function( sparql, results, onto ) {
+app.service( 'item', [
+'sparql',
+'results',
+'onto',
+function( sparql, results, onto ) {
+	
   return({
     by_upload:by_upload,
     by_collection:by_collection

@@ -1,6 +1,11 @@
 // annotations
 
-appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector', 'user', '$rootScope', 'onto',
+appControllers.controller( 'AnnotationListCtrl', [
+  '$scope',
+  '$injector',
+  'user',
+  '$rootScope',
+  'onto',
   function( $scope, $injector, user, $rootScope, onto ){
     
     // Start once user event fires 
@@ -38,7 +43,13 @@ appControllers.controller( 'AnnotationListCtrl', ['$scope','$injector', 'user', 
 
 // annotation/:urn
 
-appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation', 'user', '$rootScope', 'onto', 
+appControllers.controller( 'AnnotationCtrl', [
+  '$scope',
+  '$injector',
+  'annotation',
+  'user',
+  '$rootScope',
+  'onto', 
   function( $scope, $injector, annotation, user, $rootScope, onto ){
     
     // Start once user event fires 
@@ -46,9 +57,9 @@ appControllers.controller( 'AnnotationCtrl', ['$scope','$injector','annotation',
     $rootScope.$on( user.events.ok, function(){ go() });
     
     $scope.title = "Annotation";
-                var label = onto.with_prefix('label');  
-                var desc = onto.with_prefix('desc');
-                var keyword = onto.with_prefix('subject');
+	var label = onto.with_prefix('label');  
+	var desc = onto.with_prefix('desc');
+	var keyword = onto.with_prefix('subject');
     $scope.form = {};
     $scope.form[label] = "";
     $scope.form[desc] = "";

@@ -1,4 +1,5 @@
-app.service( 'results', [ function( sparql ) {
+app.service( 'results', [ 
+function( sparql ) {
   
   return({
     list:list,
@@ -51,5 +52,4 @@ app.service( 'results', [ function( sparql ) {
     return out;
   }
 
-  
 }]);

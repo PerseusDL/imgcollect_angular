@@ -1,4 +1,9 @@
-app.service( 'collection', ['sparql','results', 'onto', function( sparql, results, onto ) {
+app.service( 'collection', [
+'sparql',
+'results',
+'onto', 
+function( sparql, results, onto ) {
+	
   return({
     get:get,
     search:search

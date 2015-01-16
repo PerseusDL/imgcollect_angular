@@ -1,4 +1,9 @@
-app.service( 'resize', ['sparql','results', 'onto', function( sparql, results, onto ) {
+app.service( 'resize', [
+'sparql',
+'results',
+'onto', 
+function( sparql, results, onto ) {
+	
   return ({
     get:get
   })

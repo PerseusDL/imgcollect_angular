@@ -1,6 +1,15 @@
 // new/upload
 
-appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','stdout','user','$upload','config','onto',
+appControllers.controller( 'UploadNew', [
+  '$scope',
+  '$injector',
+  'urnServ',
+  'json',
+  'stdout',
+  'user',
+  '$upload',
+  'config',
+  'onto',
   function( $scope, $injector, urnServ, json, stdout, user, $upload, config, onto ){
     $scope.title = "Upload New";
     $scope.stdout = "";
@@ -101,8 +110,10 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
         json_to_str( $scope.json );
         stdout.log( "Default JSON loaded from: "+$scope.src );
         $scope.ready = true;
+		
         // TODO we should loop through the ontology to see what has defaults 
         // rather than hard-coding the fields we want to set defaults for
+		
         set_form_default(rights,'rights');
       });
     }
@@ -131,23 +142,27 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
        });
     }
   
-                // TODO externalize exif ontology  
+	// TODO externalize exif ontology
+	
     function exif_json( data ){
       var exif = data.data.exif;
       for ( var key in exif ) {
         $scope.json[ 'exif:'+key.toCamel() ] = exif[key];
       }
     }
-    
-    
-    // Copy Image
+	
   }
 ]);
 
 
 // uploads
 
-appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope','user','onto',
+appControllers.controller( 'UploadListCtrl', [
+  '$scope',
+  '$injector',
+  '$rootScope',
+  'user',
+  'onto',
   function( $scope, $injector, $rootScope, user, onto ){
     $scope.type = "upload";
     $scope.title = "Upload List";
@@ -183,13 +198,20 @@ appControllers.controller( 'UploadListCtrl', ['$scope','$injector','$rootScope',
 
 // upload/:urn
 
-appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item', 'onto',
+appControllers.controller( 'UploadCtrl', [
+  '$scope',
+  '$injector',
+  'resize',
+  'item',
+  'onto',
   function( $scope, $injector, resize, item, onto ){
     $scope.title = "Upload";
+	
     var label = onto.with_prefix('label');  
     var desc = onto.with_prefix('description');
     var keyword = onto.with_prefix('subject');
     var rights = onto.with_prefix('rights');
+	
     $scope.form = {};
     $scope.form[label] = null;
     $scope.form[desc] = null;

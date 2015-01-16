@@ -1,4 +1,9 @@
-app.service( 'upload', ['sparql', 'results', 'onto', function( sparql, results, onto ){
+app.service( 'upload', [
+'sparql',
+'results',
+'onto',
+function( sparql, results, onto ){
+	
   return({
     by_annotation:by_annotation
   })

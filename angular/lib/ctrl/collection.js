@@ -1,6 +1,12 @@
 // new/collection
 
-appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$rootScope', 'user', 'onto',
+appControllers.controller( 'CollectionNew', [
+  '$scope',
+  '$injector', 
+  'urnServ', 
+  '$rootScope',
+  'user', 
+  'onto',
   function( $scope, $injector, urnServ, $rootScope, user, onto ){
     
     $scope.title = "Collection New";
@@ -56,7 +62,12 @@ appControllers.controller( 'CollectionNew', ['$scope','$injector', 'urnServ', '$
 
 // collections
 
-appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$rootScope', 'onto', 
+appControllers.controller( 'CollectionListCtrl', [
+  '$scope',
+  '$injector',
+  'user',
+  '$rootScope',
+  'onto', 
   function( $scope, $injector, user, $rootScope, onto ){
     
     $scope.type = "collection";
@@ -98,13 +109,21 @@ appControllers.controller( 'CollectionListCtrl', ['$scope','$injector','user','$
 
 // collection/:urn
 
-appControllers.controller( 'CollectionCtrl', [ '$scope','$injector','item', 'user', '$rootScope', 'onto', 
+appControllers.controller( 'CollectionCtrl', [ 
+  '$scope',
+  '$injector',
+  'item',
+  'user',
+  '$rootScope',
+  'onto', 
   function( $scope, $injector, item, user, $rootScope, onto ){
     
     $scope.title = "Collection";
-                var label = onto.with_prefix('label');  
-                var desc = onto.with_prefix('description');
-                var keyword = onto.with_prefix('subject');
+	
+	var label = onto.with_prefix('label');  
+	var desc = onto.with_prefix('description');
+	var keyword = onto.with_prefix('subject');
+	
     $scope.form = {};
     $scope.form[label] = '';
     $scope.form[desc] = '';

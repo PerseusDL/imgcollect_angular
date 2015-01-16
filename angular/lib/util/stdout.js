@@ -1,4 +1,5 @@
-app.service( 'stdout', [ function() {
+app.service( 'stdout', [ 
+function() {
   
   this.msg = ">>\n";
   

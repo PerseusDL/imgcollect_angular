@@ -1,6 +1,9 @@
 // items
 
-appControllers.controller( 'ItemListCtrl', ['$scope','$injector','onto',
+appControllers.controller( 'ItemListCtrl', [
+  '$scope',
+  '$injector',
+  'onto',
   function( $scope, $injector, onto ){
     $scope.type = "item";  
     $scope.title = "Item List";
@@ -25,7 +28,6 @@ appControllers.controller( 'ItemListCtrl', ['$scope','$injector','onto',
     // Applying the filter is the same as initializing..
     
     $scope.apply_filter = function(){
-      debugger;
       $injector.invoke( ListCtrl, this, { $scope: $scope } );
       $scope.init([label,desc,rep]);
     }
@@ -71,8 +73,17 @@ appControllers.controller( 'ItemCtrl', ['$scope','$injector','annotation', 'onto
 
 // new/item/:urn
 
-appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collection',
-  '$location','json','stdout','user','$injector','onto',
+appControllers.controller( 'ItemNew', [
+  '$scope',
+  'urnServ',
+  '$routeParams',
+  'collection',
+  '$location',
+  'json',
+  'stdout',
+  'user',
+  '$injector',
+  'onto',
   function( $scope, urnServ, $routeParams, collection, $location, json, stdout, user, $injector, onto ){
     $scope.upload_urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
     $scope.type = "item";
@@ -134,33 +145,33 @@ appControllers.controller( 'ItemNew', ['$scope','urnServ','$routeParams','collec
     var save = function(){
       touch();
       json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
-      function( data ){
-        
-        // Congratulations!
-        // You've added an upload to a collection
-        // Go to Edit item view
-        
-        $location.path('item/'+$scope.urn );  
-      });
+      	function( data ){
+      	  
+      	  // Congratulations!
+      	  // You've added an upload to a collection
+      	  // Go to Edit item view
+      	  
+      	  $location.path('item/'+$scope.urn );  
+      	});
     }
   
   
     // Set basic values
   
     var touch = function(){
-      var src = onto.with_prefix('src');
-      var creator = onto.with_prefix('creator');
-      var memberOf = onto.with_prefix('memberOf');
-      var created = onto.with_prefix('created');
-      var license = onto.with_prefix('rights');
-      $scope.json['@id'] = $scope.urn;
-      $scope.json[src]['@id'] = $scope.upload_urn;
-      $scope.json[creator]['@id'] = user.id();
-      $scope.json[memberOf]['@id'] = $scope.collection;
-      $scope.json[created] = ( new TimeStamp ).xsd();
-      // TODO this is a hack -- we want to read default values
-      // and data types from the config
-      $scope.json[license]['@id'] = onto.default_value('rights');
+	  var src = onto.with_prefix('src');
+	  var creator = onto.with_prefix('creator');
+	  var memberOf = onto.with_prefix('memberOf');
+	  var created = onto.with_prefix('created');
+	  var license = onto.with_prefix('rights');
+	  $scope.json['@id'] = $scope.urn;
+	  $scope.json[src]['@id'] = $scope.upload_urn;
+	  $scope.json[creator]['@id'] = user.id();
+	  $scope.json[memberOf]['@id'] = $scope.collection;
+	  $scope.json[created] = ( new TimeStamp ).xsd();
+	  // TODO this is a hack -- we want to read default values
+	  // and data types from the config
+	  $scope.json[license]['@id'] = onto.default_value('rights');
     }
   
   

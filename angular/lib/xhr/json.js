@@ -1,4 +1,9 @@
-app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, config, user ) {
+app.service( 'json', [
+'$http',
+'$q',
+'config',
+'user', 
+function( $http, $q, config, user ) {
   
   // Avoid typos with constants
   
