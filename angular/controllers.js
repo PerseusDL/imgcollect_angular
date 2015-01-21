@@ -138,3 +138,52 @@ function( $scope, stdout ) {
     $scope.msg = stdout.msg;
   });
 }]);
+
+
+// View
+
+appControllers.controller( 'ViewCtrl', [
+'$scope',
+'$routeParams',
+'json',
+	function( $scope, $routeParams, json ){
+		
+		// Get the URN
+		
+	    $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+		
+		// Get the coords
+		
+		var urn = $scope.urn.split("@");
+		$scope.coords = urn[1].split(',');
+		get_src( urn )
+		
+		// What's the src JSON?
+		
+		function get_src( urn ){
+			json.urn( urn[0] ).then(
+				function( data ){
+					get_json( data['src'] )
+				}
+			);
+		}
+		
+		// Get the src JSON
+		
+		function get_json( src ){
+			json.get( src ).then(
+				function( data ){
+					var type = data['dct:type']
+					switch( type ){
+						case 'upload':
+							$scope.src = data['dct:references']
+						break;
+						case 'item':
+							get_src( data['dct:references'] )
+						break;
+					}
+				}
+			)
+		}
+	}
+]);

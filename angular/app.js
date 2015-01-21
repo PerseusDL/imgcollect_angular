@@ -127,6 +127,14 @@ function($routeProvider) {
     redirectTo: '/home'
   });
   
+  // view
+  
+  $routeProvider.
+  when('/view/:urn', {
+	  templateUrl: 'partials/view.html',
+	  controller: 'ViewCtrl'
+  })
+  
 }])
 .run([
 '$rootScope',

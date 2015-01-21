@@ -101,7 +101,7 @@ function(){
 appDirectives.directive('imgBit', 
 function(){
   return {
-    link: function( scope,elem,attr ){
+    link: function( scope, elem, attr ){
 		
 		elem.bind('load', 
 		function(e){
