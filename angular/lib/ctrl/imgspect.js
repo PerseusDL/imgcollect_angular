@@ -140,16 +140,16 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   
   $scope.add = function(){
     
-    var fresh = {
-      'rdf:label': $scope.temp_label,
-      'rdf:description': $scope.temp_desc,
-      'this:roi_height': $scope.temp_lite.h,
-      'this:roi_width': $scope.temp_lite.w,
-      'this:roi_x': $scope.temp_lite.x,
-      'this:roi_y': $scope.temp_lite.y
-    };
-    var annots = annotations();
-    annots.push( fresh );
+    //var fresh = {
+    //  'rdf:label': $scope.temp_label,
+    //  'rdf:description': $scope.temp_desc,
+    //  'this:roi_height': $scope.temp_lite.h,
+    //  'this:roi_width': $scope.temp_lite.w,
+    //  'this:roi_x': $scope.temp_lite.x,
+    //  'this:roi_y': $scope.temp_lite.y
+    //};
+    //var annots = annotations();
+    //annots.push( fresh );
   }
   
   // Save new annotations to database
@@ -204,9 +204,10 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   
   json.urn( $scope.urn ).then( function( data ){
     var src = data.src[0];
+    var srckey = onto.with_prefix('src');
     json.get( src ).then( function( data ){
       $scope.json.item = data;
-      upload_json( data['this:upload']['@id'] );
+      upload_json( data[srckey]['@id'] );
     });
   });
   
@@ -215,6 +216,7 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   
   function upload_json( urn ){
     json.urn( urn ).then( function( data ){
+      console.log(data);
       var src = data.src[0];
       json.get( src ).then( function( data ){
         $scope.json.upload = data;

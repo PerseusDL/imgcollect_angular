@@ -8,15 +8,17 @@ appControllers.controller( 'UploadNew', ['$scope','$injector','urnServ','json','
     var desc = onto.with_prefix('description');
     var src = onto.with_prefix('src');
     var rights = onto.with_prefix('rights');
+    var owner = onto.with_prefix('owner');
     $scope.form = {};
     $scope.form[label] = "";
     $scope.form[desc] = "";
+    $scope.form[owner] = "";
     $scope.form[rights] = "";
     $scope.form[src] = "";
     $scope.src_field = src;
     $scope.type = 'upload';
     $injector.invoke( NewCtrl, this, { $scope: $scope } );
-    $scope.init([label,desc,rights]);
+    $scope.init([label,desc,owner,rights]);
     $scope.change = function(key){ change(key) }
     
     
@@ -190,14 +192,16 @@ appControllers.controller( 'UploadCtrl', ['$scope','$injector','resize','item', 
     var desc = onto.with_prefix('description');
     var keyword = onto.with_prefix('subject');
     var rights = onto.with_prefix('rights');
+    var owner = onto.with_prefix('owner');
     $scope.form = {};
     $scope.form[label] = null;
     $scope.form[desc] = null;
+    $scope.form[owner] = null;
     $scope.form[rights] = onto.default_value('rights');
     $scope.form[keyword] = [];
     
     $injector.invoke( EditCtrl, this, { $scope: $scope } );
-    $scope.init([label,desc,rights]);
+    $scope.init([label,desc,owner,rights]);
     
     // Resize
     

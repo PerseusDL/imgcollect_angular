@@ -72,6 +72,11 @@ app.service( 'config', [ 'host', function( host ){
                      ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
                      prefix: "this"
                   },
+                  owner: {
+                     term: "publisher",
+                     ns: "http://purl.org/dc/terms/",
+                     prefix: "dct"
+                  },
                   creator: {
                      term: "creator",
                      ns: "http://purl.org/dc/terms/",
