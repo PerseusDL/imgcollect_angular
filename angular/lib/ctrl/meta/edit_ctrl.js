@@ -52,9 +52,9 @@ var EditCtrl = ['$scope', 'json', '$routeParams', 'onto', function( $scope, json
   
   function save() {
     json.put( $scope.src[0], $scope.json ).then(
-                // TODO we should update dct:contributor and dct:modified here
-                // checking to be sure the current user isn't already listed as a 
-                // contributor before adding them
+    // TODO we should update dct:contributor and dct:modified here
+    // checking to be sure the current user isn't already listed as a 
+    // contributor before adding them
     function( msg ){ 
       output( msg );
     });
