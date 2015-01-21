@@ -1,9 +1,4 @@
-app.service( 'json', [
-'$http',
-'$q',
-'config',
-'user', 
-function( $http, $q, config, user ) {
+app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, config, user ) {
   
   // Avoid typos with constants
   
@@ -138,7 +133,7 @@ function( $http, $q, config, user ) {
   // Properly resolve relative URLs
   
   function rel( url ){
-    if ( url.indexOf('http://') == 0 ){
+    if ( url.indexOf('http') == 0 ){
       return url;
     }
     return config.xhr.json.url+'/data/'+url;
