@@ -61,6 +61,16 @@ pre {
 textarea {
   min-height:15rem;
 }
+h1 {
+  word-break:break-all;
+}
+.clearfix {
+  clear:both;
+}
+.padder{
+  width:100%;
+  height:1rem;
+}
 
 /* Common */
 .button-group > li .button {
@@ -148,20 +158,10 @@ img.preview {
   margin:0;
 }
 
-/* img-bit */
-.img-bit {
-  display:inline-block;
-}
-.img-bit .frame {
-  position:relative;
-  overflow:hidden;
-}
-.img-bit .frame img {
-  position:absolute;
-  display:block;
-  vertical-align:baseline;
-  max-width:none;
-  max-height:none;
+/* img-loc */
+.img-loc .lite {
+	opacity: 0.8;
+	background-color:$yellow;
 }
 
 /* img-spect */
