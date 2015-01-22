@@ -18,7 +18,6 @@ appControllers.controller( 'CollectionNew', [
     $scope.form[label] = onto.default_value('label');
     $scope.form[desc] = onto.default_value('description');
     
-    
     // Run after user has been authorized
     
     $rootScope.$on( user.events.ok, function(){ go() });
@@ -120,21 +119,25 @@ appControllers.controller( 'CollectionCtrl', [
     
     $scope.title = "Collection";
 	
-	var label = onto.with_prefix('label');  
-	var desc = onto.with_prefix('description');
-	var keyword = onto.with_prefix('subject');
+    var label = onto.with_prefix('label');  
+    var desc = onto.with_prefix('description');
+    var keyword = onto.with_prefix('subject');
+    var imgViewer = onto.with_prefix('imgViewer');
+    var imgServer = onto.with_prefix('imgServer');
 	
     $scope.form = {};
     $scope.form[label] = '';
     $scope.form[desc] = '';
     $scope.form[keyword] = [];
+    $scope.form[imgServer] = '';
+    $scope.form[imgViewer] = '';
     
     // Run after user has been authorized
     
     $rootScope.$on( user.events.ok, function(){ go() });
     function go(){
       $injector.invoke( EditCtrl, this, { $scope: $scope } );
-      $scope.init([label,desc]);
+      $scope.init([label,desc,imgServer,imgViewer]);
       
       // Retrieve Collection Items
     

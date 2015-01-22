@@ -47,6 +47,16 @@ app.service( 'config', [ 'host', function( host ){
     },
 
                 ontology: {
+                  imgViewer: {
+                    term: "imageViewer",
+                    ns: "http://data.perseus.org/rdfvocab/cite/",
+                    prefix: "citex"
+                  },
+                  imgServer: {
+                    term: "imageServer",
+                    ns: "http://data.perseus.org/rdfvocab/cite/",
+                    prefix: "citex"
+                  },
                   label:  {
                      term: "label",
                      ns: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
