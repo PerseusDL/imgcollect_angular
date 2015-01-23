@@ -31,9 +31,9 @@
 		
 		<div ng-hide="show_disk" id="img-url" class="box">
 			<input type="text" 
-			       ng-change="change('this:src')" 
-				   ng-model="form['this:src']" 
-				   placeholder="URL" 
+			       ng-change="change(src_field)" 
+				   ng-model="form[src_field]" 
+				   placeholder="src_field" 
 			/>
 		</div>
 		
@@ -48,16 +48,7 @@
 			
 			<!-- Change metadata -->
 			<form ng-show="ready">
-				<input type="text" 
-					   ng-change="change('rdf:label')" 
-					   ng-model="form['rdf:label']" 
-					   placeholder="label" 
-				/>
-				<input type="text" 
-					   ng-change="change('rdf:description')"
-					   ng-model="form['rdf:description']" 
-					   placeholder="description" 
-				/>
+				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
 				<input class="button secondary" 
 					   type="submit" 
 					   value="save" 

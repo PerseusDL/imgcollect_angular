@@ -31,16 +31,7 @@
 		<div id="annotation-form" class="box">
 			<h3>metadata</h3>
 			<form>
-				<input type="text" 
-					   ng-change="change('rdf:label')" 
-					   ng-model="form['rdf:label']" 
-					   placeholder="label" 
-				/>
-				<input type="text" 
-					   ng-change="change('rdf:description')" 
-					   ng-model="form['rdf:description']" 
-					   placeholder="description" 
-				/>
+				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
 				<input class="button secondary" 
 					   type="submit" 
 					   value="Save" 
@@ -58,6 +49,3 @@
 		
 	</div>
 </div>
-
-<!-- JSON output -->
-<!-- <div json-out></div> -->

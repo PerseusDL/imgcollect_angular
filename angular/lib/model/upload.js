@@ -1,28 +1,31 @@
-app.service( 'upload', ['sparql', 'results', function( sparql, results ){
-	return({
-		by_annotation:by_annotation
-	})
+app.service( 'upload', [
+'sparql',
+'results',
+'onto',
+function( sparql, results, onto ){
 	
-	function prefix() {
-	return "\
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>\
-	PREFIX cite: <http://www.homermultitext.org/cite/rdf/>";
-	}
-	
-	function by_annotation( urn ) {
-		return sparql.search( annotation_query( urn ) ).then(
-		function( data ){
-			return results.list( data );
-		});
-	}
-	
-	function annotation_query( urn ) {
-	return "\
-	"+prefix()+"\
-	SELECT ?urn\
-	WHERE {\
-		<"+urn+"> cite:belongsTo ?item .\
-		?item this:upload ?urn\
-	}"
-	}
+  return({
+    by_annotation:by_annotation
+  })
+  
+  function prefix() {
+    return onto.prefixes();
+  }
+  
+  function by_annotation( urn ) {
+    return sparql.search( annotation_query( urn ) ).then(
+    function( data ){
+      return results.list( data );
+    });
+  }
+  
+  function annotation_query( urn ) {
+  return "\
+  "+prefix()+"\
+  SELECT ?urn\
+  WHERE {\
+    <"+urn+"> " + onto.with_prefix('memberOf') + " ?item .\
+    ?item " + onto.with_prefix('src') + " ?urn\
+  }"
+  }
 }]);
