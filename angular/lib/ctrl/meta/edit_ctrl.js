@@ -3,8 +3,9 @@
 
 var EditCtrl = ['$scope', 
 'json',
-'$routeParams', 
-function( $scope, json, $routeParams ){
+'$routeParams',
+'onto',
+function( $scope, json, $routeParams, onto ){
 	
   $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
   $scope.stdout = "";
