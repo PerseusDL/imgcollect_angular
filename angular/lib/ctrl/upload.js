@@ -117,9 +117,9 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
       }
     }
     else {
-	  if ( $scope.form[ src_field ] ){
-	    $scope.cp_http();
-	  }
+	  	if ( $scope.form[ src ] ){
+	  	  $scope.cp_http();
+	  	}
     }
   }
   
@@ -170,7 +170,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
       headers: {
         'Content-Type': 'application/json'
       },
-      data: { src: $scope.form[ src_field ] }
+      data: { src: $scope.form[ src ] }
   	})
   	.error( function(){
 	  $scope.upload_out = "There was an error upload";
