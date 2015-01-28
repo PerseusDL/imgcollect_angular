@@ -139,7 +139,7 @@ function( $http, $q, config, user ) {
 	
 	function tack( key ){
 		var tacks = config.xhr.json.tack_on;
-		if ( tacks.indexOf( key ) == -1 ){
+		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
 			return false;
 		}
 		return true;

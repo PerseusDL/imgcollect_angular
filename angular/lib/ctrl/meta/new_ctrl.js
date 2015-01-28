@@ -22,12 +22,20 @@ function( $scope, urnServ, json, stdout, user, onto ){
     $scope.urn = $scope.base_urn+$scope.clean_id()
   }
   
+  // Clean an id
+  
   $scope.clean_id = function(){ 
 	  return $scope.id.alphaOnly().toLowerCase() 
   }
   
+  // Run when controller is initialized
+  // @param [Array] editable fields for this item
+  
   $scope.init = function( edit_fields ){ 
-	  init(edit_fields) 
+	  init( edit_fields ) 
+  }
+  function init( edit_fields ){
+    $scope.edit_text_fields = edit_fields;
   }
   
   // Output messages
@@ -95,12 +103,4 @@ function( $scope, urnServ, json, stdout, user, onto ){
   		save();
   	});
   }
-  
-  
-  // Run when controller is initialized
-  // @param [Array] editable fields for this item
-  function init( edit_fields ){
-    $scope.edit_text_fields = edit_fields;
-  }
-  
 }];

@@ -29,21 +29,22 @@ app.service( 'config', [ 'host', function( host ){
       sparql: {
         
         // URL to SPARQL query endpoint
-        
-        url: 'http://services.perseids.org/fuseki/ds/query'
+		url: 'http://localhost:4321/ds/query'
+        //url: 'http://services.perseids.org/fuseki/ds/query'
       },
       
       json: {
         
         // URL to JackSON server
         // JackSON server hosts JSON data and the application by default
-        
-        url: 'http://www.perseids.org/jackson',
+		url: 'http://localhost:4567'
+        //url: 'http://www.perseids.org/jackson',
         
       }
     },
     imgup: {
-      url: 'http://www.perseids.org/imgup/upload'  
+		url: 'http://localhost:1234/upload'
+      //url: 'http://www.perseids.org/imgup/upload'  
     },
 	ontology: {
 	  imgViewer: {

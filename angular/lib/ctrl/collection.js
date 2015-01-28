@@ -26,7 +26,7 @@ appControllers.controller( 'CollectionNew', [
       // Inherit from parent
 		
       $injector.invoke( NewCtrl, this, { $scope: $scope } );
-      $scope.init([label,desc]);
+      $scope.init([ label, desc ]);
     }
 
 
