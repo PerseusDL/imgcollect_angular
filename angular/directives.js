@@ -34,35 +34,42 @@ function(){
 appDirectives.directive('stdOut', 
 function(){
   return {
-    templateUrl: 'partials/share/std-out.html'
+    templateUrl: 'partials/share/msg/std-out.html'
   }
 });
 
 appDirectives.directive('jsonOut', 
 function(){
   return {
-    templateUrl: 'partials/share/json-out.html'
+    templateUrl: 'partials/share/msg/json-out.html'
   }
 });
 
 appDirectives.directive('jsonMsg',
 function(){
 	return {
-		templateUrl: 'partials/share/json-msg.html'
+		templateUrl: 'partials/share/msg/json-msg.html'
 	}
 });
 
 appDirectives.directive('jsonMsgMini',
 function(){
 	return {
-		templateUrl: 'partials/share/json-msg-mini.html'
+		templateUrl: 'partials/share/msg/json-msg-mini.html'
 	}
 });
 
 appDirectives.directive('sparqlMsg',
 function(){
 	return {
-		templateUrl: 'partials/share/sparql-msg.html'
+		templateUrl: 'partials/share/msg/sparql-msg.html'
+	}
+});
+
+appDirectives.directive('urnServMsg',
+function(){
+	return {
+		templateUrl: 'partials/share/msg/urn-serv-msg.html'
 	}
 });
 

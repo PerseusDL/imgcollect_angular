@@ -22,11 +22,17 @@
 		<div id="collection-form" class="box">
 			<h3>metadata</h3>
 			<form>
-				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
-				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
-			
-				<!-- mini status -->
-				<!-- <div ng-show="saving" json-msg-mini></div> -->
+				<input type="text" 
+               ng-repeat="field in edit_text_fields" 
+							 ng-change="change(field)" 
+							 ng-model="form[field]" 
+							 placeholder="{{field}}" 
+				/>
+				<input class="button secondary" 
+               type="submit" 
+							 value="Save" 
+							 ng-click="save()" 
+				/>
 				
 				<!-- Messages received from JackSON server -->
 				<div ng-show="saving" json-msg></div>

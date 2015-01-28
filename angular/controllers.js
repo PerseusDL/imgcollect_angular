@@ -116,22 +116,28 @@ function( $scope, json ){
 
 
 // Sparql Msg
+// Makes communcation with SPARQL endpoint more transparent
 
 appControllers.controller( 'SparqlMsg', [
 '$scope',
 'sparql',
 function( $scope, sparql ){
 	
-	$scope.msg = 'YARGH';
 	$scope.query = '';
-	
 	var update = function( status, query ){
 		$scope.query = query;
 	}
-	
 	sparql.on_change( update );
 	
 }]);
+
+
+// Talk to URN server
+
+appControllers.controller( 'urnServ',[
+'$scope',
+'urnServ',
+function( $scope, urnServ ){}])
 
 
 // View

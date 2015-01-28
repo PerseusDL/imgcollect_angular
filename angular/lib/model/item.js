@@ -48,6 +48,7 @@ function( sparql, results, onto ) {
   }
   
   function collection_query( urn ){
+		console.log( query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">") );
     return query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
   }
     

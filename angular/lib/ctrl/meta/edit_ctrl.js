@@ -88,16 +88,17 @@ function( $scope, json, $routeParams, onto ){
   // Get JSON
   
   function get() {
-  	json.get( $scope.src[0] ).then( function( data ){
-	  $scope.json = data;
-	  json_to_str( $scope.json );
-	  form();
-	  
-	  // Run code after receiving JSON
-	  
-	  if ( $scope.run != undefined ){
-	    $scope.run();
-	  }
+  	json.get( $scope.src[0] ).then( 
+		function( data ){
+	  	$scope.json = data;
+	  	json_to_str( $scope.json );
+	  	form();
+	  	
+	  	// Run code after receiving JSON
+	  	
+	  	if ( $scope.run != undefined ){
+	  	  $scope.run();
+	  	}
   	});
   }
   
