@@ -139,6 +139,9 @@ return({
 		     default_value: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
 		  }
 		},
+		
+		// Config user access
+		
 		access: {
 			public_views: [ '/view' ],
 			logged_in: '/upload',

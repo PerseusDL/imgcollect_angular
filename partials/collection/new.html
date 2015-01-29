@@ -13,7 +13,7 @@
 				<div>{{ urn }} claimed</div>
 				<a class="button secondary" href="#/collection/{{ urn }}">edit</a>
 			</div>
-			<pre>{{ stdout }}</pre>
+			<pre ng-show="show_error">{{ stdout }}</pre>
 		</div>
 	</div>
 </div>
