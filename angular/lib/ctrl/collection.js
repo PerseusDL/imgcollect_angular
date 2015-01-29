@@ -12,6 +12,7 @@ function( $scope, $injector, urnServ, $rootScope, user, onto ){
   $scope.title = "Collection New";
   $scope.type = "collection";
   $scope.show_uniq = true;
+	$scope.error = false;
   var label = onto.with_prefix('label');  
   var desc = onto.with_prefix('description');
   $scope.form = {};
@@ -41,6 +42,7 @@ function( $scope, $injector, urnServ, $rootScope, user, onto ){
   
   var uniq_callback = function( bool, urn ){
     $scope.show_uniq = !bool;
+		$scope.show_error = !bool;
     if ( bool == true ){
       
       // This next line claims a CITE URN and JackSON /data URL
