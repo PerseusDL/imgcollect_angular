@@ -144,6 +144,15 @@ function( $rootScope, $location, user, config ){
 		}
 	}
 	
+	// If a user is logged-in they don't need to see the login view
+	
+	function logged_in(){
+		var path = $location.path();
+		if ( path.indexOf('/login') == 0 ){
+			$location.path('/uploads')
+		}
+	}
+	
 	// Run everytime scope changes
   
   $rootScope.$on('$routeChangeSuccess', function(){
@@ -155,6 +164,7 @@ function( $rootScope, $location, user, config ){
       // All is well
       
       function(){
+				logged_in();
         $rootScope.$emit( user.events.ok );
       },
       
