@@ -35,6 +35,7 @@ function( $http, $q, config, user ) {
 	var GET = 'GET';
 	var POST = 'POST';
 	var PUT = 'PUT';
+	var DELETE = 'DELETE';
 	
 	
 	// Publicly accessible methods
@@ -43,6 +44,7 @@ function( $http, $q, config, user ) {
 		post: post,
 		put: put,
 		get: get,
+		del: del,
 		ls: ls,
 		urn: urn,
 		disp: disp,
@@ -101,6 +103,17 @@ function( $http, $q, config, user ) {
 		return( request.then( 
 			success, 
 			error 
+		));
+	}
+	
+	
+	// DELETE the JSON
+	
+	function del( url ){
+		var request = api( DELETE, rel(url) );
+		return( request.then(
+			success,
+			error
 		));
 	}
 	
