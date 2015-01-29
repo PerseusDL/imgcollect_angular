@@ -129,9 +129,22 @@ function( $routeProvider ) {
 '$rootScope',
 '$location',
 'user',
-function( $rootScope, $location, user ){
-  
-  // Run everytime scope changes
+'config',
+function( $rootScope, $location, user, config ){
+	
+	// Some views are public
+	
+	function public_view(){
+		var path = $location.path();
+		var pub = config.public_views;
+		for( var i=0; i<pub.length; i++ ){
+			if ( path.indexOf( pub[i] ) == 0 ){
+				return true
+			}
+		}
+	}
+	
+	// Run everytime scope changes
   
   $rootScope.$on('$routeChangeSuccess', function(){
     
@@ -148,11 +161,15 @@ function( $rootScope, $location, user ){
       // User is not logged in
       
       function(){
+				if ( public_view() == true ){
+					return;
+				}
         $rootScope.$emit( user.events.error );
         $location.path('/login');
       }
 	  
 	);
+	
 })
 
 }]);  // close app.config
