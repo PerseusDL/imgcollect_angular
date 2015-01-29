@@ -139,6 +139,10 @@ return({
 		     default_value: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
 		  }
 		},
-		public_views: [ '/view' ]
+		access: {
+			public_views: [ '/view' ],
+			logged_in: '/upload',
+			logged_out: '/login'
+		}
   })
 }])

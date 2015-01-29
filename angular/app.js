@@ -30,6 +30,10 @@ function( $routeProvider ) {
     templateUrl: 'partials/upload/new.html',
     controller: 'UploadNew'
   }).
+	when('/delete/upload/:urn', {
+		templateUrl: 'partials/upload/delete.html',
+		controller: 'UploadDelete'
+	}).
   otherwise({
     redirectTo: '/uploads'
   });;
@@ -136,7 +140,7 @@ function( $rootScope, $location, user, config ){
 	
 	function public_view(){
 		var path = $location.path();
-		var pub = config.public_views;
+		var pub = config.access.public_views;
 		for( var i=0; i<pub.length; i++ ){
 			if ( path.indexOf( pub[i] ) == 0 ){
 				return true
@@ -148,8 +152,8 @@ function( $rootScope, $location, user, config ){
 	
 	function logged_in(){
 		var path = $location.path();
-		if ( path.indexOf('/login') == 0 ){
-			$location.path('/uploads')
+		if ( path.indexOf( config.access.logged_out ) == 0 ){
+			$location.path( config.access.logged_in )
 		}
 	}
 	
@@ -175,7 +179,7 @@ function( $rootScope, $location, user, config ){
 					return;
 				}
         $rootScope.$emit( user.events.error );
-        $location.path('/login');
+        $location.path( config.access.logged_out );
       }
 	  
 	);
