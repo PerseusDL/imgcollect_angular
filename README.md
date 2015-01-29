@@ -267,3 +267,14 @@ If you have a non-standard installation ( one where the servers are running on d
 	xhr.sparql.url
 	xhr.json.url
 	imgup.url
+
+# Test suite
+
+imgcollect_angular uses Jasmine.
+To use it install the ruby Jasmine gem.
+
+	gem install jasmine
+
+Run the Jasmine server.
+
+	rake jasmine
