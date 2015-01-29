@@ -1,4 +1,4 @@
 <div id="urn-info" class="{{ title }}">
-	<h1>{{ urn }}</h1>
-	<div><a ng-repeat="item in src" href="{{ item }}">{{ item }}</a></div>
+	<h1><a href="{{src[0]}}" ng-if="src.length == 1">{{ urn }}</a></h1>
+	<div ng-if="src.length > 1"><a ng-repeat="item in src" href="{{ item }}">{{ item }}</a></div>
 </div>

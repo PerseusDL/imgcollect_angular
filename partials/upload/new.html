@@ -3,7 +3,6 @@
 		
 		<h3>Where is your image?</h3>
 		
-		
 		<!-- Type of upload? -->
 		
 		<a ng-click="disk(true)" 
@@ -14,26 +13,24 @@
 		   ng:class="{selected: show_disk==false}" 
 		   class="button secondary tiny">URL</a>
 		
-		
 		<!-- Upload from disk -->
 		
 		<div ng-show="show_disk" id="img-disk" class="box">
 			<input type="file"
-				   ng-file-select
-				   ng-model="file"
-				   accept="image/*"
+             ng-file-select
+             ng-model="file"
+             accept="image/*"
 			/>
 			<pre ng-show="upload_out">{{ upload_out }}</pre>
 		</div>
-		
 		
 		<!-- Upload by URL -->
 		
 		<div ng-hide="show_disk" id="img-url" class="box">
 			<input type="text" 
-			       ng-change="change('this:src')" 
-				   ng-model="form['this:src']" 
-				   placeholder="URL" 
+             ng-change="change(src_field)" 
+             ng-model="form[src_field]" 
+             placeholder="http://path.to/some/image" 
 			/>
 		</div>
 		
@@ -42,31 +39,28 @@
 
 <div class="row">
 	<div class="columns small-12">
-		
 		<div id="upload-new-form" class="box">
 			<h3>metadata</h3>
 			
-			<!-- Change metadata -->
+			<!-- Metadata -->
+			
 			<form ng-show="ready">
 				<input type="text" 
-					   ng-change="change('rdf:label')" 
-					   ng-model="form['rdf:label']" 
-					   placeholder="label" 
+				       ng-repeat="field in edit_text_fields" 
+							 ng-change="change(field)" 
+							 ng-model="form[field]" 
+							 placeholder="{{field}}" 
 				/>
-				<input type="text" 
-					   ng-change="change('rdf:description')"
-					   ng-model="form['rdf:description']" 
-					   placeholder="description" 
-				/>
+				
 				<input class="button secondary" 
-					   type="submit" 
-					   value="save" 
-					   ng-click="save()" 
+               type="submit" 
+               value="save" 
+               ng-click="save()" 
 				/>
 				
 				<!-- Messages received from JackSON server -->
-				<div ng-show="saving" json-msg></div>
 				
+				<div ng-show="saving" json-msg></div>
 			</form>
 			
 		</div>

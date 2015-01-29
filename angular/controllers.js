@@ -1,123 +1,195 @@
 var appControllers = angular.module('appControllers',[]);
 
-
 // login
 
-appControllers.controller( 'LoginCtrl', ['$scope', 'user',
-	function( $scope, user ){
-		
-	}
-]);
+appControllers.controller( 'LoginCtrl', [
+'$scope',
+'user',
+function( $scope, user ){}]);
 
 
 // resize/:urn
 
-appControllers.controller( 'ResizeCtrl', ['$scope','$injector','user','$rootScope',
-	function( $scope, $injector, user, $rootScope ){
-		
-		// Start once user event fires 
-		
-		$rootScope.$on( user.events.ok, function(){ go() });
-		
-		function go(){
-		
-			$scope.title = "Resize";
-			$scope.form = {
-				'rdf:label':"",
-				'rdf:description':"",
-				'this:keyword':[]
-			};
-			$injector.invoke( EditCtrl, this, { $scope: $scope } );
-			
-			$scope.run = function() {
-				$scope.uploads = [];
-				$scope.uploads[0] = { urn: $scope.json['this:upload']['@id'] };
-			}
-			
-			$scope.init();
-		}
-	}
-]);
+appControllers.controller( 'ResizeCtrl', [
+'$scope',
+'$injector',
+'user',
+'$rootScope',
+'onto',
+function( $scope, $injector, user, $rootScope, onto ){
+  
+  // Start once user event fires 
+  
+  $rootScope.$on( user.events.ok, function(){ go() });
+  
+  function go(){
+    var label = onto.with_prefix('label');
+    var desc = onto.with_prefix('description');
+    var keyword = onto.with_prefix('subject');
+    $scope.title = "Resize";
+    $scope.form = {};
+    $scope.form[label] = "";
+    $scope.form[desc] = "";
+    $scope.form[subject] = [];
+    $injector.invoke( EditCtrl, this, { $scope: $scope } );
+    
+    $scope.run = function() {
+      $scope.uploads = [];
+      $scope.uploads[0] = { 
+		  urn: $scope.json[onto.with_prefix('src')]['@id'] 
+	  };
+    }
+    
+    $scope.init();
+  }
+}]);
 
 
 // User
 
-appControllers.controller( 'UserCtrl', ['$scope','$injector','user','$rootScope',
-	function( $scope, $injector, user, $rootScope ){
-		
-		
-		// Start once user event fires 
-		
-		$rootScope.$on( user.events.ok, function(){ go() });
-		
-		function go(){
-			$scope.only = user.only;
-			$scope.user = user.id();
-		}
-		
-		$scope.switch = function( bool ){
-			user.only = bool;
-			go();
-		}
-	}
-]);
+appControllers.controller( 'UserCtrl', [
+'$scope',
+'$injector',
+'user',
+'$rootScope',
+function( $scope, $injector, user, $rootScope ){    
+  
+  // Start once user event fires 
+  
+  $rootScope.$on( user.events.ok, function(){ go() });
+  
+  function go(){
+    $scope.only = user.only;
+    $scope.user = user.id();
+    $scope.username = user.name();
+  }
+  
+  $scope.switch = function( bool ){
+    user.only = bool;
+    go();
+  }
+}]);
 
 
 // StdOut
 
-appControllers.controller( 'StdOut', ['$scope','stdout',
-	function( $scope, stdout ){
-		$scope.stdout = stdout;
-		$scope.$watch('stdout.msg', function(){
-			$scope.msg = stdout.msg;
-		});
-	}
-]);
+appControllers.controller( 'StdOut', [
+'$scope',
+'stdout',
+function( $scope, stdout ){
+	$scope.stdout = stdout;
+	$scope.$watch('stdout.msg', function(){
+		$scope.msg = stdout.msg;
+	});
+}]);
 
 
 // JsonMsg
 // Makes communication with JackSON server more transparent
 // to the user.
 
-appControllers.controller( 'JsonMsg', ['$scope','json',
-	function( $scope, json ){
-		
-		var update = function( method, url, stat, msg ){
-			$scope.method = method;
-			$scope.url = url;
-			$scope.status = stat;
-			$scope.msg = msg;
-			$scope.hide = false;
-			switch( $scope.status ){
-				case json.state().success:
-					$scope.mode = 'success'
-					break;
-				case json.state().error:
-					$scope.mode = 'alert'
-					break;
-				default:
-					$scope.mode = 'secondary'
-			}
+appControllers.controller( 'JsonMsg', [
+'$scope',
+'json',
+function( $scope, json ){
+	
+	var update = function( method, url, stat, msg ){
+		$scope.method = method;
+		$scope.url = url;
+		$scope.status = stat;
+		$scope.msg = msg;
+		$scope.hide = false;
+		switch( $scope.status ){
+			case json.state().success:
+				$scope.mode = 'success'
+				break;
+			case json.state().error:
+				$scope.mode = 'alert'
+				break;
+			default:
+				$scope.mode = 'secondary'
 		}
-		
-		json.on_change( update );
 	}
-]);
+	
+	json.on_change( update );
+}]);
 
 
 // Sparql Msg
+// Makes communcation with SPARQL endpoint more transparent
 
-appControllers.controller( 'SparqlMsg', ['$scope','sparql',
-	function( $scope, sparql ){
-		
-		$scope.msg = 'YARGH';
-		$scope.query = '';
-		
-		var update = function( status, query ){
-			$scope.query = query;
-		}
-		
-		sparql.on_change( update );
-		
+appControllers.controller( 'SparqlMsg', [
+'$scope',
+'sparql',
+function( $scope, sparql ){
+	
+	$scope.query = '';
+	var update = function( status, query ){
+		$scope.query = query;
 	}
-]);
+	sparql.on_change( update );
+	
+}]);
+
+
+// Talk to URN server
+
+appControllers.controller( 'urnServ',[
+'$scope',
+'urnServ',
+function( $scope, urnServ ){}])
+
+
+// View
+
+appControllers.controller( 'ViewCtrl', [
+'$scope',
+'$routeParams',
+'json',
+function( $scope, $routeParams, json ){
+	
+  // Get the URN
+  
+  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+  
+  // Get the coords
+  
+  var urn = $scope.urn.split("@");
+  $scope.coords = urn[1].split(',');
+  get_src( urn[0] )
+  
+  $scope.max_width = 600;
+  
+  // What's the src JSON?
+  
+  function get_src( urn ){
+    json.urn( urn ).then( function( data ){
+  	  get_json( data['src'][0] );
+  	});
+  }
+  
+  
+  // Check the type
+  
+  function check_type( data ){
+  	var type = data['dct:type']
+  	switch( type ){
+      case 'upload':
+        $scope.src = data['dct:references']['@id']
+      break;
+      case 'item':
+        get_src( data['dct:references']['@id'] )
+      break;
+  	}
+  }
+  
+  
+  // Get the src JSON
+  
+  function get_json( src ){
+    json.get( src ).then( function( data ){
+      check_type( data );
+  	});
+  }
+  
+}]);

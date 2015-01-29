@@ -1,4 +1,10 @@
-app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, config, user ) {
+app.service( 'json', [
+'$http',
+'$q',
+'config',
+'user',
+function( $http, $q, config, user ) {
+	
 	
 	// output
 	
@@ -23,11 +29,13 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		});
 	}
 	
+	
 	// Avoid typos with constants
 	
 	var GET = 'GET';
 	var POST = 'POST';
 	var PUT = 'PUT';
+	
 	
 	// Publicly accessible methods
 	
@@ -45,6 +53,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 		state: state,
 		url: this.url
 	});
+	
 	
 	// Retrieve a JSON file by URN
 	
@@ -130,7 +139,7 @@ app.service( 'json', ['$http', '$q', 'config', 'user', function( $http, $q, conf
 	
 	function tack( key ){
 		var tacks = config.xhr.json.tack_on;
-		if ( tacks.indexOf( key ) == -1 ){
+		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
 			return false;
 		}
 		return true;

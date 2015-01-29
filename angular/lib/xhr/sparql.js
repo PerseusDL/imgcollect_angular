@@ -1,4 +1,8 @@
-app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
+app.service( 'sparql', [
+'$http', 
+'$q',
+'config', 
+function( $http, $q, config ) {
 	
 	this.query = "";
 	
@@ -43,7 +47,7 @@ app.service( 'sparql', ['$http', '$q', 'config', function( $http, $q, config ) {
 	
 	function get( search ) {
 		this.query = search.smoosh();
-		var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search );
+	    var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search )+"&output=json";
 		return $http({
 			method: 'GET',
 			url: url,

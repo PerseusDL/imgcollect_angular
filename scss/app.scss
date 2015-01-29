@@ -61,6 +61,16 @@ pre {
 textarea {
   min-height:15rem;
 }
+h1 {
+  word-break:break-all;
+}
+.clearfix {
+  clear:both;
+}
+.padder{
+  width:100%;
+  height:1rem;
+}
 
 /* Common */
 .button-group > li .button {
@@ -148,6 +158,12 @@ img.preview {
   margin:0;
 }
 
+/* sparqlMsg */
+#sparqlMsg {
+	margin: 0 0 2rem 0;
+	text-align: center;
+}
+
 /* jsonMsg */
 #jsonMsg .alert-box {
   margin:0;
@@ -177,6 +193,11 @@ img.preview {
   vertical-align:baseline;
   max-width:none;
   max-height:none;
+
+/* img-loc */
+.img-loc .lite {
+	opacity: 0.8;
+	background-color:$yellow;
 }
 
 /* img-spect */
@@ -196,12 +217,6 @@ img.preview {
   background-size:cover;
   overflow:hidden;
 }
-/*
-.imgspect.nav {
-  float:left;
-  display:block;
-}
-*/
 .imgspect.nav {
   outline: 1px $vapor;
   position:absolute;
@@ -280,4 +295,4 @@ img.preview {
   position:absolute;
   padding:.5rem;
   width:15rem;
-}
+}}
