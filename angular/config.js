@@ -1,17 +1,13 @@
 app.service( 'config', [ 'host', function( host ){
 return({
     
-    // ATTENTION! 
-    
-    // Configuration options should mirror application folder structure
-    
     serv: {
       
       user: {
         
         // URL to Perseids user data object
         
-          ping: 'conf/ping.js'
+        ping: 'conf/ping.js'
         //ping: 'http://sosol.perseids.org/sosol/dmm_api/ping'
       },
       
@@ -142,6 +138,7 @@ return({
 		     prefix: "cite",
 		     default_value: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
 		  }
-		}
+		},
+		public_views: [ '/view' ]
   })
 }])
