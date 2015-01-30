@@ -97,6 +97,19 @@ function( json, onto, user, sparql ) {
 		});
 	}
 	
+	function rm_in_obj( obj, string ){
+		for( var key in obj ){
+			if ( !obj.hasOwnProperty( key ) ){
+				continue;
+			}
+			if ( typeof obj[key] == "object" && obj ){
+				console.log( key );
+				console.log( obj[key] );
+				rm_in_obj( obj, string );
+			}
+		}
+	}
+	
 	
 	// Geth the JSON src file
 	
