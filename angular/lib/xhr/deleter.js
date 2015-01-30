@@ -92,22 +92,17 @@ function( json, onto, user, sparql ) {
 	function rm( src_urn, prefix, rm_urn, url ){
 		json.get( url )
 		.then( function( data ){
-			console.log( data[ prefix ] );
-			console.log( typeof data[ prefix ] );
+			var item = data[ prefix ]
+			console.log( item );
+			rm_in_item( item, rm_urn );
+			console.log( item );
 		});
 	}
 	
-	function rm_in_obj( obj, string ){
-		for( var key in obj ){
-			if ( !obj.hasOwnProperty( key ) ){
-				continue;
-			}
-			if ( typeof obj[key] == "object" && obj ){
-				console.log( key );
-				console.log( obj[key] );
-				rm_in_obj( obj, string );
-			}
-		}
+	function rm_in_item( item, string ){
+		// if the item is a string that's easy
+		
+		// if the item is an 
 	}
 	
 	

@@ -124,7 +124,7 @@ appControllers.controller( 'ItemNew', [
     
     var fresh_callback = function( urn ){
       $scope.urn = urn;
-      $scope.ready = true;
+			$scope.ready = true;
     }
     
     
@@ -143,8 +143,8 @@ appControllers.controller( 'ItemNew', [
     // Save the default after writing the most basic values
   
     var save = function(){
-      touch();
-      json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
+      touch().then( function(){
+      	json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
       	function( data ){
       	  
       	  // Congratulations!
@@ -153,27 +153,41 @@ appControllers.controller( 'ItemNew', [
       	  
       	  $location.path('item/'+$scope.urn );  
       	});
+			});
     }
   
   
     // Set basic values
+		// Some values will get their default value from
+		// the upload.
   
     var touch = function(){
-	  var src = onto.with_prefix('src');
-	  var creator = onto.with_prefix('creator');
-	  var memberOf = onto.with_prefix('memberOf');
-	  var created = onto.with_prefix('created');
-	  var license = onto.with_prefix('rights');
-	  $scope.json['@id'] = $scope.urn;
-	  $scope.json[src]['@id'] = $scope.upload_urn;
-	  $scope.json[creator]['@id'] = user.id();
-	  $scope.json[memberOf]['@id'] = $scope.collection;
-	  $scope.json[created] = ( new TimeStamp ).xsd();
-	  // TODO this is a hack -- we want to read default values
-	  // and data types from the config
-	  $scope.json[license]['@id'] = onto.default_value('rights');
-    }
-  
+			return json.urn( $scope.upload_urn ).then( function( data ){
+				return json.get( data.src[0] ).then( function( data ){
+					
+			  	var src = onto.with_prefix('src');
+			  	var creator = onto.with_prefix('creator');
+			  	var memberOf = onto.with_prefix('memberOf');
+			  	var created = onto.with_prefix('created');
+			  	var license = onto.with_prefix('rights');
+					var label = onto.with_prefix('label');
+					var desc = onto.with_prefix('description');
+					
+			  	$scope.json['@id'] = $scope.urn;
+			  	$scope.json[src]['@id'] = $scope.upload_urn;
+			  	$scope.json[creator]['@id'] = user.id();
+			  	$scope.json[memberOf]['@id'] = $scope.collection;
+			  	$scope.json[created] = ( new TimeStamp ).xsd();
+					$scope.json[label] = data[label];
+					$scope.json[desc] = data[desc]
+					
+			  	// TODO this is a hack -- we want to read default values
+			  	// and data types from the config
+			
+			  	$scope.json[license]['@id'] = onto.default_value('rights');
+				})
+			});
+		}
   
     // Load the default JSON data
   
