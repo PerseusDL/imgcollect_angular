@@ -15,7 +15,7 @@ function check() {
 
 function clear() { $( sel ).removeClass('selected') }
 
-function toggle(me) {
+function toggle( me ) {
 	$(me).addClass('selected');
 }
 
@@ -27,3 +27,9 @@ $(document).ready( function(){
 		check();
 	})
 })
+
+// Easy way to get a service handle...
+
+function tserv( service ){
+	return angular.element( document.body ).injector().get( service )
+}
