@@ -14,7 +14,8 @@ function( json, onto, user, sparql ) {
 		urn: urn,
 		log: log,
 		related: related,
-		del: del
+		del: del,
+		ref: ref
 	});
 	
 	
@@ -82,7 +83,18 @@ function( json, onto, user, sparql ) {
 	// Remove references
 	
 	function ref( src_urn, prefix, rm_urn ){
-		
+		json.urn( src_urn )
+		.then( function( data ){
+			rm( src_urn, prefix, rm_urn, data.src[0] );
+		});
+	}
+	
+	function rm( src_urn, prefix, rm_urn, url ){
+		json.get( url )
+		.then( function( data ){
+			console.log( data[ prefix ] );
+			console.log( typeof data[ prefix ] );
+		});
 	}
 	
 	
@@ -127,5 +139,7 @@ Move data in and out for testing...
 
 rm -rf /var/www/JackSON/data/*
 cp -R ~/Desktop/JackSON.data.bkup/* /var/www/JackSON/data/
+
+t = tserv('deleter');
 
 */
