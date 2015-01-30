@@ -56,13 +56,13 @@ function( json, onto, user, sparql ) {
 	
 	// Get related URNs
 	
-	function related( urn ){
+	function related( src_urn ){
 		
 		var query = [
 		onto.prefixes(),
 		"SELECT ?urn ?verb",
 		"WHERE {",
-			"?urn ?verb <"+urn+">", 
+			"?urn ?verb <"+src_urn+">", 
 		"}" ];
 		
 		var output = [];
@@ -71,10 +71,18 @@ function( json, onto, user, sparql ) {
 			for ( var i=0; i<data.length; i++ ) {
 				var urn = data[i].urn.value;
 				var verb = data[i].verb.value;
-				output.push({ urn: urn, verb: verb });
+				if ( urn == src_urn ){ continue }
+				output.push({ urn: urn, verb: onto.short( verb ) });
 			}
 			return output;
 		});
+	}
+	
+	
+	// Remove references
+	
+	function ref( src_urn, prefix, rm_urn ){
+		
 	}
 	
 	

@@ -31,5 +31,5 @@ $(document).ready( function(){
 // Easy way to get a service handle...
 
 function tserv( service ){
-	return angular.element( document.body ).injector().get( 'deleter' )
+	return angular.element( document.body ).injector().get( service )
 }

@@ -16,6 +16,7 @@ function( $http, $q, $upload, config, user ) {
 		msg: this.msg
 	});
 	
+	
 	// Copy a URL path
 	
 	function cp_url( src, success, error ){
