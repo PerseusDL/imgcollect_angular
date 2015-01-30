@@ -193,3 +193,38 @@ function( $scope, $routeParams, json ){
   }
   
 }]);
+
+
+// Delete things
+// delete/upload/:urn
+
+appControllers.controller( 'DeleteCtrl', [
+'$scope',
+'$injector',
+'json',
+'$routeParams',
+'deleter',
+function( $scope, $injector, json, $routeParams, deleter ){
+  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+	$scope.refs = []
+	$scope.show_refs = false;
+	
+	
+	// Find all references to the URN
+	
+	$scope.get_refs = function(){
+		deleter.refs( $scope.urn ).then( function( data ){
+			$scope.refs = data;
+			$scope.show_refs = true;
+		});
+	}
+	
+	
+	// Delete
+	
+	$scope.delete = function(){
+		deleter.urn( $scope.urn ).then( function( data ){
+			console.log( data );
+		});
+	}
+}]);

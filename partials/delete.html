@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="columns small-12">
+		<h1>{{ urn }}</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="columns small-12">
+		
+		<!-- Start -->
+		
+		<div ng-hide="show_refs">
+			<p>Before deleting this record, we check where it is referenced...</p>
+			<a class="button secondary" 
+			   ng-click="get_refs()">Start</a>
+		</div>
+		
+		<!-- References -->
+		
+		<div ng-show="show_refs">
+			
+			<!-- Safe to delete -->
+			
+			<div data-alert
+					 ng-if="refs.length == 0"
+					 class="alert-box success">
+					 
+					 No references found. Safe to delete.
+					 
+				<a ng-if="refs.length == 0"
+					 class="button secondary tiny" 
+					 ng-click="delete()">Delete</a>
+					 
+			</div>
+			
+			<!-- References found -->
+			
+			<ul ng-if="refs.length > 0" class="urns">
+			<li ng-repeat="ref in refs">
+				{{ ref.urn }} -- {{ ref.verb }}
+			</li>
+			</ul>
+				 
+		</div>
+
+	</div>
+</div>

@@ -298,15 +298,3 @@ function( $scope, $injector, resize, item, onto ){
   );
   
 }]);
-
-
-// delete/upload/:urn
-
-appControllers.controller( 'UploadDelete', [
-'$scope',
-'$injector',
-'json',
-'$routeParams',
-function( $scope, $injector, json, $routeParams ){
-  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
-}]);
