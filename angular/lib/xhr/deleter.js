@@ -2,7 +2,8 @@ app.service( 'deleter', [
 'json',
 'onto',
 'user',
-function( json, onto ) {
+'sparql',
+function( json, onto, user, sparql ) {
 	
 	// Delete log 
 	// [ { urn: server_output } ... ]
@@ -11,7 +12,9 @@ function( json, onto ) {
 	
 	return ({
 		urn: urn,
-		log: log
+		log: log,
+		related: related,
+		del: del
 	});
 	
 	
@@ -47,7 +50,30 @@ function( json, onto ) {
 		json.del( path ).then(
 		function( data ){
 			log_item( urn, data );
-			console.log( log );
+		});
+	}
+	
+	
+	// Get related URNs
+	
+	function related( urn ){
+		
+		var query = [
+		onto.prefixes(),
+		"SELECT ?urn ?verb",
+		"WHERE {",
+			"?urn ?verb <"+urn+">", 
+		"}" ];
+		
+		var output = [];
+		return sparql.search( query.join(' ') ).then(
+		function( data ){
+			for ( var i=0; i<data.length; i++ ) {
+				var urn = data[i].urn.value;
+				var verb = data[i].verb.value;
+				output.push({ urn: urn, verb: verb });
+			}
+			return output;
 		});
 	}
 	
@@ -93,6 +119,5 @@ Move data in and out for testing...
 
 rm -rf /var/www/JackSON/data/*
 cp -R ~/Desktop/JackSON.data.bkup/* /var/www/JackSON/data/
-
 
 */
