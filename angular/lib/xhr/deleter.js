@@ -1,13 +1,17 @@
 app.service( 'deleter', [
 'json',
 'onto',
+'user',
 function( json, onto ) {
 	
-	this.log = [{}];
+	// Delete log 
+	// [ { urn: server_output } ... ]
+	
+	var log = [{}];
 	
 	return ({
 		urn: urn,
-		log: this.log
+		log: log
 	});
 	
 	
@@ -20,9 +24,9 @@ function( json, onto ) {
 	
 	// Add a log_item
 	
-	function log_item( path, data ){
-		this.log[ log.length-1 ] = {};
-		this.log[ log.length-1 ][ path ] = data;
+	function log_item( urn, data ){
+		log[ log.length-1 ] = {};
+		log[ log.length-1 ][ urn ] = data;
 	}
 	
 	
@@ -32,18 +36,18 @@ function( json, onto ) {
 		json.urn( urn )
 		.then( function( data ){
 			var path = data.src[0];
-			src( path )
+			src( path, urn )
 		});
 	}
 	
 	
 	// Delete the JSON file
 	
-	function del( path ){
+	function del( path, urn ){
 		json.del( path ).then(
 		function( data ){
-			log_item( path, data );
-			console.log( this.log );
+			log_item( urn, data );
+			console.log( log );
 		});
 	}
 	
@@ -72,7 +76,7 @@ function( json, onto ) {
 			
 			// Delete the initial JSON src file
 			
-			del( path );
+			del( path, urn );
 		});
 	}
 	

@@ -1,3 +1,5 @@
+// Process results returned from SPARQL query
+
 app.service( 'results', [ 
 function( sparql ) {
   
@@ -5,8 +7,7 @@ function( sparql ) {
     list:list,
     more:more
   });
-  
-  // Process results returned from SPARQL query
+	
   
   // URN list
   
@@ -31,6 +32,7 @@ function( sparql ) {
     return swap;
   }
   
+	
   // More than the URN list
   
   function more( data, config ){

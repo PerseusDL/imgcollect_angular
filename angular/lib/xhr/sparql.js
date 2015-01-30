@@ -6,6 +6,9 @@ function( $http, $q, config ) {
 	
 	this.query = "";
 	
+	
+	// Service states
+	
 	function state(){
 		return {
 			wait: 'WAIT',
@@ -14,6 +17,9 @@ function( $http, $q, config ) {
 		}
 	};
 	
+	
+	// Run events on success
+	
 	var events = [];
 	function on_change( event ){ events.push( event ) }
 	function run_events(){
@@ -21,6 +27,7 @@ function( $http, $q, config ) {
 			event( 'whoa', this.query );
 		});
 	}
+	
 	
 	// SPARQL search
 	
