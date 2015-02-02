@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="columns small-12">
+		<h1>{{ urn }}</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="columns small-12">
+		
+
+		<!-- no record -->
+
+		<div data-alert 
+				 ng-show="ui_no_record()"
+				 class="alert-box warning">
+				 
+				 Record not found for this URN.
+				 
+		</div>
+
+
+		<!-- success -->
+		
+		<div data-alert
+			   ng-show="ui_success()"
+				 class="alert-box success">
+				 
+				 Record has been deleted.
+			
+		</div>
+
+
+		<!-- delete safe -->
+		
+		<div data-alert
+				 ng-show="ui_delete_safe()"
+				 class="alert-box success">
+				 
+				 No references found. Safe to delete.
+				 
+		</div>
+		
+		
+		<!-- references found -->
+			
+		<div data-alert
+				 ng-show="ui_ref_found()"
+				 class="alert-box warning">
+				 
+				 References found.  Still want to delete?
+				 
+		</div>
+		
+		
+		<!-- reference check -->
+		
+		<div ng-show="ui_ref_check()">
+			<p>Before deleting this record check where it is referenced.</p>
+			<a class="button secondary" 
+			   ng-click="get_refs()">check references</a>
+		</div>
+		
+		
+		<!-- reference table -->
+				
+		<table ng-show="ui_ref_table()">
+			<tr><th>verb</th><th>urn</th></tr>
+			<tr ng-repeat="ref in refs">
+				<th>{{ ref.verb }}</th>
+				<th><a href="#/delete/{{ ref.urn }}">{{ ref.urn }}</a></th>
+			</tr>
+		</table>
+		
+		
+		<!-- delete button -->
+		
+		<a ng-show="ui_del_button()"
+			 class="button secondary" 
+			 ng-click="delete()">delete</a>
+
+	</div>
+</div>

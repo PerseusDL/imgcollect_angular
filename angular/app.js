@@ -30,13 +30,9 @@ function( $routeProvider ) {
     templateUrl: 'partials/upload/new.html',
     controller: 'UploadNew'
   }).
-	when('/delete/upload/:urn', {
-		templateUrl: 'partials/upload/delete.html',
-		controller: 'UploadDelete'
-	}).
   otherwise({
     redirectTo: '/uploads'
-  });;
+  });
   
   
   // items
@@ -126,7 +122,20 @@ function( $routeProvider ) {
   when('/view/:urn', {
 	  templateUrl: 'partials/view.html',
 	  controller: 'ViewCtrl'
-  })
+  });
+	
+	
+	// deleter
+	
+	$routeProvider.
+	when('/delete/:urn', {
+		templateUrl: 'partials/delete.html',
+		controller: 'DeleteCtrl'
+	}).
+	when('/delete', {
+		templateUrl: 'partials/pre_delete.html',
+		controller: 'PreDeleteCtrl'
+	});
   
 }])
 .run([

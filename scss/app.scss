@@ -193,6 +193,7 @@ img.preview {
   vertical-align:baseline;
   max-width:none;
   max-height:none;
+}
 
 /* img-loc */
 .img-loc .lite {
@@ -295,4 +296,14 @@ img.preview {
   position:absolute;
   padding:.5rem;
   width:15rem;
-}}
+}
+
+/* alert-box */
+.alert-box .button {
+	margin: 0 0 0 2rem;
+}
+
+/* control-box */
+#control-box.button {
+	margin: 0 .25rem 0 0;
+}

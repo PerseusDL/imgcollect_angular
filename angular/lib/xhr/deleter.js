@@ -13,16 +13,14 @@ function( json, onto, user, sparql ) {
 	return ({
 		urn: urn,
 		log: log,
-		related: related,
-		del: del,
-		ref: ref
+		refs: refs
 	});
 	
 	
 	// Delete by URN
 	
 	function urn( urn ){
-		path( urn )
+		return path( urn );
 	}
 	
 	
@@ -37,10 +35,10 @@ function( json, onto, user, sparql ) {
 	// Get the the path to the JSON files
 	
 	function path( urn ){
-		json.urn( urn )
+		return json.urn( urn )
 		.then( function( data ){
 			var path = data.src[0];
-			src( path, urn )
+			return src( path, urn )
 		});
 	}
 	
@@ -48,7 +46,7 @@ function( json, onto, user, sparql ) {
 	// Delete the JSON file
 	
 	function del( path, urn ){
-		json.del( path ).then(
+		return json.del( path ).then(
 		function( data ){
 			log_item( urn, data );
 		});
@@ -57,7 +55,7 @@ function( json, onto, user, sparql ) {
 	
 	// Get related URNs
 	
-	function related( src_urn ){
+	function refs( src_urn ){
 		
 		var query = [
 		onto.prefixes(),
@@ -80,57 +78,42 @@ function( json, onto, user, sparql ) {
 	}
 	
 	
-	// Remove references
+	// Remove reference
 	
-	function ref( src_urn, prefix, rm_urn ){
+	function ghost( src_urn, prefix, rm_urn ){
 		json.urn( src_urn )
 		.then( function( data ){
-			rm( src_urn, prefix, rm_urn, data.src[0] );
+			ghost_json( src_urn, prefix, rm_urn, data.src[0] );
 		});
 	}
 	
-	function rm( src_urn, prefix, rm_urn, url ){
+	
+	// So far all URN references use '@id'.
+	// This may not be true.
+	// It would be better to walk the JSON
+	
+	function ghost_json( src_urn, prefix, rm_urn, url ){
 		json.get( url )
 		.then( function( data ){
-			var item = data[ prefix ]
-			console.log( item );
-			rm_in_item( item, rm_urn );
-			console.log( item );
+			var item = data[ prefix ];
+			if( item['@id'] == rm_urn ){
+				item['@id'] = '';
+			}
+			json.put( url, data )
 		});
-	}
-	
-	function rm_in_item( item, string ){
-		// if the item is a string that's easy
-		
-		// if the item is an 
 	}
 	
 	
 	// Geth the JSON src file
 	
 	function src( path ){
-		json.get( path )
+		return json.get( path )
 		.then( function( data ){
-			var type = data[ onto.with_prefix('type') ];
 			
-			// Sometimes many files need deleting
-			// or modification
-			
-			switch( type ){
-				case 'upload':
-					console.log( 'delete upload' );
-					break;
-				case 'item':
-					console.log( 'delete item' );
-					break;
-				case 'collection':
-					console.log( 'collection item' );
-					break;
-			}
+			// TODO: Check the user...
 			
 			// Delete the initial JSON src file
-			
-			del( path, urn );
+			return del( path, urn );
 		});
 	}
 	
