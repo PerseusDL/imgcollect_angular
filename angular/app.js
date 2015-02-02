@@ -131,6 +131,10 @@ function( $routeProvider ) {
 	when('/delete/:urn', {
 		templateUrl: 'partials/delete.html',
 		controller: 'DeleteCtrl'
+	}).
+	when('/delete', {
+		templateUrl: 'partials/pre_delete.html',
+		controller: 'PreDeleteCtrl'
 	});
   
 }])
