@@ -7,63 +7,76 @@
 <div class="row">
 	<div class="columns small-12">
 		
+
+		<!-- no record -->
+
 		<div data-alert 
-				 ng-show="urn_invalid"
+				 ng-show="ui_no_record()"
 				 class="alert-box warning">
 				 
-				 URN not found.  It can't be deleted if it doesn't exist.
+				 Record not found for this URN.
+				 
+		</div>
+
+
+		<!-- success -->
+		
+		<div data-alert
+			   ng-show="ui_success()"
+				 class="alert-box success">
+				 
+				 Record has been deleted.
+			
+		</div>
+
+
+		<!-- delete safe -->
+		
+		<div data-alert
+				 ng-show="ui_delete_safe()"
+				 class="alert-box success">
+				 
+				 No references found. Safe to delete.
 				 
 		</div>
 		
-		<!-- Start -->
 		
-		<div ng-hide="urn_invalid">
-			<p>Before deleting this record, we check where it is referenced...</p>
+		<!-- references found -->
+			
+		<div data-alert
+				 ng-show="ui_ref_found()"
+				 class="alert-box warning">
+				 
+				 References found.  Still want to delete?
+				 
+		</div>
+		
+		
+		<!-- reference check -->
+		
+		<div ng-show="ui_ref_check()">
+			<p>Before deleting this record check where it is referenced.</p>
 			<a class="button secondary" 
-			   ng-click="get_refs()">Start</a>
+			   ng-click="get_refs()">check references</a>
 		</div>
 		
-		<!-- References -->
 		
-		<div ng-show="show_refs">
-			
-			<!-- Safe to delete -->
-			
-			<div data-alert
-					 ng-if="refs.length == 0"
-					 class="alert-box success">
-					 
-					 No references found. Safe to delete.
-					 
-				<a ng-if="refs.length == 0"
-					 class="button secondary tiny" 
-					 ng-click="delete()">Delete</a>
-					 
-			</div>
-			
-			<!-- References found -->
+		<!-- reference table -->
 				
-			<div ng-if="refs.length > 0">
-				
-				<div data-alert
-						 class="alert-box warning">
-						 
-						 References found.  Still want to delete?
-						 
-				  <a class="button secondary tiny"
-					   ng-click="delete()">Delete</a>
-						 
-				</div>
-					
-				<table>
-				<tr><th>verb</th><th>urn</th></tr>
-				<tr ng-repeat="ref in refs">
-					<th>{{ ref.verb }}</th>
-					<th><a href="#/delete/{{ ref.urn }}">{{ ref.urn }}</a></th>
-				</tr>
-				</table>
-				 
-		</div>
+		<table ng-show="ui_ref_table()">
+			<tr><th>verb</th><th>urn</th></tr>
+			<tr ng-repeat="ref in refs">
+				<th>{{ ref.verb }}</th>
+				<th><a href="#/delete/{{ ref.urn }}">{{ ref.urn }}</a></th>
+			</tr>
+		</table>
+		
+		
+		<!-- delete button -->
+		
+		<a ng-show="ui_del_button()"
+			 class="button secondary tiny" 
+			 ng-click="delete()">delete</a>
 
 	</div>
 </div>
