@@ -7,9 +7,17 @@
 <div class="row">
 	<div class="columns small-12">
 		
+		<div data-alert 
+				 ng-show="urn_invalid"
+				 class="alert-box warning">
+				 
+				 URN not found.  It can't be deleted if it doesn't exist.
+				 
+		</div>
+		
 		<!-- Start -->
 		
-		<div ng-hide="show_refs">
+		<div ng-hide="urn_invalid">
 			<p>Before deleting this record, we check where it is referenced...</p>
 			<a class="button secondary" 
 			   ng-click="get_refs()">Start</a>

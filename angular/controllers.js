@@ -205,10 +205,23 @@ appControllers.controller( 'DeleteCtrl', [
 'json',
 '$routeParams',
 'deleter',
-function( $scope, $injector, json, $routeParams, deleter ){
+function( $scope, $injector, json, $routeParams, deleter, urn_serv ){
   $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
 	$scope.refs = []
 	$scope.show_refs = false;
+	$scope.urn_invalid = false;
+	
+	
+	// Check if URN is valid
+	
+	urn_valid();
+	function urn_valid(){
+		json.urn( $scope.urn ).then( function( data ){
+			if ( 'error' in data ){
+				$scope.urn_invalid = true;
+			}
+		});
+	}
 	
 	
 	// Find all references to the URN

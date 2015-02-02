@@ -57,7 +57,7 @@ function( $http, $q, config, user ) {
 	});
 	
 	
-	// Retrieve a JSON file by URN
+	// Retrieve a JSON file path by URN
 	
 	function urn( urn ){
 		var request = api( GET, config.xhr.json.url+'/src?urn='+urn );

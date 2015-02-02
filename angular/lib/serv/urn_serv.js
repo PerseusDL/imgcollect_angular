@@ -1,4 +1,9 @@
-app.service( 'urnServ', ['sparql', 'json', 'host', 'config', function( sparql, json, host, config ) {
+app.service( 'urnServ', [
+'sparql', 
+'json', 
+'host', 
+'config', 
+function( sparql, json, host, config ) {
   
   return ({
     uniq: uniq,
