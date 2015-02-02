@@ -34,12 +34,26 @@
 			</div>
 			
 			<!-- References found -->
-			
-			<ul ng-if="refs.length > 0" class="urns">
-			<li ng-repeat="ref in refs">
-				{{ ref.urn }} -- {{ ref.verb }}
-			</li>
-			</ul>
+				
+			<div ng-if="refs.length > 0">
+				
+				<div data-alert
+						 class="alert-box warning">
+						 
+						 References found.  Still want to delete?
+						 
+				  <a class="button secondary tiny"
+					   ng-click="delete()">Delete</a>
+						 
+				</div>
+					
+				<table>
+				<tr><th>verb</th><th>urn</th></tr>
+				<tr ng-repeat="ref in refs">
+					<th>{{ ref.verb }}</th>
+					<th><a href="#/delete/{{ ref.urn }}">{{ ref.urn }}</a></th>
+				</tr>
+				</table>
 				 
 		</div>
 
