@@ -151,7 +151,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.upload_out = false;
   $scope.upload = function(){
   	$upload.upload({
-  		url: config.imgup.url, 
+  		url: config.imgup.url+'/upload', 
   		method: 'POST',
   		file: $scope.file
    	})
@@ -166,7 +166,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.cp_http = function(){
   	$http({
       method: 'POST',
-      url: config.imgup.url,
+      url: config.imgup.url+'/upload',
       headers: {
         'Content-Type': 'application/json'
       },

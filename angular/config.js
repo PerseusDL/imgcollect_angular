@@ -42,7 +42,7 @@ return({
     },
     imgup: {
 			
-			url: 'http://localhost:1234/upload'
+			url: 'http://localhost:1234'
       //url: 'http://www.perseids.org/imgup/upload'
 			
     },

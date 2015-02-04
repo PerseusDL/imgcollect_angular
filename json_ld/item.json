@@ -1,0 +1,21 @@
+{
+	"@context": {
+		"urn": "http://data.perseus.org/collections/urn:",
+		"cite": "http://www.homermultitext.org/cite/rdf/",
+		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"dct": "http://purl.org/dc/terms/",
+		"crm": "http://www.cidoc-crm.org/cidoc-crm/"
+	},
+	"@id": ".",
+	"dct:type": "item",
+	"cite:belongsTo": { "@id": "" },
+	"rdf:label": "",
+	"rdf:description": "",
+	"crm:P138_represents": { "@id" : "" },
+	"cite:license": { "@id": "" },
+	"dct:references": { "@id": "" },
+	"dct:creator": { "@id": "" },
+	"dct:created": "",
+	"dct:modified": "",
+	"dct:contributor": []
+}
