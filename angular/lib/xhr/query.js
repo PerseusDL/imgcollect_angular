@@ -26,25 +26,4 @@ function( sparql, config, onto ) {
 		return 'get'
 	}
 	
-	/*
-	
-	 SELECT ?urn ?label ?desc ?time ?rep ?user ?thumb
-	 WHERE {    
-	 		?urn <http://purl.org/dc/terms/type> 'upload' .
-			OPTIONAL { ?res cite:belongsTo ?urn .
-								 ?res dct:references ?thumb }
-		  OPTIONAL { ?urn rdf:label ?label . }
-	    OPTIONAL { ?urn rdf:description ?desc . }
-	    OPTIONAL { ?urn dct:created ?time . }
-	    OPTIONAL { ?urn crm:P138_represents ?rep . }
-	    OPTIONAL { ?urn <http://purl.org/dc/terms/creator> ?user . }  
-	 }
-	 ORDER BY DESC( ?time ) 
-	 LIMIT 10
-	 OFFSET 0
-	
-	*/
-	
-	
-	
 }]);

@@ -281,7 +281,6 @@ function( $scope, $injector, $rootScope, user, onto, sparql ){
 	  sparql.search( $scope.quick_query.join(" \n") ).then( 
 	    function( data ){
 	      $scope.json = data;
-				console.log( data );
 	    }
 	  );
 		
