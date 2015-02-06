@@ -92,6 +92,11 @@ return({
 		     ns: "http://purl.org/dc/terms/",
 		     prefix: "dct"
 		  },
+			identifier: {
+				term: "dct:identifier",
+	     ns: "http://purl.org/dc/terms/",
+	     prefix: "dct"
+			},
 		  contributor: {
 		     term: "contributor",
 		     ns: "http://purl.org/dc/terms/",

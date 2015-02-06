@@ -20,11 +20,14 @@
 		"roi_height": {
 			"@id": "this:roi_height",
 			"@type": "xs:float"
-		},
+		}
 	},
-	"@id": "urn:cite:resize",
+	"@id": "urn:cite:resize.",
 	"dct:type": "resize",
-	"this:height": "",
-	"this:width": "",
-	"this:filetype": "",
+	"dct:identifier": "thumb",
+	"dct:references": "{{ src }}",
+	"cite:belongsTo": { "@id": "" },
+	"this:height": "{{ height }}",
+	"this:width": "{{ width }}",
+	"this:filetype": "jpg"
 }
