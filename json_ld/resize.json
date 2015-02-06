@@ -22,7 +22,7 @@
 			"@type": "xs:float"
 		},
 	},
-	"@id": "urn:cite:uploads.",
+	"@id": "urn:cite:resize",
 	"dct:type": "resize",
 	"this:height": "",
 	"this:width": "",

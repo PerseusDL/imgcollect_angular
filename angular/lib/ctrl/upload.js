@@ -173,7 +173,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
       data: { src: $scope.form[ src ] }
   	})
   	.error( function(){
-	  $scope.upload_out = "There was an error upload";
+			$scope.upload_out = "There was an error upload";
   	})
   	.success( function( data ){
       upload_success( data );

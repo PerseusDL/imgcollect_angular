@@ -42,18 +42,22 @@ function( $http, $q, $upload, config, user ) {
 	
 	// Resize an image
 	
-	function resize( src, width, height ){
+	function resize( src, width, height, send_to, json ){
+		var body = { 
+			src: src,
+			max_width: width,
+			max_height: height,
+			send_to: send_to,
+			json: json
+		};
+		
 		return $http({
 			method: 'POST',
 			url: config.imgup.url+'/resize',
 		  headers: { 
 				'Content-Type': 'application/json'
 			},
-			data: { 
-				src: src,
-				max_width: width,
-				max_height: height
-			}
+			data: body
 		})
 		.error( function( r ){
 			update_msg( r );
