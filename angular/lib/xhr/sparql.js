@@ -54,7 +54,7 @@ function( $http, $q, config ) {
 	
 	function get( search ) {
 		this.query = search.smoosh();
-	    var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search )+"&output=json";
+	  var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search )+"&output=json";
 		return $http({
 			method: 'GET',
 			url: url,

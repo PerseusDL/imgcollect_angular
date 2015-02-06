@@ -41,13 +41,11 @@ function( $scope, sparql, user, $routeParams, onto ){
   // TODO these fields should be driven from the config
   // and the query fields independent from how they are
   // set on the filter
-	
   $scope.items = {};
   $scope.items[label] = "?label";
   $scope.items[desc] = "?desc";
   $scope.items[created] = "?time";
   $scope.items[represents] = "?rep";
-//	$scope.items[thumb] = "?thumb";
   $scope.items["<"+onto.with_ns('creator')+">"] = "?user";
   
   
@@ -56,7 +54,6 @@ function( $scope, sparql, user, $routeParams, onto ){
   $scope.select = "\
   SELECT ?urn "+handles()+"\
   WHERE {\
-		"+thumb()+"\
     "+where()+"\
     "+filter()+"\
     "+optionals()+"\
@@ -95,19 +92,12 @@ function( $scope, sparql, user, $routeParams, onto ){
       }
     }
   );
-	
-	// Thumbnail
-	
-	function thumb(){
-		return ""
-		return "OPTIONAL { ?res <" + onto.with_ns('memberOf') + "> ?urn.\
-		?res <" + onto.with_ns('src') + "> ?thumb }";
-	}
 
+  
   
   // Only your data or everyones?
   
-  function where(){
+  function where() {
     if ( user.only == true ){
       return "?urn <" + onto.with_ns('type') +"> '"+$scope.type+"'.\
       ?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">;";
@@ -118,7 +108,7 @@ function( $scope, sparql, user, $routeParams, onto ){
   
   // Build a SPARQL filter clause
   
-  function filter(){
+  function filter() {
     var items = [];
     var regex = [];
     var out = '';
@@ -135,7 +125,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     return out;
   }
   
-  function handles(){
+  function handles() {
     var out = [];
     for ( var key in $scope.items ){
       out.push( $scope.items[key] );
@@ -143,7 +133,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     return out.join(' ');
   }
   
-  function optionals(){
+  function optionals() {
     var out = [];
     for ( var key in $scope.items ){
       var obj = $scope.items[key];
@@ -152,7 +142,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     return out.join("\n");
   }
   
-  function list(){
+  function list() {
     $scope.query = $scope.prefix + $scope.select + $scope.paginate;
     return sparql.search( $scope.query ).then( 
       function( data ){
@@ -161,7 +151,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     );
   }
   
-  function count(){
+  function count() {
     var count = $scope.prefix + $scope.number;
     return sparql.search( count ).then(
       function( data ){
@@ -173,7 +163,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     )
   }
   
-  function init(){
+  function init() {
     if ( !('type' in $scope) ){
       throw "$scope.type is not defined.";
     }

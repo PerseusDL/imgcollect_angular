@@ -1,35 +1,62 @@
 <div class="row">
 	<div class="columns small-12 medium-6">
+		
 		<!-- List Info -->
+		
 		<div list-meta-box></div>
+		
 		<!-- New Upload -->
+		
 		<a class="button secondary" href="#/new/upload">new upload</a>
+		
 	</div>
 	<div class="columns small-12 medium-6">	
+		
 		<!-- Filter -->
+		
 		<div filter-box></div>
+		
 	</div>
 </div>
 
 <!-- Uploads -->
+
 <ul class="uploads list">
-  <li ng-repeat="item in json">
-    <table>
-	  <tr ng-repeat="key in keys" ng-switch on="key">
-		<th>{{ key }}</th>
-		<!-- urn -->
-		<td ng-switch-when="urn">
-			<a href="#/upload/{{ item[key].value }}">{{ item[key].value }}</a>
-		</td>
-		<!-- user -->
-		<td ng-switch-when="user">
-			<a href="{{ item[key].value }}">{{ item[key].value }}</a>
-		</td>
-		<!-- default -->
-		<td ng-switch-default>{{ item[key].value }}</td>
-	  </tr>
-	</table>
-  </li>
+  <div class="row" 
+			 ng-repeat="item in json">
+		
+		<div class="columns small-2">
+			<img src="{{ item['thumb'].value }}" />
+		</div>
+		
+		<div class="columns small-10">
+    	<table>
+	  		<tr ng-repeat="key in keys" 
+				    ng-switch on="key">
+						
+					<th>{{ key }}</th>
+					
+					<!-- urn -->
+					
+					<td ng-switch-when="urn">
+						<a href="#/upload/{{ item[key].value }}">{{ item[key].value }}</a>
+					</td>
+					
+					<!-- user -->
+					
+					<td ng-switch-when="user">
+						<a href="{{ item[key].value }}">{{ item[key].value }}</a>
+					</td>
+					
+					<!-- default -->
+					
+					<td ng-switch-default>{{ item[key].value }}</td>
+					
+	  		</tr>
+			</table>
+		</div>
+	
+	</div>
 </ul>
 
 <div sparql-msg></div>
