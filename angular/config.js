@@ -38,7 +38,12 @@ return({
 				url: 'http://localhost:4567'
         //url: 'http://www.perseids.org/jackson',
         
-      }
+      },
+			
+			tmpl: {
+				url: 'http://localhost:4567/apps/imgcollect/json_ld'
+			}
+			
     },
     imgup: {
 			
