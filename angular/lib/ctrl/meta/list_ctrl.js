@@ -102,9 +102,9 @@ function( $scope, sparql, user, $routeParams, onto ){
   function where() {
     if ( user.only == true ){
       return "?urn <" + onto.with_ns('type') +"> '"+$scope.type+"'.\
-      ?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">.";
+      ?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">;";
     }
-    return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"'.";
+    return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"';";
   }
 	
 	function extra() {
@@ -125,7 +125,7 @@ function( $scope, sparql, user, $routeParams, onto ){
       var check = $scope.filter[key];
       if ( check == null ) continue;
       var item = $scope.items[key];
-      items.push( key+' '+item );
+      items.push( '?urn '+key+' '+item );
       regex.push( 'regex( '+item+', "'+check+'", "i" )' );
     }
     if ( items.length > 0 ){
