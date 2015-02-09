@@ -76,7 +76,6 @@ function( json, imgup, config, urnServ, onto ) {
 To run this in the console...
 
 var r = tserv('resizer')
-r.add('urn:cite:perseus:resize.ry897TREW', 200, 200)
 r.add('urn:cite:perseus:upload.QAlWThSWNU1', 200, 200)
 
 */

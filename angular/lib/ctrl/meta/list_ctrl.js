@@ -41,6 +41,7 @@ function( $scope, sparql, user, $routeParams, onto ){
   // TODO these fields should be driven from the config
   // and the query fields independent from how they are
   // set on the filter
+	
   $scope.items = {};
   $scope.items[label] = "?label";
   $scope.items[desc] = "?desc";
@@ -55,6 +56,7 @@ function( $scope, sparql, user, $routeParams, onto ){
   SELECT ?urn "+handles()+"\
   WHERE {\
     "+where()+"\
+		"+extra()+"\
     "+filter()+"\
     "+optionals()+"\
   }";
@@ -100,10 +102,17 @@ function( $scope, sparql, user, $routeParams, onto ){
   function where() {
     if ( user.only == true ){
       return "?urn <" + onto.with_ns('type') +"> '"+$scope.type+"'.\
-      ?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">;";
+      ?urn <"+ onto.with_ns('creator') +"> <"+user.url()+">.";
     }
-    return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"';";
+    return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"'.";
   }
+	
+	function extra() {
+		if ( $scope.hasOwnProperty('extra') ){
+			return $scope.extra.join(' ');
+		}
+		return '';
+	}
   
   
   // Build a SPARQL filter clause
@@ -130,6 +139,11 @@ function( $scope, sparql, user, $routeParams, onto ){
     for ( var key in $scope.items ){
       out.push( $scope.items[key] );
     }
+		if ( $scope.hasOwnProperty('extra_handles') ){
+			for ( var i=0; i<$scope.extra_handles.length; i++ ){
+				out.push( $scope.extra_handles[i] );
+			}
+		}
     return out.join(' ');
   }
   
