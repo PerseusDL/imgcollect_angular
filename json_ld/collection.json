@@ -1,0 +1,42 @@
+{
+	"@context": {
+		"urn": "http://data.perseus.org/collections/urn:",
+		"cite": "http://www.homermultitext.org/cite/rdf/",
+		"citex": "http://data.perseus.org/rdfvocab/cite/",
+		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  	  "exif": "http://www.kanzaki.com/ns/exif#",
+		"dct": "http://purl.org/dc/terms/",
+		"this": "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		"roi_x": {
+			"@id": "this:roi_x",
+			"@type": "xs:float"
+		},
+		"roi_y": {
+			"@id": "this:roi_y",
+			"@type": "xs:float"
+		},
+		"roi_width": {
+			"@id": "this:roi_width",
+			"@type": "xs:float"
+		},
+		"roi_height": {
+			"@id": "this:roi_height",
+			"@type": "xs:float"
+		},
+		"ordered": {
+			"@id": "cite:ordered",
+			"@type": "xsd:Boolean"
+		}
+	},
+	"@id": "",
+	"dct:type": "collection",
+	"citex:imageServer" : { "@id" : "" },
+	"citex:imageViewer" : { "@id" : "" },
+	"ordered": "",
+	"rdf:label": "",
+	"rdf:description": "",
+	"dct:subject": [],
+	"order": [],
+	"dct:creator": { "@id": "" },
+	"dct:created": ""
+}

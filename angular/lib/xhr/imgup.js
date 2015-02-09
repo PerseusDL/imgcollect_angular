@@ -13,6 +13,7 @@ function( $http, $q, $upload, config, user ) {
 	return ({
 		upload: upload,
 		cp_url: cp_url,
+		resize: resize,
 		msg: this.msg
 	});
 	
@@ -20,9 +21,9 @@ function( $http, $q, $upload, config, user ) {
 	// Copy a URL path
 	
 	function cp_url( src, success, error ){
-		$http({
+		return $http({
 		  method: 'POST',
-		  url: config.imgup.url,
+		  url: config.imgup.url+'/upload',
 		  headers: {
 		    'Content-Type': 'application/json'
 		  },
@@ -30,11 +31,41 @@ function( $http, $q, $upload, config, user ) {
 		})
 		.error( function( r ){
 			update_msg( r );
-			error( r.data );
+			return r.data;
 		})
 		.success( function( r ){
 			update_msg( r );
-			success( r.data );
+			return r.data;
+		})
+	}
+	
+	
+	// Resize an image
+	
+	function resize( src, width, height, send_to, json ){
+		var body = { 
+			src: src,
+			max_width: width,
+			max_height: height,
+			send_to: send_to,
+			json: json
+		};
+		
+		return $http({
+			method: 'POST',
+			url: config.imgup.url+'/resize',
+		  headers: { 
+				'Content-Type': 'application/json'
+			},
+			data: body
+		})
+		.error( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+		.success( function( r ){
+			update_msg( r );
+			return r.data;
 		})
 	}
 	
@@ -42,18 +73,18 @@ function( $http, $q, $upload, config, user ) {
 	// Upload a file to an imgup server
 	
 	function upload( file, success, error ){	
-  	$upload.upload({
-  		url: config.imgup.url, 
+  	return $upload.upload({
+  		url: config.imgup.url+'/upload',
   		method: 'POST',
   		file: file
    	})
   	.error( function( r ){
 			update_msg( r );
-  		error( r.data );
+  		return r.data;
    	})
   	.success( function( r ){
 			update_msg( r );
-  		success( r.data );
+  		return r.data;
    	})
   }
 	

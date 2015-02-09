@@ -41,6 +41,7 @@ function( $scope, sparql, user, $routeParams, onto ){
   // TODO these fields should be driven from the config
   // and the query fields independent from how they are
   // set on the filter
+	
   $scope.items = {};
   $scope.items[label] = "?label";
   $scope.items[desc] = "?desc";
@@ -55,6 +56,7 @@ function( $scope, sparql, user, $routeParams, onto ){
   SELECT ?urn "+handles()+"\
   WHERE {\
     "+where()+"\
+		"+extra()+"\
     "+filter()+"\
     "+optionals()+"\
   }";
@@ -104,6 +106,13 @@ function( $scope, sparql, user, $routeParams, onto ){
     }
     return "?urn <" + onto.with_ns('type') + "> '"+$scope.type+"';";
   }
+	
+	function extra() {
+		if ( $scope.hasOwnProperty('extra') ){
+			return $scope.extra.join(' ');
+		}
+		return '';
+	}
   
   
   // Build a SPARQL filter clause
@@ -116,7 +125,7 @@ function( $scope, sparql, user, $routeParams, onto ){
       var check = $scope.filter[key];
       if ( check == null ) continue;
       var item = $scope.items[key];
-      items.push( key+' '+item );
+      items.push( '?urn '+key+' '+item );
       regex.push( 'regex( '+item+', "'+check+'", "i" )' );
     }
     if ( items.length > 0 ){
@@ -130,6 +139,11 @@ function( $scope, sparql, user, $routeParams, onto ){
     for ( var key in $scope.items ){
       out.push( $scope.items[key] );
     }
+		if ( $scope.hasOwnProperty('extra_handles') ){
+			for ( var i=0; i<$scope.extra_handles.length; i++ ){
+				out.push( $scope.extra_handles[i] );
+			}
+		}
     return out.join(' ');
   }
   
@@ -137,7 +151,7 @@ function( $scope, sparql, user, $routeParams, onto ){
     var out = [];
     for ( var key in $scope.items ){
       var obj = $scope.items[key];
-                        out.push( "OPTIONAL { ?urn "+key+" "+obj+" . }" );
+      out.push( "OPTIONAL { ?urn "+key+" "+obj+" . }" );
     }
     return out.join("\n");
   }

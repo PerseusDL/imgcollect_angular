@@ -18,7 +18,7 @@ function( sparql, results, onto ) {
   SELECT ?urn ?width ?height\
   WHERE {\
     ?urn " + onto.with_prefix('type') +" 'resize'.\
-    ?urn " + onto.with_prefix('src') + " <"+urn+">\
+    ?urn " + onto.with_prefix('memberOf') + " <"+urn+">\
     OPTIONAL { ?urn " + onto.with_prefix('width') + " ?width . }\
     OPTIONAL { ?urn " + onto.with_prefix('height') +" ?height . }\
   }"

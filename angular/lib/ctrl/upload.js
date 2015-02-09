@@ -11,7 +11,8 @@ appControllers.controller( 'UploadNew', [
 'config',
 '$http',
 'onto',
-function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http, onto ){
+'resizer',
+function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http, onto, resizer ){
   $scope.title = "Upload New";
   $scope.stdout = "";
   
@@ -151,7 +152,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.upload_out = false;
   $scope.upload = function(){
   	$upload.upload({
-  		url: config.imgup.url, 
+  		url: config.imgup.url+'/upload', 
   		method: 'POST',
   		file: $scope.file
    	})
@@ -166,14 +167,14 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.cp_http = function(){
   	$http({
       method: 'POST',
-      url: config.imgup.url,
+      url: config.imgup.url+'/upload',
       headers: {
         'Content-Type': 'application/json'
       },
       data: { src: $scope.form[ src ] }
   	})
   	.error( function(){
-	  $scope.upload_out = "There was an error upload";
+			$scope.upload_out = "There was an error upload";
   	})
   	.success( function( data ){
       upload_success( data );
@@ -189,7 +190,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   	urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
   }
 	
-  // Once you have a fresh item URN
+  // Once you have a fresh URN
   
   var fresh_callback = function( urn ){
     $scope.urn = urn;
@@ -199,7 +200,11 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
 			setTimeout( function(){
 				$scope.saving = false;
 			}, 5000 );
-			stdout.log( data );
+			
+			// resize upload
+			
+			resizer.add( $scope.urn, 200, 200 );
+			
 		});
 	}
   
@@ -222,10 +227,17 @@ appControllers.controller( 'UploadListCtrl', [
 '$rootScope',
 'user',
 'onto',
-function( $scope, $injector, $rootScope, user, onto ){
+'sparql',
+function( $scope, $injector, $rootScope, user, onto, sparql ){
   $scope.type = "upload";
   $scope.title = "Upload List";
   $scope.keys = [ 'urn','label','desc','user','time' ];
+	
+	$scope.extra = [ 
+		"OPTIONAL { ?res cite:belongsTo ?urn .",
+		"?res dct:references ?thumb }"
+	];
+	$scope.extra_handles = ["?thumb"];
   
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
@@ -241,10 +253,9 @@ function( $scope, $injector, $rootScope, user, onto ){
   // Start once user event fires 
   
   $rootScope.$on( user.events.ok, 
-    function(){ $scope.apply_filter() 
-  });
-  
-  
+    function(){ $scope.apply_filter() }
+	);
+	
   // Applying the filter is the same as initializing..
   
   $scope.apply_filter = function(){
@@ -253,6 +264,7 @@ function( $scope, $injector, $rootScope, user, onto ){
   }
   
   $scope.apply_filter();
+	
 }]);
 
 

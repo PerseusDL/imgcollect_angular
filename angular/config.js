@@ -38,11 +38,16 @@ return({
 				url: 'http://localhost:4567'
         //url: 'http://www.perseids.org/jackson',
         
-      }
+      },
+			
+			tmpl: {
+				url: 'http://localhost:4567/apps/imgcollect/json_ld'
+			}
+			
     },
     imgup: {
 			
-			url: 'http://localhost:1234/upload'
+			url: 'http://localhost:1234'
       //url: 'http://www.perseids.org/imgup/upload'
 			
     },
@@ -92,6 +97,11 @@ return({
 		     ns: "http://purl.org/dc/terms/",
 		     prefix: "dct"
 		  },
+			identifier: {
+				term: "dct:identifier",
+	     ns: "http://purl.org/dc/terms/",
+	     prefix: "dct"
+			},
 		  contributor: {
 		     term: "contributor",
 		     ns: "http://purl.org/dc/terms/",
