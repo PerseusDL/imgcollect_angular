@@ -65,7 +65,7 @@ function( json, imgup, config, urnServ, onto ) {
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
 		var img = upload[ onto.with_prefix('src') ]['@id'];
 		return imgup.resize( img, 200, 200, save_to, tmpl ).then( function( data ){
-			console.log( data );
+			return data;
 		});
 	}
 	

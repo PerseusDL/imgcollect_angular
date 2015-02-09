@@ -11,7 +11,8 @@ appControllers.controller( 'UploadNew', [
 'config',
 '$http',
 'onto',
-function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http, onto ){
+'resizer',
+function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http, onto, resizer ){
   $scope.title = "Upload New";
   $scope.stdout = "";
   
@@ -189,7 +190,7 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   	urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
   }
 	
-  // Once you have a fresh item URN
+  // Once you have a fresh URN
   
   var fresh_callback = function( urn ){
     $scope.urn = urn;
@@ -199,7 +200,11 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
 			setTimeout( function(){
 				$scope.saving = false;
 			}, 5000 );
-			stdout.log( data );
+			
+			// resize upload
+			
+			resizer.add( $scope.urn, 200, 200 );
+			
 		});
 	}
   
