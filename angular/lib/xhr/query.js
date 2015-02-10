@@ -10,8 +10,11 @@ function( sparql, config, onto ) {
 		where: [
 			[ '?urn', 'type', 'upload' ],
 			[ '?urn', 'label', '?label', { filter:'regex( ?label, "g", "i" )' } ],
-			[ '?res', 'memberOf', '?urn', { optional:true } ],
-			[ '?res', 'src', '?thumb', { optional:true } ],
+			[
+				[ '?res', 'memberOf', '?urn'],
+				[ '?res', 'src', '?thumb' ],
+				{ optional:true }
+			],
 			[ '?urn', 'label', '?label', { optional:true } ],
 			[ '?urn', 'description', '?desc', { optional:true } ],
 			[ '?urn', 'created', '?time', { optional:true } ],
@@ -40,6 +43,8 @@ function( sparql, config, onto ) {
 		return 'get'
 	}
 	
+	// Build the query
+	
 	function query(){
 		
 		// Build the WHERE clause
@@ -49,19 +54,31 @@ function( sparql, config, onto ) {
 			var tri = json.where[i];
 			var opt = {};
 			
-			if ( tri.length == 4 ){
-				opt = tri[3];
+			var last = tri[tri.length-1];
+			if ( last instanceof Object ){
+				opt = last;
 			}
 				
 			if ( "optional" in opt ){
-				where.push( "OPTIONAL { "+ line( tri ) +" }" );
+				if ( Array.isArray( tri[0] ) ){
+					var sub = [];
+					for ( var i=0; i<tri.length-1; i++ ){
+						sub.push( line( tri[i] ) );
+					}
+					where.push( "OPTIONAL { " );
+					where = where.concat( sub );
+					where.push( "}" );
+				}
+				else {
+					where.push( "OPTIONAL { "+ line( tri ) +" }" );
+				}
 			}
 			else {
 				where.push( line( tri ) );
 			}
 			
 			if ( "filter" in opt ){
-				where.push( "FILTER { "+ opt.filter +" }" );
+				where.push( "FILTER ( "+ opt.filter +" )" );
 			}
 		}
 		
@@ -69,26 +86,61 @@ function( sparql, config, onto ) {
 		// Get the handles
 		
 		var handles = {};
-		for ( var i=0; i<json.where.length; i++ ){
-			var tri = json.where[i];
-			( tri[0].indexOf("?") == 0 ) ? handles[ tri[0] ]=1 : null;
-			( tri[2].indexOf("?") == 0 ) ? handles[ tri[2] ]=1 : null;
-		}
+		handles = get_handles( json.where, handles );
 		var sel = [];
 		for ( var key in handles ){
 			sel.push( key );
 		}
 		
-		var q = 
+		// Build the SPARQL query
 		
-		console.log( sel );
-		console.log( where );
-		
+		var q = onto.prefix_array();
+		q = q.concat([ 
+			'SELECT '+sel.join(' '),
+			'WHERE {',
+		]);
+		q = q.concat( where );
+		q = q.concat([
+			'}'
+		]);
+		console.log( q.join("\n") );
 	}
 	
-	function line( tri ){
-		return tri[0]+" "+onto.with_prefix( tri[1] )+" "+tri[2]+" .";
+	
+	// Get the SPARQL handles from WHERE
+	
+	function get_handles( search, handles ){
+		for ( var i=0; i<search.length; i++ ){
+			var tri = search[i];
+			
+			if ( Array.isArray( tri[0] ) ){
+				get_handles( tri, handles )
+			}
+			
+			var n = [0,2]
+			for ( var j in n ){
+				var index = n[j];
+				if ( typeof tri[ index ] == "string" &&
+						 tri[ index ].indexOf("?") == 0 ){
+					handles[ tri[ index ] ] = 1;
+				}
+			}
+		}
+		
+		return handles
 	}
+	
+	
+	// Build a triple line
+	
+	function line( tri ){
+		var sub = tri[0];
+		var obj = tri[2];
+		sub = ( sub.indexOf("?") == 0 ) ? sub : '"'+sub+'"';
+		obj = ( obj.indexOf("?") == 0 ) ? obj : '"'+obj+'"'
+		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
+	}
+	
 }]);
 
 /*
