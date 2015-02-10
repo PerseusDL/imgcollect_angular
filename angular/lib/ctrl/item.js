@@ -33,6 +33,12 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
 				[ '?urn', 'label', '?label', build_filter( '?label', label ) ],
 				[ '?urn', 'description', '?desc', build_filter( '?desc', desc ) ],
 				[ '?urn', 'represents', '?rep', build_filter( '?rep', rep ) ],
+				[
+					[ '?urn', 'src', '?up'],
+					[ '?res', 'memberOf', '?up' ],
+					[ '?res', 'src', '?thumb' ],
+					{ optional:true }
+				],
 				[ '?urn', 'created', '?time', { optional:true } ],
 				[ '?urn', 'creator', '?user', { optional:true } ],
 			],
