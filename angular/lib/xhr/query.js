@@ -2,53 +2,50 @@ app.service( 'query', [
 'sparql',
 'config',
 'onto',
-function( sparql, config, onto ) {
+'results',
+function( sparql, config, onto, results ) {
 	
 	// Public methods
 	
-	var json = {
-		where: [
-			[ '?urn', 'type', 'upload' ],
-			[ '?urn', 'label', '?label', { filter:'regex( ?label, "g", "i" )' } ],
-			[
-				[ '?res', 'memberOf', '?urn'],
-				[ '?res', 'src', '?thumb' ],
-				{ optional:true }
-			],
-			[ '?urn', 'label', '?label', { optional:true } ],
-			[ '?urn', 'description', '?desc', { optional:true } ],
-			[ '?urn', 'created', '?time', { optional:true } ],
-			[ '?urn', 'represents', '?rep', { optional:true } ],
-			[ '?urn', 'creator', '?user', { optional:true } ],
-		],
-		order_by: 'desc( ?time )',
-		limit: 10,
-		offset: 0
-	}
-	
 	return {
-		items: items,
 		get: get,
-		count: count,
-		query: query
+		count: count
 	}
 	
-	function items(){
-		return 'items'
+	
+	// Get count
+	
+	function count( json ){
+		var b = construct( json );
+		var q = onto.prefix_array();
+		q = q.concat([ 
+			'SELECT count( distinct ?urn )',
+			'WHERE {',
+		]);
+		q = q.concat( b.where );
+		q = q.concat([
+			'}'
+		]);
+		return sparql.search( q.join("\n") ).then( 
+		function( data ){
+			return data[0][.1]['value'];
+		});
 	}
 	
-	function count(){}
 	
-	function get(){
-		return 'get'
+	// Get the triples
+	
+	function get( json ){
+    return sparql.search( query( json )  ).then(
+    function( data ){
+      return results.list( data );
+    });
 	}
 	
-	// Build the query
 	
-	function query(){
-		
-		// Build the WHERE clause
-		
+	// Build the WHERE clause
+	
+	function get_where( json ){
 		var where = [];
 		for ( var i=0; i<json.where.length; i++ ){
 			var tri = json.where[i];
@@ -81,29 +78,48 @@ function( sparql, config, onto ) {
 				where.push( "FILTER ( "+ opt.filter +" )" );
 			}
 		}
-		
-		
-		// Get the handles
-		
+		return where;
+	}
+	
+	// Construct the main body of the query
+	
+	function construct( json ){
+		var where = get_where( json );		
 		var handles = {};
 		handles = get_handles( json.where, handles );
 		var sel = [];
 		for ( var key in handles ){
 			sel.push( key );
 		}
+		return { where: where, selectors: sel }
+	}
+	
+	
+	// Build the query
+	
+	function query( json ){
 		
-		// Build the SPARQL query
+		// Construct the main body of the query
+		
+		var b = construct( json );
 		
 		var q = onto.prefix_array();
 		q = q.concat([ 
-			'SELECT '+sel.join(' '),
+			'SELECT '+b.selectors.join(' '),
 			'WHERE {',
 		]);
-		q = q.concat( where );
+		q = q.concat( b.where );
 		q = q.concat([
 			'}'
 		]);
-		console.log( q.join("\n") );
+		
+		// Order by clause
+		
+		// Offset clause
+		
+		// Return the query
+		
+		return q.join("\n");
 	}
 	
 	
@@ -126,7 +142,6 @@ function( sparql, config, onto ) {
 				}
 			}
 		}
-		
 		return handles
 	}
 	
@@ -145,31 +160,31 @@ function( sparql, config, onto ) {
 
 /*
 
-	var t = tserv('query');
-	t.query();
+Test
 
-	PREFIX citex: <http://data.perseus.org/rdfvocab/cite/> 
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-	PREFIX dct: <http://purl.org/dc/terms/> 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#> 
-	PREFIX cite: <http://www.homermultitext.org/cite/rdf/> 
-	PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> 
-	PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>  
-	SELECT ?urn ?label ?desc ?time ?rep ?user ?thumb  
-	WHERE {    
-		?urn <http://purl.org/dc/terms/type> 'upload' .
-		?urn rdf:label ?label .
-		FILTER ( regex( ?label, "g", "i" ) ) 
-		OPTIONAL { ?res cite:belongsTo ?urn . }
-		OPTIONAL { ?res dct:references ?thumb . }
-		OPTIONAL { ?urn rdf:label ?label . }
-		OPTIONAL { ?urn rdf:description ?desc . }
-		OPTIONAL { ?urn dct:created ?time . }
-		OPTIONAL { ?urn crm:P138_represents ?rep . }
-		OPTIONAL { ?urn <http://purl.org/dc/terms/creator> ?user . }  
-	}  
-	ORDER BY DESC( ?time )  
-	LIMIT 10  
-	OFFSET 0 
+var t = tserv('query');
+t.query();
+
+
+Samples
+
+var json = {
+	where: [
+		[ '?urn', 'type', 'upload' ],
+		[ '?urn', 'label', '?label', { filter:'regex( ?label, "space", "i" )' } ],
+		[
+			[ '?res', 'memberOf', '?urn'],
+			[ '?res', 'src', '?thumb' ],
+			{ optional:true }
+		],
+		[ '?urn', 'description', '?desc', { optional:true } ],
+		[ '?urn', 'created', '?time', { optional:true } ],
+		[ '?urn', 'represents', '?rep', { optional:true } ],
+		[ '?urn', 'creator', '?user', { optional:true } ],
+	],
+	order_by: 'desc( ?time )',
+	limit: 10,
+	offset: 0
+}  
 
 */

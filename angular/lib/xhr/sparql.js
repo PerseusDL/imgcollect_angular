@@ -53,7 +53,7 @@ function( $http, $q, config ) {
 	// JackSON wrapper
 	
 	function get( search ) {
-		this.query = search.smoosh();
+		this.query = search;
 	  var url = config.xhr.sparql.url+'?query='+encodeURIComponent( search )+"&output=json";
 		return $http({
 			method: 'GET',
