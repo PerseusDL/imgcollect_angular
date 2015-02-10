@@ -247,7 +247,8 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
 	$scope.query = function(){
 		return {
 			where: [
-				[ '?urn', 'type', 'upload' ],
+				[ '?urn', 'type', '"upload"' ],
+				user_check(),
 				[ '?urn', 'label', '?label', build_filter( '?label', label ) ],
 				[ '?urn', 'description', '?desc', build_filter( '?desc', desc ) ],
 				[
@@ -264,6 +265,15 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
 			offset: $scope.limit * ( $scope.page-1 )
 		}
 	}
+	
+	function user_check(){
+		if ( user.only ) {
+			return [ '?urn', 'creator', "<"+user.url()+">" ];
+		}
+		return null;
+	}
+	
+	// Build a filter clause
 	
 	function build_filter( key, handle ){
 		var filter = $scope.filter[ handle ]
@@ -302,8 +312,6 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // Applying the filter is the same as initializing..
   
   $scope.apply_filter = function(){
-		
-		console.log( query.build( $scope.query() ) );
 		
 		// Get count
 		

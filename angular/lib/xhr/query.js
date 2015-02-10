@@ -53,6 +53,8 @@ function( sparql, config, onto, results ) {
 		for ( var i=0; i<json.where.length; i++ ){
 			
 			var tri = json.where[i];
+			if ( tri == null ) continue;
+			
 			
 			// Get options
 			
@@ -160,6 +162,7 @@ function( sparql, config, onto, results ) {
 	function get_handles( search, handles ){
 		for ( var i=0; i<search.length; i++ ){
 			var tri = search[i];
+			if ( tri == null ) continue;
 			
 			if ( Array.isArray( tri[0] ) ){
 				get_handles( tri, handles )
@@ -183,8 +186,6 @@ function( sparql, config, onto, results ) {
 	function line( tri ){
 		var sub = tri[0];
 		var obj = tri[2];
-		sub = ( sub.indexOf("?") == 0 ) ? sub : '"'+sub+'"';
-		obj = ( obj.indexOf("?") == 0 ) ? obj : '"'+obj+'"'
 		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
 	}
 	
