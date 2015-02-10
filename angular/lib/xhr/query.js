@@ -5,6 +5,7 @@ app.service( 'query', [
 'results',
 function( sparql, config, onto, results ) {
 	
+	
 	// Public methods
 	
 	return {
@@ -14,6 +15,7 @@ function( sparql, config, onto, results ) {
 	
 	
 	// Get count
+	// Ignores offset, limit, and order by
 	
 	function count( json ){
 		var b = construct( json );
@@ -28,7 +30,7 @@ function( sparql, config, onto, results ) {
 		]);
 		return sparql.search( q.join("\n") ).then( 
 		function( data ){
-			return data[0][.1]['value'];
+			return data[0]['.1']['value'];
 		});
 	}
 	
@@ -81,6 +83,7 @@ function( sparql, config, onto, results ) {
 		return where;
 	}
 	
+	
 	// Construct the main body of the query
 	
 	function construct( json ){
@@ -113,9 +116,29 @@ function( sparql, config, onto, results ) {
 			'}'
 		]);
 		
-		// Order by clause
+		// order by clause
 		
-		// Offset clause
+		if ( 'order_by' in json ){
+			q = q.concat([
+				'ORDER BY '+json.order_by
+			]);
+		}
+			
+		// limit clause
+		
+		if ( 'limit' in json ){
+			q = q.concat([
+				'LIMIT '+json.limit
+			]);
+		}
+		
+		// offset clause
+		
+		if ( 'offset' in json ){
+			q = q.concat([
+				'OFFSET '+json.offset
+			]);
+		}
 		
 		// Return the query
 		
@@ -157,16 +180,15 @@ function( sparql, config, onto, results ) {
 	}
 	
 }]);
-
 /*
 
-Test
+// Test
 
 var t = tserv('query');
 t.query();
 
 
-Samples
+// Samples
 
 var json = {
 	where: [
