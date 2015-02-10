@@ -81,5 +81,21 @@ function( config ) {
     pfx_query = pfx_query + " PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
     return pfx_query;
   }
+	
+	
+	// Build the prefix as an array
+	
+	this.prefix_array = function(){
+		var arr = [];
+		var seen = {};
+    for ( var key in config.ontology ) {
+			var item = config.ontology[ key ];
+			if ( ! seen[ item.prefix ] ){
+				arr.push( "PREFIX " + item.prefix + ": <" + item.ns + ">" );
+				seen[ item.prefix ] = 1;
+			}
+    }
+		return arr;
+	}
   
 }]);
