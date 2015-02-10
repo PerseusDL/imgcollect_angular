@@ -10,7 +10,8 @@ function( sparql, config, onto, results ) {
 	
 	return {
 		get: get,
-		count: count
+		count: count,
+		build: query
 	}
 	
 	
@@ -66,8 +67,8 @@ function( sparql, config, onto, results ) {
 			if ( "optional" in opt ){
 				if ( Array.isArray( tri[0] ) ){
 					var sub = [];
-					for ( var i=0; i<tri.length-1; i++ ){
-						sub.push( line( tri[i] ) );
+					for ( var j=0; j<tri.length-1; j++ ){
+						sub.push( line( tri[j] ) );
 					}
 					where.push( "OPTIONAL { " );
 					where = where.concat( sub );
@@ -86,6 +87,7 @@ function( sparql, config, onto, results ) {
 			if ( "filter" in opt ){
 				where.push( "FILTER ( "+ opt.filter +" )" );
 			}
+			
 		}
 		return where;
 	}

@@ -248,14 +248,13 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
 		return {
 			where: [
 				[ '?urn', 'type', 'upload' ],
-//				[ '?urn', 'label', '?label', { filter:'regex( ?label, "space", "i" )' } ],
+				[ '?urn', 'label', '?label', build_filter( '?label', label ) ],
+				[ '?urn', 'description', '?desc', build_filter( '?desc', desc ) ],
 				[
 					[ '?res', 'memberOf', '?urn'],
 					[ '?res', 'src', '?thumb' ],
 					{ optional:true }
 				],
-				[ '?urn', 'description', '?label', { optional:true } ],
-				[ '?urn', 'description', '?desc', { optional:true } ],
 				[ '?urn', 'created', '?time', { optional:true } ],
 				[ '?urn', 'represents', '?rep', { optional:true } ],
 				[ '?urn', 'creator', '?user', { optional:true } ],
@@ -264,6 +263,14 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
 			limit: $scope.limit,
 			offset: $scope.limit * ( $scope.page-1 )
 		}
+	}
+	
+	function build_filter( key, handle ){
+		var filter = $scope.filter[ handle ]
+		if ( filter == null ){
+			return angular.copy( { optional:true } );
+		}
+		return angular.copy({ filter:'regex( '+key+', "'+ filter +'", "i" )' });
 	}
   
   // Start once user event fires 
@@ -295,6 +302,8 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // Applying the filter is the same as initializing..
   
   $scope.apply_filter = function(){
+		
+		console.log( query.build( $scope.query() ) );
 		
 		// Get count
 		
