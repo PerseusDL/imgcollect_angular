@@ -50,14 +50,19 @@ function( sparql, config, onto, results ) {
 	function get_where( json ){
 		var where = [];
 		for ( var i=0; i<json.where.length; i++ ){
-			var tri = json.where[i];
-			var opt = {};
 			
+			var tri = json.where[i];
+			
+			// Get options
+			
+			var opt = {};
 			var last = tri[tri.length-1];
 			if ( last instanceof Object ){
 				opt = last;
 			}
-				
+			
+			// Create optional clauses
+			
 			if ( "optional" in opt ){
 				if ( Array.isArray( tri[0] ) ){
 					var sub = [];
@@ -75,6 +80,8 @@ function( sparql, config, onto, results ) {
 			else {
 				where.push( line( tri ) );
 			}
+			
+			// Build a filter
 			
 			if ( "filter" in opt ){
 				where.push( "FILTER ( "+ opt.filter +" )" );

@@ -225,30 +225,46 @@ appControllers.controller( 'UploadListCtrl', [
 '$scope',
 '$injector',
 '$rootScope',
+'$routeParams',
 'user',
 'onto',
-'sparql',
-function( $scope, $injector, $rootScope, user, onto, sparql ){
+'query',
+function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   $scope.type = "upload";
-  $scope.title = "Upload List";
   $scope.keys = [ 'urn','label','desc','user','time' ];
+	$scope.limit = 10;
+  $scope.page = ( $routeParams.page == undefined ) ? 1 : parseInt( $routeParams.page );
 	
-	$scope.extra = [ 
-		"OPTIONAL { ?res cite:belongsTo ?urn .",
-		"?res dct:references ?thumb }"
-	];
-	$scope.extra_handles = ["?thumb"];
-  
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
-  
-  // See lib/list_ctr.js: filter()
   
   var label = onto.with_prefix('label');  
   var desc = onto.with_prefix('description');
   $scope.filter = {};
   $scope.filter[label] = null;
   $scope.filter[desc] = null;
+	
+	$scope.query = function(){
+		return {
+			where: [
+				[ '?urn', 'type', 'upload' ],
+//				[ '?urn', 'label', '?label', { filter:'regex( ?label, "space", "i" )' } ],
+				[
+					[ '?res', 'memberOf', '?urn'],
+					[ '?res', 'src', '?thumb' ],
+					{ optional:true }
+				],
+				[ '?urn', 'description', '?label', { optional:true } ],
+				[ '?urn', 'description', '?desc', { optional:true } ],
+				[ '?urn', 'created', '?time', { optional:true } ],
+				[ '?urn', 'represents', '?rep', { optional:true } ],
+				[ '?urn', 'creator', '?user', { optional:true } ],
+			],
+			order_by: 'desc( ?time )',
+			limit: $scope.limit,
+			offset: $scope.limit * ( $scope.page-1 )
+		}
+	}
   
   // Start once user event fires 
   
@@ -256,14 +272,48 @@ function( $scope, $injector, $rootScope, user, onto, sparql ){
     function(){ $scope.apply_filter() }
 	);
 	
+  // Clear the filter
+  
+  $scope.clear_filter = function(){
+    for ( var key in $scope.filter ){
+      $scope.filter[key] = null;
+    }
+    $scope.apply_filter();
+  }
+  
+  
+  // Filtering changes if user.only changes
+
+  $scope.$watch( function(){ return user.only },
+    function( newVal, oldVal ){
+      if ( newVal != oldVal ){
+        $scope.apply_filter();
+      }
+    }
+  );
+	
   // Applying the filter is the same as initializing..
   
   $scope.apply_filter = function(){
-    $injector.invoke( ListCtrl, this, { $scope: $scope } );
-    $scope.init([label,desc]);
+		
+		// Get count
+		
+		query.count( $scope.query() ).then(
+		function( data ){
+			$scope.count = data;
+      $scope.pages = Math.ceil( $scope.count / $scope.limit );
+      $scope.prev = ( $scope.page > 1 ) ? true : false;
+      $scope.next = ( $scope.page < $scope.pages ) ? true : false;
+		});
+		
+		// Get the data
+		
+    query.get( $scope.query() ).then( 
+		function( data ){
+			$scope.json = data;
+		});
+		
   }
-  
-  $scope.apply_filter();
 	
 }]);
 
