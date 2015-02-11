@@ -1,13 +1,58 @@
 <div id="collection-items" class="box">
-	<h3>item</h3>
-	<ul class="items">
-		<li ng-if="items.length == 0">No item URNs</li>
-		<li ng-repeat="item in items">
-			<a href="#/item/{{ item.urn }}">{{ item.urn }}</a>
-		</li>
+	
+	<h3 ng-if="items.length == 1">item</h3>
+	<h3 ng-if="items.length > 1">items</h3>
+	
+	<ul ng-if="items.length == 0" class="items">
+		<li>No item URNs</li>
+	</ul>
+	
+	<!-- list of items -->
+			
+	<ul ng-if="items.length > 0" class="items list">
+	<div class="row" 
+	     ng-repeat="item in items">
+	
+		<div class="columns small-2">
+			<img src="{{ item['thumb'] }}" />
+		</div>
+		
+		<div class="columns small-10">
+	  	<table>
+	 		<tr ng-repeat="key in keys" 
+				    ng-switch on="key">
+						
+					<th>{{ key }}</th>
+					
+					<!-- urn -->
+					
+					<td ng-switch-when="urn">
+						<a href="#/item/{{ item[key] }}">{{ item[key] }}</a>
+					</td>
+					
+					<!-- user -->
+					
+					<td ng-switch-when="user">
+						<a href="{{ item[key] }}">{{ item[key] }}</a>
+					</td>
+					
+					<!-- default -->
+					
+					<td ng-switch-default>{{ item[key] }}</td>
+					
+	 		</tr>
+			</table>
+		</div>
+	
+	</div>
 	</ul>
 	
 	<!-- Add Upload to Collection -->
 	
-	<a ng-if="title == 'Upload'" class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
+	<a ng-if="title == 'Upload'" 
+	   class="button secondary" 
+		 href="#/new/item/{{ urn }}">
+		 add to collection
+	 </a>
+	
 </div>

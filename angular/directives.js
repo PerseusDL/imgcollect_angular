@@ -94,6 +94,13 @@ function(){
   }
 });
 
+appDirectives.directive('collectionItemsShort', 
+function(){
+  return {
+    templateUrl: 'partials/share/collection-items-short.html'
+  }
+});
+
 appDirectives.directive('resizeItems', 
 function(){
   return {
