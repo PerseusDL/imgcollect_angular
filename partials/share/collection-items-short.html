@@ -1,0 +1,13 @@
+<div id="collection-items" class="box">
+	<h3>item</h3>
+	<ul class="items">
+		<li ng-if="items.length == 0">No item URNs</li>
+		<li ng-repeat="item in items">
+			<a href="#/item/{{ item.urn }}">{{ item.urn }}</a>
+		</li>
+	</ul>
+	
+	<!-- Add Upload to Collection -->
+	
+	<a ng-if="title == 'Upload'" class="button secondary" href="#/new/item/{{ urn }}">add to collection</a>
+</div>

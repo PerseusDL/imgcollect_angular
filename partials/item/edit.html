@@ -13,10 +13,16 @@
 		<!-- Uploads -->
 		
 		<div id="item-upload" class="box">
-			<h3>upload</h3>
-			<ul class="items">
-				<li><a href="#/upload/{{ json[upload_ref]['@id'] }}">{{ json[upload_ref]['@id'] }}</a></li>
-			</ul>
+			<h3>upload</h3>			
+			<div>
+				<img src="{{ upload[0].thumb }}" />
+			</div>
+			
+			<div>
+				<a href="#/upload/{{ json[upload_ref]['@id'] }}">
+					{{ json[upload_ref]['@id'] }}
+				</a>
+			</div>
 		</div>
 	
 	</div>

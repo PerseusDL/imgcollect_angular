@@ -2,18 +2,20 @@ app.service( 'item', [
 'sparql',
 'results',
 'onto',
-function( sparql, results, onto ) {
+'query',
+function( sparql, results, onto, query ) {
 	
   return({
     by_upload:by_upload,
-    by_collection:by_collection
+    by_collection:by_collection,
+		thumb:thumb
   })
   
   function prefix() {
     return onto.prefixes();
   }
   
-  function query( where ){
+  function old_query( where ){
   return "\
   "+prefix()+"\
   SELECT ?urn\
@@ -34,7 +36,7 @@ function( sparql, results, onto ) {
   }
 
   function upload_query( urn ){
-  return query( "?urn " + onto.with_prefix('src') + " <"+urn+">" );
+  return old_query( "?urn " + onto.with_prefix('src') + " <"+urn+">" );
   }
   
   
@@ -48,7 +50,27 @@ function( sparql, results, onto ) {
   }
   
   function collection_query( urn ){
-    return query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
+    return old_query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
   }
-    
+  
+	function thumb( urn ){
+		var q = {
+			where:[
+				[ '<'+urn+'>', 'src', '?up'],
+				[ '?res', 'memberOf', '?up' ],
+				[ '?res', 'src', '?thumb', { optional:true } ]
+			]
+		}
+		return query.get( q ).then(
+		function( data ){
+			return data;
+		});
+	}
+	
 }]);
+/*
+
+var c = tserv('item');
+c.thumb('urn:cite:perseus:crystals.APyNKeJBqXt');
+
+*/
