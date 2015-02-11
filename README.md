@@ -3,9 +3,9 @@
 imgcollect uses three servers.
 Here are their GitHub repos.
 
-* [JackSON](https://github.com/caesarfeta/JackSON)
-* [JackRDF](https://github.com/caesarfeta/JackRDF)
-* [imgup](https://github.com/caesarfeta/imgup)
+* [JackSON](https://github.com/PerseusDL/JackSON)
+* [JackRDF](https://github.com/PerseusDL/JackRDF)
+* [imgup](https://github.com/PerseusDL/imgup)
 
 imgcollect is primarily written in...
 
@@ -35,7 +35,7 @@ Fresh Install of Ubuntu 12.04
 
 	sudo mkdir -p /var/www
 	sudo chown -R user /var/www
-	git clone https://github.com/caesarfeta/JackSON /var/www/JackSON
+	git clone https://github.com/PerseusDL/JackSON /var/www/JackSON
 	cd /var/www/JackSON
 	git submodule update --init
 
@@ -56,7 +56,7 @@ Fresh Install of Ubuntu 12.04
 ### Install JackRDFs coupled fuseki server
 
 	sudo apt-get install default-jre default-jdk
-	git clone https://github.com/caesarfeta/JackRDF /var/www/JackRDF
+	git clone https://github.com/PerseusDL/JackRDF /var/www/JackRDF
 	cd /var/www/JackRDF
 	rake server:install
 
@@ -96,7 +96,7 @@ Watch for changes / build CSS
 
 ### Install imgup server
 
-	git clone https://github.com/caesarfeta/imgup /var/www/imgup
+	git clone https://github.com/PerseusDL/imgup /var/www/imgup
 	cd /var/www/imgup
 	bundle install
 	rake start
