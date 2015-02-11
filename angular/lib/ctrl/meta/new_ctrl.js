@@ -5,7 +5,8 @@ var NewCtrl = [
 'stdout',
 'user',
 'onto',
-function( $scope, urnServ, json, stdout, user, onto ){
+'tmpl',
+function( $scope, urnServ, json, stdout, user, onto, tmpl ){
   
   // Update data
   
@@ -37,11 +38,6 @@ function( $scope, urnServ, json, stdout, user, onto ){
   // Output messages
   
   $scope.stdout = "";
-  
-	
-  // Path to default JSON
-  
-  $scope.src = 'default/'+$scope.type+'.json';
   
   
   // Claim JackSON data url and CITE URN
@@ -88,10 +84,10 @@ function( $scope, urnServ, json, stdout, user, onto ){
   // Load the default JSON data
   
   var default_json = function(){
-    json.get( $scope.src ).then(
+    tmpl.get( $scope.type ).then(
     function( data ){
       $scope.json = data;
-      stdout.log( "Default JSON loaded from: "+$scope.src );
+      stdout.log( "Default "+$scope.type+" JSON loaded" );
       save();
     });
   }

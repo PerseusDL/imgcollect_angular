@@ -4,14 +4,15 @@ app.service( 'resizer', [
 'config',
 'urnServ',
 'onto',
-function( json, imgup, config, urnServ, onto ) {
+'tmpl',
+function( json, imgup, config, urnServ, onto, tmpl ) {
 	
 	var max_width = null;
 	var max_height = null;
 	var src = null;
 	var upload = null;
 	var resize_urn = null;
-	var tmpl = null;
+	var res_tmpl = null;
 	var urn = null;
 	
 	return {
@@ -49,22 +50,22 @@ function( json, imgup, config, urnServ, onto ) {
 	}
 	
 	function resize_tmpl(){
-		return json.get( 'default/resize.json' ).then( function( data ){
-			tmpl = data;
+		return tmpl.get( 'resize' ).then( function( data ){
+			res_tmpl = data;
 			return set_vals();
 		});
 	}
 	
 	function set_vals(){
-		tmpl['@id'] = resize_urn;
-		tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
+		res_tmpl['@id'] = resize_urn;
+		res_tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
 		return send();
 	}
 	
 	function send(){
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
 		var img = upload[ onto.with_prefix('src') ]['@id'];
-		return imgup.resize( img, 200, 200, save_to, tmpl ).then( function( data ){
+		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( function( data ){
 			return data;
 		});
 	}
