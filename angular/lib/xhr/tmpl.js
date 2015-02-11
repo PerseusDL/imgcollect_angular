@@ -25,7 +25,7 @@ function( $http, config ) {
 
 To run this in the console...
 
-var crop = tserv('cropper');
-crop.add( 'urn:cite:perseus:upload.ry897TREW', 0.5, 0.5, 0.25, 0.25 );
+var tmpl = tserv('tmpl');
+tmpl.get('resize').then( function(data){ console.log( data ) });
 
 */
