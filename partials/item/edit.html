@@ -1,6 +1,8 @@
 <div class="row">
 	<div class="columns small-12">
+		
 		<!-- Info -->
+		
 		<div urn-info></div>
 	</div>
 </div>
@@ -9,6 +11,7 @@
 	<div class="columns small-12 medium-6">
 
 		<!-- Uploads -->
+		
 		<div id="item-upload" class="box">
 			<h3>upload</h3>
 			<ul class="items">
@@ -20,6 +23,7 @@
 	<div class="columns small-12 medium-6">
 		
 		<!-- Collection -->
+		
 		<div id="item-collection" class="box">
 			<h3>collection</h3>
 			<ul class="items">
@@ -32,19 +36,20 @@
 </div>
 
 <!-- Item -->
+
 <div class="row">
 	<div class="columns small-12">
+		
 		<!-- Metadata -->
+		
 		<div id="item-form" class="box">
 			<h3>metadata</h3>
 			<form> 
 				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
 				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
-			
-				<!-- mini status -->
-				<!-- <div ng-show="saving" json-msg-mini></div> -->
 				
 				<!-- Messages received from JackSON server -->
+				
 				<div ng-show="saving" json-msg></div>
 				
 			</form>			
