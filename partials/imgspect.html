@@ -1,15 +1,18 @@
 <!-- load -->
+
 <div class="imgspect">
 	<img src="{{ src }}"/>
 </div>
 
 <!-- frame -->
+
 <div class="imgspect frame"
 	 ng-style="{
 	   'width':'100%',
 	   'height':frame_h+'px' }">
 	
 	<!-- canvas --> 
+	
 	<div class="canvas no-select"
 		 ng-style="{
 		   'width':canvas_w+'px',
@@ -19,20 +22,22 @@
 		   'background-image':'url('+src+')' }">
 				
 		<!-- lites -->
+		
 		<div ng-repeat="item in json.annotations"
 			 class="lite"
 			 ng-style="{
-			   'width':to_canvas_x( item['this:roi_width'] )+'px',
-			   'height':to_canvas_y( item['this:roi_height'] )+'px',
-			   'left':to_canvas_x( item['this:roi_x'] )+'px',
-			   'top':to_canvas_y( item['this:roi_y'] )+'px',
+			   'width':to_canvas_x( item['width'] )+'px',
+			   'height':to_canvas_y( item['height'] )+'px',
+			   'left':to_canvas_x( item['x'] )+'px',
+			   'top':to_canvas_y( item['y'] )+'px',
 			   'opacity':config.lite.opa,
 			   'background-color':config.lite.color }">
-			   <p>{{ item['rdf:label'] }}</p>
-			   <p>{{ item['rdf:description'] }}</p>
+			   <p>{{ item['label'] }}</p>
+			   <p>{{ item['description'] }}</p>
 		 </div>
 		 
 		 <!-- temp lite -->
+		 
 		 <div class="lite temp"
 			  ng-style="{
 				'width':to_canvas_x( temp_lite.w )+'px',
@@ -44,12 +49,16 @@
 					
 			<a class="button secondary tiny nudge"></a>
 			<div class="ctrl">
-				<a class="no-select button secondary tiny popout" ng-click="popout( true )">+</a>
+				
+				<a class="no-select button secondary tiny popout" 
+					 ng-click="popout( true )">+</a>
+					 
 				<a class="no-select button secondary tiny resize">*</a>
 			</div>
 		 </div>
 		 
 		 <!-- annotation popout -->
+		 
 		<div class="annot"
 			 ng-show="popout()"
 		     ng-style="{
@@ -67,17 +76,22 @@
 				<input type="text"
 					   ng-model="temp_desc"
 					   ng-style="{ 'background-color':config.annot.input.color }"
-				       placeholder="description"
+				     placeholder="description"
 				/>
 			</div>
 			
 			<div class="ctrl">
-				<a class="no-select button secondary tiny add" ng-click="add()">add</a>
-				<a class="no-select button secondary tiny cancel" ng-click="popout( false )">cancel</a>
-				<!--
-				<a ng-click="lite_clear_text()" 
-				   class="no-select button secondary tiny">clear</a>
-				-->
+				
+				<a class="no-select button secondary tiny add" 
+				   ng-click="add()">
+					 add
+				</a>
+				
+				<a class="no-select button secondary tiny cancel" 
+				   ng-click="popout( false )">
+					 cancel
+				</a>
+
 			</div>
 		</div>
 	</div>
@@ -85,29 +99,33 @@
 </div>
 
 <!-- nav -->
+
 <div class="imgspect nav"
-	 ng-style="{
+	 	 ng-style="{
 	   'width':nav_w()+'px',
 	   'height':nav_h+'px' }">
 	 
 	 <!-- nav canvas -->
+	 
 	 <div class="canvas"
- 		 ng-style="{
- 		   'width':nav_w()+'px',
- 		   'height':nav_h+'px',
- 		   'background-image':'url('+src+')' }">
+ 		 	  ng-style="{
+ 		    'width':nav_w()+'px',
+ 		    'height':nav_h+'px',
+ 		    'background-image':'url('+src+')' }">
 		   
   		 <!-- dragger -->
+			 
   		 <div class="drag"
   		 	 ng-style="{
 			   'width':drag_w()+'px',
 			   'height':drag_h()+'px',
 			   'left':drag_x+'px',
 			   'top':drag_y+'px',
-		   	   'opacity': config.nav.opa }">
+		   	 'opacity': config.nav.opa }">
   		 </div>
 		   
 	   	 <!-- nav lites -->
+			 
 	   	 <div ng-repeat="item in json.annotations"
 	   		 class="lite"
 	   		 ng-style="{
@@ -122,6 +140,7 @@
 </div>
 
 <!-- controls -->
+
 <div class="imgspect controls">
 	
 	<div>zoom</div>
@@ -139,7 +158,14 @@
 	       ng-model="config.lite.opa"
 	/>
 	 
-	<input ng-click="save()" type="submit" class="button secondary" value="Save" />
+	<!-- save application state -->
+	
+	<input ng-click="save()" 
+	       type="submit" 
+				 class="button secondary" 
+				 value="Save" 
+	/>
+				 
 	<div json-msg></div>
 	
 </div>

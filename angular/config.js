@@ -127,6 +127,16 @@ return({
 		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
 		     prefix: "this"
 		  },
+		  x: {
+		     term: "x",
+		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		     prefix: "this"
+		  },
+		  y: {
+		     term: "y",
+		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		     prefix: "this"
+		  },
 		  subject: {
 		     term: "subject",
 		     ns: "http://purl.org/dc/terms/",

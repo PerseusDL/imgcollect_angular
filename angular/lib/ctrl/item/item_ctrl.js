@@ -3,10 +3,9 @@
 appControllers.controller( 'ItemCtrl', [
 '$scope',
 '$injector',
-'annotation', 
 'onto',
 'item',
-function( $scope, $injector, annotation, onto, item ){
+function( $scope, $injector, onto, item ){
 	
   $scope.title = "Item";
 	
@@ -32,19 +31,24 @@ function( $scope, $injector, annotation, onto, item ){
   $scope.collections = [];
   $scope.collections[0] = collection;
 	
-  
-  // Annotation URNs
-  
-  //$scope.annotations = [];
-  //annotation.by_item( $scope.urn ).then(
-  //  function( data ){ $scope.annotations = data }
-  //);
+	// ROIS
 	
-	// Upload
+	var rois = {}
+	item.rois( $scope.urn ).then( function( data ){
+		$scope.rois = data;
+	})
+	
+	// Upload thumb
 	
 	item.thumb( $scope.urn ).then(
 	function( data ){
 		$scope.upload = data;
+	});
+	
+	// Upload src
+	item.upload_src( $scope.urn ).then(
+	function( data )	{
+		$scope.img_src = data[0]['img'];
 	});
 	
 	

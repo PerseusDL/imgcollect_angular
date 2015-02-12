@@ -19,11 +19,11 @@
  <div class="row" 
 		 ng-repeat="item in json">
 
-	<div class="columns small-2">
+	<div class="columns small-6 medium-2">
 		<img src="{{ item['thumb'] }}" />
 	</div>
 	
-	<div class="columns small-10">
+	<div class="columns small-6 medium-10">
    	<table>
   		<tr ng-repeat="key in keys" 
 			    ng-switch on="key">

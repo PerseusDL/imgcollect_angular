@@ -1,0 +1,34 @@
+{
+	"@context": {
+		"urn": "http://data.perseus.org/collections/urn:",
+		"cite": "http://www.homermultitext.org/cite/rdf/",
+		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"dct": "http://purl.org/dc/terms/",
+		"this": "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		"x": {
+			"@id": "this:x",
+			"@type": "xs:float"
+		},
+		"y": {
+			"@id": "this:y",
+			"@type": "xs:float"
+		},
+		"width": {
+			"@id": "this:width",
+			"@type": "xs:float"
+		},
+		"height": {
+			"@id": "this:height",
+			"@type": "xs:float"
+		}
+	},
+	"@id": "urn:cite:perseus:",
+	"dct:type": "roi",
+	"cite:belongsTo": { "@id": "" },
+	"rdf:label": "",
+	"rdf:description": "",
+	"x": null,
+	"y": null,
+	"width": null,
+	"height": null
+}
