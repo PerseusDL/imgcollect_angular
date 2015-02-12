@@ -152,6 +152,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
     };
     var annots = annotations();
     annots.push( fresh );
+		$scope.popout( false );
   }
   
   // Save new annotations to database

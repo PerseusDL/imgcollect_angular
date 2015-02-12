@@ -44,6 +44,7 @@ function( $http, $q, config, user ) {
 		post: post,
 		put: put,
 		get: get,
+		delete: del,
 		del: del,
 		ls: ls,
 		urn: urn,
