@@ -136,6 +136,15 @@ function( $routeProvider ) {
 		templateUrl: 'partials/pre_delete.html',
 		controller: 'PreDeleteCtrl'
 	});
+	
+	
+	// imgspect
+	
+	$routeProvider.
+	when('/imgspect/:urn', {
+		templateUrl: 'partials/imgspect.html',
+		controller: 'imgspect'
+	})
   
 }])
 .run([

@@ -1,13 +1,14 @@
-// new/annotation/:urn
+// imgspect/:urn
 
 appControllers.controller( 'imgspect', [
 '$scope',
 '$injector',
 '$routeParams',
 'json',
-'annotation',
+'item',
 'onto',
-function( $scope, $injector, $routeParams, json, annotation, onto ){
+'tmpl',
+function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   
   // SELECTORS
   
@@ -125,7 +126,7 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   // Get default annotation data
   
   $scope.default = null;
-  json.get( 'default/annotation.json' ).then(
+  tmpl.get( 'roi' ).then(
     function( data ){
       $scope.default = data;
     },
@@ -141,17 +142,16 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   // Add the current temp-lite to annotations
   
   $scope.add = function(){
-    
-    //var fresh = {
-    //  'rdf:label': $scope.temp_label,
-    //  'rdf:description': $scope.temp_desc,
-    //  'this:roi_height': $scope.temp_lite.h,
-    //  'this:roi_width': $scope.temp_lite.w,
-    //  'this:roi_x': $scope.temp_lite.x,
-    //  'this:roi_y': $scope.temp_lite.y
-    //};
-    //var annots = annotations();
-    //annots.push( fresh );
+    var fresh = {
+      'rdf:label': $scope.temp_label,
+      'rdf:description': $scope.temp_desc,
+      'height': $scope.temp_lite.h,
+      'width': $scope.temp_lite.w,
+      'x': $scope.temp_lite.x,
+      'y': $scope.temp_lite.y
+    };
+    var annots = annotations();
+    annots.push( fresh );
   }
   
   // Save new annotations to database
@@ -169,11 +169,11 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   }
   
   function annotation_urn( annot ){
-    return $scope.urn+[ 
-      annot['this:roi_height'], 
-      annot['this:roi_width'], 
-      annot['this:roi_x'], 
-      annot['this:roi_y'] 
+    return $scope.urn+"@"+[ 
+      annot['height'], 
+      annot['width'], 
+      annot['x'], 
+      annot['y'] 
     ].join(',')
   }
   
@@ -188,7 +188,7 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
     
     // save on the server
     
-    json.post( 'annotation/'+annot['@id'], annot ).then( 
+    json.post( 'roi/'+annot['@id'], annot ).then( 
       function( data ){
         console.log( data );
       },
@@ -218,7 +218,6 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   
   function upload_json( urn ){
     json.urn( urn ).then( function( data ){
-      console.log(data);
       var src = data.src[0];
       json.get( src ).then( function( data ){
         $scope.json.upload = data;
@@ -231,7 +230,7 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   // get the annotations
   
   function get_annotations( urn ){
-    annotation.by_item_more( urn ).then( function( data ){
+    item.rois( urn ).then( function( data ){
       $scope.json.annotations = data;
     });
     ready();
@@ -241,7 +240,7 @@ function( $scope, $injector, $routeParams, json, annotation, onto ){
   // Start the party once everything is loaded
   
   function ready(){
-    $scope.src = $scope.json.upload['this:src'];
+    $scope.src = $scope.json.upload['dct:references']['@id'];
     start();
   }
   

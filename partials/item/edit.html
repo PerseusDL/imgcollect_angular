@@ -7,6 +7,28 @@
 	</div>
 </div>
 
+
+<div class="row">
+	<div class="columns small-12">
+		
+		<!-- Metadata -->
+		
+		<div id="item-form" class="box">
+			<h3>metadata</h3>
+			<form> 
+				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
+				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+				
+				<!-- Messages received from JackSON server -->
+				
+				<div ng-show="saving" json-msg></div>
+				
+			</form>			
+		</div>
+	</div>
+</div>
+
+
 <div class="row">
 	<div class="columns small-12 medium-6">
 
@@ -38,27 +60,48 @@
 				</li>
 			</ul>
 		</div>
+		
 	</div>
 </div>
 
-<!-- Item -->
+<!-- ROIS -->
 
 <div class="row">
-	<div class="columns small-12">
+	<div class="columns medium-12">
 		
-		<!-- Metadata -->
-		
-		<div id="item-form" class="box">
-			<h3>metadata</h3>
-			<form> 
-				<input type="text" ng-repeat="field in edit_text_fields" ng-change="change(field)" ng-model="form[field]" placeholder="{{field}}" />
-				<input class="button secondary" type="submit" value="Save" ng-click="save()" />
+		<div id="item-rois" class="box">
+			<h3>rois</h3>
+			<ul class="items list">
 				
-				<!-- Messages received from JackSON server -->
+				<div class="row" ng-repeat="roi in rois">
+					
+						<div class="columns small-6 medium-2">
+							<img src="{{ img_src }}" 
+								 ng-param="{{ roi.x }},{{ roi.y }},{{ roi.width }},{{ roi.height }}"
+							img-bit />
+						</div>
+
+						<div class="columns small-6 medium-10">						
+							<table>
+								<tr>
+									<th>Label</th>
+									<td>{{ roi.label }}</td>
+								</tr>
+								<tr>
+									<th>Description</th>
+									<td>{{ roi.description }}</td>
+								</tr>
+							</table>
+						</div>
+				</div>
 				
-				<div ng-show="saving" json-msg></div>
+				<!-- Open Imgspect -->
 				
-			</form>			
+				<a class="button secondary" href="#/imgspect/{{ urn }}">imgspect</a>
+				
+			</ul>
 		</div>
+		
 	</div>
 </div>
+

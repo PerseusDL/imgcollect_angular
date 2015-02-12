@@ -8,7 +8,9 @@ function( sparql, results, onto, query ) {
   return({
     by_upload:by_upload,
     by_collection:by_collection,
-		thumb:thumb
+		thumb:thumb,
+		rois:rois,
+		upload_src:upload_src
   })
   
   function prefix() {
@@ -52,11 +54,14 @@ function( sparql, results, onto, query ) {
   function collection_query( urn ){
     return old_query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
   }
+	
+	
+	// Get thumbnails associated with an item
   
 	function thumb( urn ){
 		var q = {
 			where:[
-				[ '<'+urn+'>', 'src', '?up'],
+				[ '<'+urn+'>', 'src', '?up' ],
 				[ '?res', 'memberOf', '?up' ],
 				[ '?res', 'src', '?thumb', { optional:true } ]
 			]
@@ -65,6 +70,43 @@ function( sparql, results, onto, query ) {
 		function( data ){
 			return data;
 		});
+	}
+	
+	// Get the upload src image
+	
+	function upload_src( urn ){
+		var q = {
+			where:[
+				[ '<'+urn+'>', 'src', '?up' ],
+				[ '?up', 'src', '?img' ]
+			]
+		}
+		return query.get( q ).then(
+		function( data ){
+			return data;
+		});
+	}
+	
+	
+	// Get the ROIs associated with an item
+	
+	function rois( urn ){
+		var q = {
+			where:[
+				[ '?urn', 'memberOf', '<'+urn+'>' ],
+				[ '?urn', 'type', '"roi"' ],
+				[ '?urn', 'x', '?x' ],
+				[ '?urn', 'y', '?y' ],
+				[ '?urn', 'width', '?width' ],
+				[ '?urn', 'height', '?height' ],
+				[ '?urn', 'label', '?label' ],
+				[ '?urn', 'description', '?description' ],
+			]
+		}
+		return query.get( q ).then(
+    function( data ){
+    	return data;
+    });	
 	}
 	
 }]);
