@@ -170,11 +170,11 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   }
   
   function annotation_urn( annot ){
-    return $scope.urn+"@"+[ 
-      annot['height'], 
-      annot['width'], 
+    return $scope.urn+"@"+[  
       annot['x'], 
-      annot['y'] 
+      annot['y'],
+      annot['width'],
+			annot['height']
     ].join(',')
   }
   

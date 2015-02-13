@@ -155,9 +155,13 @@ function( $scope, $routeParams, json ){
   // Get the coords
   
   var urn = $scope.urn.split("@");
-  $scope.coords = urn[1].split(',');
-  get_src( urn[0] )
-  
+	if ( urn.length > 1 ){
+  	$scope.coords = urn[1].split(',');
+		get_src( urn[0] );
+	}
+  else {
+  	get_src( urn );
+  }
   $scope.max_width = 600;
   
   
