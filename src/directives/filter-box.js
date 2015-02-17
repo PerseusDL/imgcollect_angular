@@ -3,6 +3,6 @@
 appDirectives.directive('filterBox', 
 function(){
   return {
-    templateUrl: 'partials/share/filter-box.html'
+    templateUrl: 'html/share/filter-box.html'
   }
 });

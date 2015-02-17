@@ -1,6 +1,6 @@
 appDirectives.directive('stdOut', 
 function(){
   return {
-    templateUrl: 'partials/share/msg/std-out.html'
+    templateUrl: 'html/share/msg/std-out.html'
   }
 });

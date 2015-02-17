@@ -17,10 +17,7 @@ module.exports = function( grunt ) {
 					'../../lib/jslib/src/js/StringExt.js',
 					'../../lib/jslib/src/js/TimeStamp.js',
 					'../../lib/jslib/third_party/datejs/date.js',
-					'bower_components/ng-file-upload/angular-file-upload.min.js',
-					'bower_components/ng-file-upload/angular-file-upload-shim.min.js',
-					'angular/**/*.js',
-					'js/*.js'
+					'src/**/*.js',
 				],
 				dest: 'dist/<%= pkg.name %>.js'
 			}

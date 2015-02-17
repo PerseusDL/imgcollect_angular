@@ -1,6 +1,6 @@
 appDirectives.directive('navBox', 
 function(){
   return {
-    templateUrl: 'partials/share/nav-box.html'
+    templateUrl: 'html/share/nav-box.html'
   }
 });
