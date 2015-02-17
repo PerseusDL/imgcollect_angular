@@ -86,13 +86,19 @@ Install nodejs this funky way.  [Taken from stackoverflow](http://stackoverflow.
 
 	curl -sL https://deb.nodesource.com/setup | sudo bash -
 	sudo apt-get install -y nodejs
+
+Install bower
+
 	sudo npm install bower -g
+
+Install imgcollect_angular dependencies
+
 	bower install
 	bundle install
 
-Watch for changes / build CSS
+Build CSS
 
-	bundle exec compass watch
+	bundle exec compass compile
 
 ### Install imgup server
 
