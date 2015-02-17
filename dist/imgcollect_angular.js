@@ -4309,6 +4309,9 @@ function( $http, $q, config, user ) {
 	// Retrieve a JSON file path by URN
 	
 	function urn( urn ){
+		if ( urn == null ){
+			return;
+		}
 		var request = api( GET, config.xhr.json.url+'/src?urn='+urn );
 		return( request.then( 
 			success, 
