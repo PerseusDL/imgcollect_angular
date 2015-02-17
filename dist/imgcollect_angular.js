@@ -700,206 +700,6 @@ var app = angular.module('app',[
 'angularFileUpload'
 ]);
 
-app.config([
-'$routeProvider',
-function( $routeProvider ) {
-  
-  // uploads
-  
-  $routeProvider.
-  when('/uploads', {
-    templateUrl: 'partials/upload/list.html',
-    controller: 'UploadListCtrl'
-  }).
-  when('/uploads/:page', {
-    templateUrl: 'partials/upload/list.html',
-    controller: 'UploadListCtrl'
-  }).
-  when('/upload/:urn', {
-    templateUrl: 'partials/upload/edit.html',
-    controller: 'UploadCtrl'
-  }).
-  when('/new/upload', {
-    templateUrl: 'partials/upload/new.html',
-    controller: 'UploadNew'
-  }).
-  otherwise({
-    redirectTo: '/uploads'
-  });
-  
-  
-  // items
-  
-  $routeProvider.
-  when('/items', {
-    templateUrl: 'partials/item/list.html',
-    controller: 'ItemListCtrl'
-  }).
-  when('/items/:page', {
-    templateUrl: 'partials/item/list.html',
-    controller: 'ItemListCtrl'
-  }).
-  when('/item/:urn', {
-    templateUrl: 'partials/item/edit.html',
-    controller: 'ItemCtrl'
-  }).
-  when('/new/item/:urn', {
-    templateUrl: 'partials/item/new.html',
-    controller: 'ItemNew'
-  });
-  
-  
-  // collections
-  
-  $routeProvider.
-  when('/collections', {
-    templateUrl: 'partials/collection/list.html',
-    controller: 'CollectionListCtrl'
-  }).
-  when('/collections/:page', {
-    templateUrl: 'partials/collection/list.html',
-    controller: 'CollectionListCtrl'
-  }).
-  when('/collection/:urn', {
-    templateUrl: 'partials/collection/edit.html',
-    controller: 'CollectionCtrl'
-  }).
-  when('/new/collection', {
-    templateUrl: 'partials/collection/new.html',
-    controller: 'CollectionNew'
-  });
-  
-  
-  // annotations
-  
-  $routeProvider.
-  when('/annotations', {
-    templateUrl: 'partials/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotations/:page', {
-    templateUrl: 'partials/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotation/:urn', {
-    templateUrl: 'partials/annotation/edit.html',
-    controller: 'AnnotationCtrl'
-  }).
-  when('/new/annotation/:urn', {
-    templateUrl: 'partials/imgspect.html',
-    controller: 'imgspect'
-  });
-  
-  
-  // resize
-  
-  $routeProvider.
-  when('/resize/:urn',{
-    templateUrl: 'partials/resize.html',
-    controller: 'ResizeCtrl'
-  });
-  
-  
-  // login
-  
-  $routeProvider.
-  when('/login', {
-    templateUrl: 'partials/login.html',
-    controller: 'LoginCtrl'
-  });
-  
-  
-  // view
-  
-  $routeProvider.
-  when('/view/:urn', {
-	  templateUrl: 'partials/view.html',
-	  controller: 'ViewCtrl'
-  });
-	
-	
-	// deleter
-	
-	$routeProvider.
-	when('/delete/:urn', {
-		templateUrl: 'partials/delete.html',
-		controller: 'DeleteCtrl'
-	}).
-	when('/delete', {
-		templateUrl: 'partials/pre_delete.html',
-		controller: 'PreDeleteCtrl'
-	});
-	
-	
-	// imgspect
-	
-	$routeProvider.
-	when('/imgspect/:urn', {
-		templateUrl: 'partials/imgspect.html',
-		controller: 'imgspect'
-	})
-  
-}])
-.run([
-'$rootScope',
-'$location',
-'user',
-'config',
-function( $rootScope, $location, user, config ){
-	
-	// Some views are public
-	
-	function public_view(){
-		var path = $location.path();
-		var pub = config.access.public_views;
-		for( var i=0; i<pub.length; i++ ){
-			if ( path.indexOf( pub[i] ) == 0 ){
-				return true
-			}
-		}
-	}
-	
-	// If a user is logged-in they don't need to see the login view
-	
-	function logged_in(){
-		var path = $location.path();
-		if ( path.indexOf( config.access.logged_out ) == 0 ){
-			$location.path( config.access.logged_in )
-		}
-	}
-	
-	// Run everytime scope changes
-  
-  $rootScope.$on('$routeChangeSuccess', function(){
-    
-    // Check for user data.
-    
-    user.check().then(
-
-      // All is well
-      
-      function(){
-				logged_in();
-        $rootScope.$emit( user.events.ok );
-      },
-      
-      // User is not logged in
-      
-      function(){
-				if ( public_view() == true ){
-					return;
-				}
-        $rootScope.$emit( user.events.error );
-        $location.path( config.access.logged_out );
-      }
-	  
-	);
-	
-})
-
-}]);  // close app.config
-
-
 
 app.service( 'config', [ 'host', function( host ){
 return({
@@ -1076,580 +876,6 @@ return({
 
 
 var appControllers = angular.module('appControllers',[]);
-
-// login
-
-appControllers.controller( 'LoginCtrl', [
-'$scope',
-'user',
-function( $scope, user ){}]);
-
-
-// resize/:urn
-
-appControllers.controller( 'ResizeCtrl', [
-'$scope',
-'$injector',
-'user',
-'$rootScope',
-'onto',
-function( $scope, $injector, user, $rootScope, onto ){
-  
-  // Start once user event fires 
-  
-  $rootScope.$on( user.events.ok, function(){ go() });
-  
-  function go(){
-    var label = onto.with_prefix('label');
-    var desc = onto.with_prefix('description');
-    var keyword = onto.with_prefix('subject');
-    $scope.title = "Resize";
-    $scope.form = {};
-    $scope.form[label] = "";
-    $scope.form[desc] = "";
-    $scope.form[subject] = [];
-    $injector.invoke( EditCtrl, this, { $scope: $scope } );
-    
-    $scope.run = function() {
-      $scope.uploads = [];
-      $scope.uploads[0] = { 
-        urn: $scope.json[onto.with_prefix('src')]['@id'] 
-      };
-    }
-    
-    $scope.init();
-  }
-}]);
-
-
-// User
-
-appControllers.controller( 'UserCtrl', [
-'$scope',
-'$injector',
-'user',
-'$rootScope',
-function( $scope, $injector, user, $rootScope ){    
-  
-  // Start once user event fires 
-  
-  $rootScope.$on( user.events.ok, function(){ go() });
-  
-  function go(){
-    $scope.only = user.only;
-    $scope.user = user.id();
-    $scope.username = user.name();
-  }
-  
-  $scope.switch = function( bool ){
-    user.only = bool;
-    go();
-  }
-}]);
-
-
-// StdOut
-
-appControllers.controller( 'StdOut', [
-'$scope',
-'stdout',
-function( $scope, stdout ){
-  $scope.stdout = stdout;
-  $scope.$watch('stdout.msg', function(){
-    $scope.msg = stdout.msg;
-  });
-}]);
-
-
-// JsonMsg
-// Makes communication with JackSON server more transparent
-// to the user.
-
-appControllers.controller( 'JsonMsg', [
-'$scope',
-'json',
-function( $scope, json ){
-  
-  var update = function( method, url, stat, msg ){
-    $scope.method = method;
-    $scope.url = url;
-    $scope.status = stat;
-    $scope.msg = msg;
-    $scope.hide = false;
-    switch( $scope.status ){
-      case json.state().success:
-        $scope.mode = 'success'
-        break;
-      case json.state().error:
-        $scope.mode = 'alert'
-        break;
-      default:
-        $scope.mode = 'secondary'
-    }
-  }
-  
-  json.on_change( update );
-}]);
-
-
-// Sparql Msg
-// Makes communcation with SPARQL endpoint more transparent
-
-appControllers.controller( 'SparqlMsg', [
-'$scope',
-'sparql',
-function( $scope, sparql ){
-  
-  $scope.query = '';
-  var update = function( status, query ){
-    $scope.query = query;
-  }
-  sparql.on_change( update );
-  
-}]);
-
-
-// Talk to URN server
-
-appControllers.controller( 'urnServ',[
-'$scope',
-'urnServ',
-function( $scope, urnServ ){}])
-
-
-// View
-
-appControllers.controller( 'ViewCtrl', [
-'$scope',
-'$routeParams',
-'json',
-function( $scope, $routeParams, json ){
-  
-  // Get the URN
-  
-  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
-  
-  // Get the coords
-  
-  var urn = $scope.urn.split("@");
-	if ( urn.length > 1 ){
-  	$scope.coords = urn[1].split(',');
-		get_src( urn[0] );
-	}
-  else {
-  	get_src( urn );
-  }
-  $scope.max_width = 600;
-  
-  
-  // What's the src JSON?
-  
-  function get_src( urn ){
-    json.urn( urn ).then( function( data ){
-      get_json( data['src'][0] );
-    });
-  }
-  
-  
-  // Check the type
-  
-  function check_type( data ){
-    var type = data['dct:type']
-    switch( type ){
-      case 'upload':
-        $scope.src = data['dct:references']['@id']
-      break;
-      case 'item':
-        get_src( data['dct:references']['@id'] )
-      break;
-    }
-  }
-  
-  
-  // Get the src JSON
-  
-  function get_json( src ){
-    json.get( src ).then( function( data ){
-      check_type( data );
-    });
-  }
-  
-}]);
-
-
-// Pre-delete
-
-appControllers.controller( 'PreDeleteCtrl', [
-'$scope',
-'$window',
-function( $scope, $window ){
-	$scope.urn = null;
-	$scope.go = function(){
-		$window.location.href ="#/delete/"+$scope.urn;
-	}
-}]);
-
-
-// Delete things
-// delete/upload/:urn
-
-appControllers.controller( 'DeleteCtrl', [
-'$scope',
-'$injector',
-'json',
-'$routeParams',
-'deleter',
-function( $scope, $injector, json, $routeParams, deleter, urn_serv ){
-  
-  // URNs
-  
-  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
-  $scope.refs = []
-  
-  // UI messaging switches
-  
-  $scope.urn_invalid = false;
-  $scope.deleted = false;
-  $scope.ref_checked = false;
-  
-  
-  // UI messaging checks
-  // Keep template display logic simple.
-  
-  $scope.ui_no_record = function(){
-    return $scope.urn_invalid;
-  }
-  
-  $scope.ui_success = function(){
-    return $scope.deleted;
-  }
-  
-  $scope.ui_delete_safe = function(){
-    if ( $scope.ref_checked && 
-         $scope.deleted == false &&
-         $scope.refs.length == 0 ){
-      return true;
-    }
-  }
-  
-  $scope.ui_ref_found = function(){
-    if ( $scope.ref_checked &&
-         $scope.deleted == false &&
-         $scope.refs.length > 0 ){
-      return true;
-    }
-  }
-    
-  $scope.ui_ref_check = function(){
-    if ( $scope.ref_checked == false &&
-         $scope.deleted == false &&
-         $scope.urn_invalid == false ){
-      return true;
-    }
-  }
-  
-  $scope.ui_ref_table = function(){
-    if ( $scope.refs.length > 0 &&
-         $scope.deleted == false ){
-      return true;
-    }
-  }
-  
-  $scope.ui_del_button = function(){
-    if ( $scope.urn_invalid == false &&
-         $scope.deleted == false &&
-         $scope.ref_checked ){
-      return true;
-    }
-  }
-  
-  
-  // Check if URN is valid
-  
-  urn_valid();
-  function urn_valid(){
-    json.urn( $scope.urn ).then( 
-    function( data ){
-      if ( 'error' in data ){
-        $scope.urn_invalid = true;
-      }
-    });
-  }
-  
-  
-  // Find all references to the URN
-  
-  $scope.get_refs = function(){
-    deleter.refs( $scope.urn ).then( 
-    function( data ){
-      $scope.refs = data;
-      $scope.ref_checked = true;
-    });
-  }
-  
-  
-  // Delete
-  
-  $scope.delete = function(){
-    deleter.urn( $scope.urn ).then( 
-    function( data ){
-      $scope.deleted = true;
-    });
-  }
-}]);
-
-
-var appDirectives = angular.module('appDirectives',[]);
-
-
-// Build a filterbox in list controllers
-
-appDirectives.directive('filterBox', 
-function(){
-  return {
-    templateUrl: 'partials/share/filter-box.html'
-  }
-});
-
-appDirectives.directive('userBox', 
-function(){
-  return {
-    templateUrl: 'partials/share/user-box.html'
-  }
-});
-
-appDirectives.directive('listMetaBox', 
-function(){
-  return {
-    templateUrl: 'partials/share/list-meta-box.html'
-  }
-});
-
-appDirectives.directive('navBox', 
-function(){
-  return {
-    templateUrl: 'partials/share/nav-box.html'
-  }
-});
-
-appDirectives.directive('controlBox',
-function(){
-	return {
-		templateUrl: 'partials/share/control-box.html'
-	}
-});
-
-appDirectives.directive('stdOut', 
-function(){
-  return {
-    templateUrl: 'partials/share/msg/std-out.html'
-  }
-});
-
-appDirectives.directive('jsonOut', 
-function(){
-  return {
-    templateUrl: 'partials/share/msg/json-out.html'
-  }
-});
-
-appDirectives.directive('jsonMsg',
-function(){
-	return {
-		templateUrl: 'partials/share/msg/json-msg.html'
-	}
-});
-
-appDirectives.directive('jsonMsgMini',
-function(){
-	return {
-		templateUrl: 'partials/share/msg/json-msg-mini.html'
-	}
-});
-
-appDirectives.directive('sparqlMsg',
-function(){
-	return {
-		templateUrl: 'partials/share/msg/sparql-msg.html'
-	}
-});
-
-appDirectives.directive('urnServMsg',
-function(){
-	return {
-		templateUrl: 'partials/share/msg/urn-serv-msg.html'
-	}
-});
-
-appDirectives.directive('urnInfo', 
-function(){
-  return {
-    templateUrl: 'partials/share/urn-info.html'
-  }
-});
-
-appDirectives.directive('collectionItems', 
-function(){
-  return {
-    templateUrl: 'partials/share/collection-items.html'
-  }
-});
-
-appDirectives.directive('collectionItemsShort', 
-function(){
-  return {
-    templateUrl: 'partials/share/collection-items-short.html'
-  }
-});
-
-appDirectives.directive('resizeItems', 
-function(){
-  return {
-    templateUrl: 'partials/share/resize-items.html'
-  }
-});
-
-appDirectives.directive('uploadItems', 
-function(){
-  return {
-    templateUrl: 'partials/share/upload-items.html'
-  }
-});
-
-appDirectives.directive('imgUploader', 
-function(){
-  return {
-    templateUrl: 'partials/share/img-uploader.html'
-  }
-});
-
-
-// Builds a box for checking URN uniqueness
-// You must implement a $scope.urn_uniq function
-// in your controller.
-
-// see controllers.js: CollectionNew
-
-appDirectives.directive('urnUniqBox', 
-function(){
-  return {
-    templateUrl: 'partials/share/urn-uniq-box.html'
-  }
-});
-
-// img-bit functionality.
-// see .img-bit in app.scss
-
-appDirectives.directive('imgBit', 
-function(){
-  return {
-    link: function( scope, elem, attr ){
-		
-		elem.bind('load', function(e){
-		  
-		  // Build the necessary dom elements
-			
-          elem.wrap( '<div class="frame">' );
-          var frame = elem.parent();
-		  
-          frame.wrap( '<div class="img-bit">' );
-		  var wrap = elem.parent();
-		  
-          var height = this.naturalHeight;
-          var width = this.naturalWidth;
-          var param = attr.ngParam.split(',');
-		  
-		  // CSS makes the magic happen
-		  
-		  wrap.css({
-		    display: "inline-block"
-		  })
-		   
-          frame.css({
-            width: parseInt( width*param[2] ),
-            height: parseInt( height*param[3] ),
-			position: "relative",
-			overflow: "hidden"
-          });
-		     
-          elem.css({
-			position: "absolute",
-			display: "block",
-			"vertical-align": "baseline",
-			"max-width": "none",
-			"max-height": "none",
-            width: width,
-            height: height,
-            top: parseInt( param[1]*height*-1 ),
-            left: parseInt( param[0]*width*-1 ),
-          });
-		  
-	  	});
-
-    }
-  }
-});
-
-// img-loc
-
-appDirectives.directive('imgLoc',
-function(){
-  return {
-	  link: function( scope, elem, attr ){
-		  
-		elem.bind('load', function(e){
-			
-			// Get the params you need
-			
-			var param = attr.ngParam.split(',');
-			
-            var height = this.naturalHeight;
-            var width = this.naturalWidth;
-			
-			// Workout max width
-			
-			var max_width = param[4];
-			var diff = max_width / width;
-			if ( diff < 1 ){
-				width = max_width
-				height = height*diff
-			}
-			
-            elem.wrap( '<div class="img-loc">' );
-            var wrap = elem.parent();
-			
-  		  	// CSS makes the magic happen
-			// see .img-loc in app.scss to customize
-		   
-            wrap.css({
-              width: parseInt( width ),
-              height: parseInt( height ),
-			  position: "relative",
-			  overflow: "hidden"
-            });
-			
-			elem.css({
-              width: parseInt( width ),
-			  height: parseInt( height )
-			})
-			
-			wrap.append( '<div class="lite">' );
-			var lite = elem.next();
-			lite.css({
-			    position: "absolute",
-				left: parseInt( width * param[0] ),
-				top: parseInt( height * param[1] ),
-				width: parseInt( width * param[2] ),
-				height: parseInt( height * param[3] )
-			});
-			wrap.after( '<div class="clearfix"></div>' );
-		});
-		
-	  }
-  }
-	
-});
-
 
 
 // annotations
@@ -1910,6 +1136,115 @@ function( $scope, $injector, urnServ, $rootScope, user, onto ){
     else {
       $scope.stdout += 'That URN is taken. Choose another.'
     }
+  }
+}]);
+
+
+// Delete things
+// delete/:urn
+
+appControllers.controller( 'DeleteCtrl', [
+'$scope',
+'$injector',
+'json',
+'$routeParams',
+'deleter',
+function( $scope, $injector, json, $routeParams, deleter, urn_serv ){
+  
+  // URNs
+  
+  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+  $scope.refs = []
+  
+  // UI messaging switches
+  
+  $scope.urn_invalid = false;
+  $scope.deleted = false;
+  $scope.ref_checked = false;
+  
+  
+  // UI messaging checks
+  // Keep template display logic simple.
+  
+  $scope.ui_no_record = function(){
+    return $scope.urn_invalid;
+  }
+  
+  $scope.ui_success = function(){
+    return $scope.deleted;
+  }
+  
+  $scope.ui_delete_safe = function(){
+    if ( $scope.ref_checked && 
+         $scope.deleted == false &&
+         $scope.refs.length == 0 ){
+      return true;
+    }
+  }
+  
+  $scope.ui_ref_found = function(){
+    if ( $scope.ref_checked &&
+         $scope.deleted == false &&
+         $scope.refs.length > 0 ){
+      return true;
+    }
+  }
+    
+  $scope.ui_ref_check = function(){
+    if ( $scope.ref_checked == false &&
+         $scope.deleted == false &&
+         $scope.urn_invalid == false ){
+      return true;
+    }
+  }
+  
+  $scope.ui_ref_table = function(){
+    if ( $scope.refs.length > 0 &&
+         $scope.deleted == false ){
+      return true;
+    }
+  }
+  
+  $scope.ui_del_button = function(){
+    if ( $scope.urn_invalid == false &&
+         $scope.deleted == false &&
+         $scope.ref_checked ){
+      return true;
+    }
+  }
+  
+  
+  // Check if URN is valid
+  
+  urn_valid();
+  function urn_valid(){
+    json.urn( $scope.urn ).then( 
+    function( data ){
+      if ( 'error' in data ){
+        $scope.urn_invalid = true;
+      }
+    });
+  }
+  
+  
+  // Find all references to the URN
+  
+  $scope.get_refs = function(){
+    deleter.refs( $scope.urn ).then( 
+    function( data ){
+      $scope.refs = data;
+      $scope.ref_checked = true;
+    });
+  }
+  
+  
+  // Delete
+  
+  $scope.delete = function(){
+    deleter.urn( $scope.urn ).then( 
+    function( data ){
+      $scope.deleted = true;
+    });
   }
 }]);
 
@@ -2750,6 +2085,45 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
 
 
 
+// JsonMsg
+// Makes communication with JackSON server more transparent
+// to the user.
+
+appControllers.controller( 'JsonMsg', [
+'$scope',
+'json',
+function( $scope, json ){
+  
+  var update = function( method, url, stat, msg ){
+    $scope.method = method;
+    $scope.url = url;
+    $scope.status = stat;
+    $scope.msg = msg;
+    $scope.hide = false;
+    switch( $scope.status ){
+      case json.state().success:
+        $scope.mode = 'success'
+        break;
+      case json.state().error:
+        $scope.mode = 'alert'
+        break;
+      default:
+        $scope.mode = 'secondary'
+    }
+  }
+  
+  json.on_change( update );
+}]);
+
+
+// login
+
+appControllers.controller( 'LoginCtrl', [
+'$scope',
+'user',
+function( $scope, user ){}]);
+
+
 // Base controller
 // http://blog.omkarpatil.com/2013/02/controller-inheritance-in-angularjs.html
 
@@ -2970,6 +2344,86 @@ function( $scope, urnServ, json, stdout, user, onto, tmpl ){
   }
 
 }];
+
+
+// Pre-delete
+
+appControllers.controller( 'PreDeleteCtrl', [
+'$scope',
+'$window',
+function( $scope, $window ){
+	$scope.urn = null;
+	$scope.go = function(){
+		$window.location.href ="#/delete/"+$scope.urn;
+	}
+}]);
+
+
+// resize/:urn
+
+appControllers.controller( 'ResizeCtrl', [
+'$scope',
+'$injector',
+'user',
+'$rootScope',
+'onto',
+function( $scope, $injector, user, $rootScope, onto ){
+  
+  // Start once user event fires 
+  
+  $rootScope.$on( user.events.ok, function(){ go() });
+  
+  function go(){
+    var label = onto.with_prefix('label');
+    var desc = onto.with_prefix('description');
+    var keyword = onto.with_prefix('subject');
+    $scope.title = "Resize";
+    $scope.form = {};
+    $scope.form[label] = "";
+    $scope.form[desc] = "";
+    $scope.form[subject] = [];
+    $injector.invoke( EditCtrl, this, { $scope: $scope } );
+    
+    $scope.run = function() {
+      $scope.uploads = [];
+      $scope.uploads[0] = { 
+        urn: $scope.json[onto.with_prefix('src')]['@id'] 
+      };
+    }
+    
+    $scope.init();
+  }
+}]);
+
+
+// Sparql Msg
+// Makes communcation with SPARQL endpoint more transparent
+
+appControllers.controller( 'SparqlMsg', [
+'$scope',
+'sparql',
+function( $scope, sparql ){
+  
+  $scope.query = '';
+  var update = function( status, query ){
+    $scope.query = query;
+  }
+  sparql.on_change( update );
+  
+}]);
+
+
+// StdOut
+
+appControllers.controller( 'StdOut', [
+'$scope',
+'stdout',
+function( $scope, stdout ){
+  $scope.stdout = stdout;
+  $scope.$watch('stdout.msg', function(){
+    $scope.msg = stdout.msg;
+  });
+}]);
 
 
 // upload/:urn
@@ -3352,6 +2806,567 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   	}
   }
 }]);
+
+
+// Talk to URN server
+
+appControllers.controller( 'urnServ',[
+'$scope',
+'urnServ',
+function( $scope, urnServ ){}])
+
+
+// User
+
+appControllers.controller( 'UserCtrl', [
+'$scope',
+'$injector',
+'user',
+'$rootScope',
+function( $scope, $injector, user, $rootScope ){    
+  
+  // Start once user event fires 
+  
+  $rootScope.$on( user.events.ok, function(){ go() });
+  
+  function go(){
+    $scope.only = user.only;
+    $scope.user = user.id();
+    $scope.username = user.name();
+  }
+  
+  $scope.switch = function( bool ){
+    user.only = bool;
+    go();
+  }
+}]);
+
+
+// View
+
+appControllers.controller( 'ViewCtrl', [
+'$scope',
+'$routeParams',
+'json',
+function( $scope, $routeParams, json ){
+  
+  // Get the URN
+  
+  $scope.urn = ( $routeParams.urn == undefined ) ? null : $routeParams.urn;
+  
+  // Get the coords
+  
+  var urn = $scope.urn.split("@");
+	if ( urn.length > 1 ){
+  	$scope.coords = urn[1].split(',');
+		get_src( urn[0] );
+	}
+  else {
+  	get_src( urn );
+  }
+  $scope.max_width = 600;
+  
+  
+  // What's the src JSON?
+  
+  function get_src( urn ){
+    json.urn( urn ).then( function( data ){
+      get_json( data['src'][0] );
+    });
+  }
+  
+  
+  // Check the type
+  
+  function check_type( data ){
+    var type = data['dct:type']
+    switch( type ){
+      case 'upload':
+        $scope.src = data['dct:references']['@id']
+      break;
+      case 'item':
+        get_src( data['dct:references']['@id'] )
+      break;
+    }
+  }
+  
+  
+  // Get the src JSON
+  
+  function get_json( src ){
+    json.get( src ).then( function( data ){
+      check_type( data );
+    });
+  }
+  
+}]);
+
+
+var appDirectives = angular.module('appDirectives',[]);
+
+
+appDirectives.directive('collectionItemsShort', 
+function(){
+  return {
+    templateUrl: 'partials/share/collection-items-short.html'
+  }
+});
+
+
+appDirectives.directive('collectionItems', 
+function(){
+  return {
+    templateUrl: 'partials/share/collection-items.html'
+  }
+});
+
+
+appDirectives.directive('controlBox',
+function(){
+	return {
+		templateUrl: 'partials/share/control-box.html'
+	}
+});
+
+
+// Build a filterbox in list controllers
+
+appDirectives.directive('filterBox', 
+function(){
+  return {
+    templateUrl: 'partials/share/filter-box.html'
+  }
+});
+
+
+// img-bit functionality.
+// see .img-bit in app.scss
+
+appDirectives.directive('imgBit', 
+function(){
+  return {
+    link: function( scope, elem, attr ){
+		
+			elem.bind('load', function(e){
+		  
+				// Build the necessary dom elements
+				
+				elem.wrap( '<div class="frame">' );
+				var frame = elem.parent();
+				
+				frame.wrap( '<div class="img-bit">' );
+		  	var wrap = elem.parent();
+		  	
+				var height = this.naturalHeight;
+				var width = this.naturalWidth;
+				var param = attr.ngParam.split(',');
+		  	
+		  	// CSS makes the magic happen
+		  	
+		  	wrap.css({
+		  	  display: "inline-block"
+		  	});
+		  	 
+				frame.css({
+					width: parseInt( width*param[2] ),
+					height: parseInt( height*param[3] ),
+					position: "relative",
+					overflow: "hidden"
+				});
+		  	   
+				elem.css({
+					position: "absolute",
+					display: "block",
+					"vertical-align": "baseline",
+					"max-width": "none",
+					"max-height": "none",
+				  width: width,
+				  height: height,
+				  top: parseInt( param[1]*height*-1 ),
+				  left: parseInt( param[0]*width*-1 ),
+				});
+	  	});
+			
+    }
+  }
+});
+
+
+// img-loc
+
+appDirectives.directive('imgLoc',
+function(){
+  return {
+	  link: function( scope, elem, attr ){
+		  
+		elem.bind('load', function(e){
+			
+			// Get the params you need
+			
+			var param = attr.ngParam.split(',');
+			var height = this.naturalHeight;
+			var width = this.naturalWidth;
+			
+			// Workout max width
+			
+			var max_width = param[4];
+			var diff = max_width / width;
+			if ( diff < 1 ){
+				width = max_width
+				height = height*diff
+			}
+			
+			elem.wrap( '<div class="img-loc">' );
+			var wrap = elem.parent();
+			
+			// CSS makes the magic happen
+			// see .img-loc in app.scss to customize
+		   
+			wrap.css({
+				width: parseInt( width ),
+				height: parseInt( height ),
+			  position: "relative",
+			  overflow: "hidden"
+			});
+			
+			elem.css({
+				width: parseInt( width ),
+			  height: parseInt( height )
+			})
+			
+			wrap.append( '<div class="lite">' );
+			var lite = elem.next();
+			lite.css({
+				position: "absolute",
+				left: parseInt( width * param[0] ),
+				top: parseInt( height * param[1] ),
+				width: parseInt( width * param[2] ),
+				height: parseInt( height * param[3] )
+			});
+			wrap.after( '<div class="clearfix"></div>' );
+		});
+		
+	  }
+  }
+	
+});
+
+
+appDirectives.directive('imgUploader', 
+function(){
+  return {
+    templateUrl: 'partials/share/img-uploader.html'
+  }
+});
+
+
+appDirectives.directive('jsonMsgMini',
+function(){
+	return {
+		templateUrl: 'partials/share/msg/json-msg-mini.html'
+	}
+});
+
+
+appDirectives.directive('jsonMsg',
+function(){
+	return {
+		templateUrl: 'partials/share/msg/json-msg.html'
+	}
+});
+
+
+appDirectives.directive('jsonOut', 
+function(){
+  return {
+    templateUrl: 'partials/share/msg/json-out.html'
+  }
+});
+
+
+appDirectives.directive('listMetaBox', 
+function(){
+  return {
+    templateUrl: 'partials/share/list-meta-box.html'
+  }
+});
+
+
+appDirectives.directive('navBox', 
+function(){
+  return {
+    templateUrl: 'partials/share/nav-box.html'
+  }
+});
+
+
+appDirectives.directive('resizeItems', 
+function(){
+  return {
+    templateUrl: 'partials/share/resize-items.html'
+  }
+});
+
+
+appDirectives.directive('sparqlMsg',
+function(){
+	return {
+		templateUrl: 'partials/share/msg/sparql-msg.html'
+	}
+});
+
+
+appDirectives.directive('stdOut', 
+function(){
+  return {
+    templateUrl: 'partials/share/msg/std-out.html'
+  }
+});
+
+
+appDirectives.directive('uploadItems', 
+function(){
+  return {
+    templateUrl: 'partials/share/upload-items.html'
+  }
+});
+
+
+appDirectives.directive('urnInfo', 
+function(){
+  return {
+    templateUrl: 'partials/share/urn-info.html'
+  }
+});
+
+
+appDirectives.directive('urnServMsg',
+function(){
+	return {
+		templateUrl: 'partials/share/msg/urn-serv-msg.html'
+	}
+});
+
+
+// Builds a box for checking URN uniqueness
+// You must implement a $scope.urn_uniq function
+// in your controller.
+
+// see controllers.js: CollectionNew
+
+appDirectives.directive('urnUniqBox', 
+function(){
+  return {
+    templateUrl: 'partials/share/urn-uniq-box.html'
+  }
+});
+
+
+appDirectives.directive('userBox', 
+function(){
+  return {
+    templateUrl: 'partials/share/user-box.html'
+  }
+});
+
+
+app.config([
+'$routeProvider',
+function( $routeProvider ) {
+  
+  // uploads
+  
+  $routeProvider.
+  when('/uploads', {
+    templateUrl: 'partials/upload/list.html',
+    controller: 'UploadListCtrl'
+  }).
+  when('/uploads/:page', {
+    templateUrl: 'partials/upload/list.html',
+    controller: 'UploadListCtrl'
+  }).
+  when('/upload/:urn', {
+    templateUrl: 'partials/upload/edit.html',
+    controller: 'UploadCtrl'
+  }).
+  when('/new/upload', {
+    templateUrl: 'partials/upload/new.html',
+    controller: 'UploadNew'
+  }).
+  otherwise({
+    redirectTo: '/uploads'
+  });
+  
+  
+  // items
+  
+  $routeProvider.
+  when('/items', {
+    templateUrl: 'partials/item/list.html',
+    controller: 'ItemListCtrl'
+  }).
+  when('/items/:page', {
+    templateUrl: 'partials/item/list.html',
+    controller: 'ItemListCtrl'
+  }).
+  when('/item/:urn', {
+    templateUrl: 'partials/item/edit.html',
+    controller: 'ItemCtrl'
+  }).
+  when('/new/item/:urn', {
+    templateUrl: 'partials/item/new.html',
+    controller: 'ItemNew'
+  });
+  
+  
+  // collections
+  
+  $routeProvider.
+  when('/collections', {
+    templateUrl: 'partials/collection/list.html',
+    controller: 'CollectionListCtrl'
+  }).
+  when('/collections/:page', {
+    templateUrl: 'partials/collection/list.html',
+    controller: 'CollectionListCtrl'
+  }).
+  when('/collection/:urn', {
+    templateUrl: 'partials/collection/edit.html',
+    controller: 'CollectionCtrl'
+  }).
+  when('/new/collection', {
+    templateUrl: 'partials/collection/new.html',
+    controller: 'CollectionNew'
+  });
+  
+  
+  // annotations
+  
+  $routeProvider.
+  when('/annotations', {
+    templateUrl: 'partials/annotation/list.html',
+    controller: 'AnnotationListCtrl'
+  }).
+  when('/annotations/:page', {
+    templateUrl: 'partials/annotation/list.html',
+    controller: 'AnnotationListCtrl'
+  }).
+  when('/annotation/:urn', {
+    templateUrl: 'partials/annotation/edit.html',
+    controller: 'AnnotationCtrl'
+  }).
+  when('/new/annotation/:urn', {
+    templateUrl: 'partials/imgspect.html',
+    controller: 'imgspect'
+  });
+  
+  
+  // resize
+  
+  $routeProvider.
+  when('/resize/:urn',{
+    templateUrl: 'partials/resize.html',
+    controller: 'ResizeCtrl'
+  });
+  
+  
+  // login
+  
+  $routeProvider.
+  when('/login', {
+    templateUrl: 'partials/login.html',
+    controller: 'LoginCtrl'
+  });
+  
+  
+  // view
+  
+  $routeProvider.
+  when('/view/:urn', {
+	  templateUrl: 'partials/view.html',
+	  controller: 'ViewCtrl'
+  });
+	
+	
+	// deleter
+	
+	$routeProvider.
+	when('/delete/:urn', {
+		templateUrl: 'partials/delete.html',
+		controller: 'DeleteCtrl'
+	}).
+	when('/delete', {
+		templateUrl: 'partials/pre_delete.html',
+		controller: 'PreDeleteCtrl'
+	});
+	
+	
+	// imgspect
+	
+	$routeProvider.
+	when('/imgspect/:urn', {
+		templateUrl: 'partials/imgspect.html',
+		controller: 'imgspect'
+	})
+  
+}])
+.run([
+'$rootScope',
+'$location',
+'user',
+'config',
+function( $rootScope, $location, user, config ){
+	
+	// Some views are public
+	
+	function public_view(){
+		var path = $location.path();
+		var pub = config.access.public_views;
+		for( var i=0; i<pub.length; i++ ){
+			if ( path.indexOf( pub[i] ) == 0 ){
+				return true
+			}
+		}
+	}
+	
+	// If a user is logged-in they don't need to see the login view
+	
+	function logged_in(){
+		var path = $location.path();
+		if ( path.indexOf( config.access.logged_out ) == 0 ){
+			$location.path( config.access.logged_in )
+		}
+	}
+	
+	// Run everytime scope changes
+  
+  $rootScope.$on('$routeChangeSuccess', function(){
+    
+    // Check for user data.
+    
+    user.check().then(
+
+      // All is well
+      
+      function(){
+				logged_in();
+        $rootScope.$emit( user.events.ok );
+      },
+      
+      // User is not logged in
+      
+      function(){
+				if ( public_view() == true ){
+					return;
+				}
+        $rootScope.$emit( user.events.error );
+        $location.path( config.access.logged_out );
+      }
+	  
+	);
+})
+}]);  // close app.config
+
 
 
 app.service( 'collection', [
