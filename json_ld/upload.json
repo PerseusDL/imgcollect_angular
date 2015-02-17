@@ -5,27 +5,7 @@
 		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
 		"dct": "http://purl.org/dc/terms/",
   	"exif": "http://www.kanzaki.com/ns/exif#",
-		"this": "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		"roi_x": {
-			"@id": "this:roi_x",
-			"@type": "xs:float"
-		},
-		"roi_y": {
-			"@id": "this:roi_y",
-			"@type": "xs:float"
-		},
-		"roi_width": {
-			"@id": "this:roi_width",
-			"@type": "xs:float"
-		},
-		"roi_height": {
-			"@id": "this:roi_height",
-			"@type": "xs:float"
-		},
-		"ordered": {
-			"@id": "cite:ordered",
-			"@type": "xsd:Boolean"
-		}
+		"this": "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#"
 	},
 	"@id": "urn:cite:uploads.",
 	"dct:type": "upload",
