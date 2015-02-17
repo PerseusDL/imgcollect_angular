@@ -30,5 +30,7 @@
 	"x": null,
 	"y": null,
 	"width": null,
-	"height": null
+	"height": null,
+	"dct:creator": { "@id": "" },
+	"dct:created": ""
 }
