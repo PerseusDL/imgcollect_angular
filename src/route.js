@@ -6,19 +6,19 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/uploads', {
-    templateUrl: 'partials/upload/list.html',
+    templateUrl: 'html/upload/list.html',
     controller: 'UploadListCtrl'
   }).
   when('/uploads/:page', {
-    templateUrl: 'partials/upload/list.html',
+    templateUrl: 'html/upload/list.html',
     controller: 'UploadListCtrl'
   }).
   when('/upload/:urn', {
-    templateUrl: 'partials/upload/edit.html',
+    templateUrl: 'html/upload/edit.html',
     controller: 'UploadCtrl'
   }).
   when('/new/upload', {
-    templateUrl: 'partials/upload/new.html',
+    templateUrl: 'html/upload/new.html',
     controller: 'UploadNew'
   }).
   otherwise({
@@ -30,19 +30,19 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/items', {
-    templateUrl: 'partials/item/list.html',
+    templateUrl: 'html/item/list.html',
     controller: 'ItemListCtrl'
   }).
   when('/items/:page', {
-    templateUrl: 'partials/item/list.html',
+    templateUrl: 'html/item/list.html',
     controller: 'ItemListCtrl'
   }).
   when('/item/:urn', {
-    templateUrl: 'partials/item/edit.html',
+    templateUrl: 'html/item/edit.html',
     controller: 'ItemCtrl'
   }).
   when('/new/item/:urn', {
-    templateUrl: 'partials/item/new.html',
+    templateUrl: 'html/item/new.html',
     controller: 'ItemNew'
   });
   
@@ -51,19 +51,19 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/collections', {
-    templateUrl: 'partials/collection/list.html',
+    templateUrl: 'html/collection/list.html',
     controller: 'CollectionListCtrl'
   }).
   when('/collections/:page', {
-    templateUrl: 'partials/collection/list.html',
+    templateUrl: 'html/collection/list.html',
     controller: 'CollectionListCtrl'
   }).
   when('/collection/:urn', {
-    templateUrl: 'partials/collection/edit.html',
+    templateUrl: 'html/collection/edit.html',
     controller: 'CollectionCtrl'
   }).
   when('/new/collection', {
-    templateUrl: 'partials/collection/new.html',
+    templateUrl: 'html/collection/new.html',
     controller: 'CollectionNew'
   });
   
@@ -72,19 +72,19 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/annotations', {
-    templateUrl: 'partials/annotation/list.html',
+    templateUrl: 'html/annotation/list.html',
     controller: 'AnnotationListCtrl'
   }).
   when('/annotations/:page', {
-    templateUrl: 'partials/annotation/list.html',
+    templateUrl: 'html/annotation/list.html',
     controller: 'AnnotationListCtrl'
   }).
   when('/annotation/:urn', {
-    templateUrl: 'partials/annotation/edit.html',
+    templateUrl: 'html/annotation/edit.html',
     controller: 'AnnotationCtrl'
   }).
   when('/new/annotation/:urn', {
-    templateUrl: 'partials/imgspect.html',
+    templateUrl: 'html/imgspect.html',
     controller: 'imgspect'
   });
   
@@ -93,7 +93,7 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/resize/:urn',{
-    templateUrl: 'partials/resize.html',
+    templateUrl: 'html/resize.html',
     controller: 'ResizeCtrl'
   });
   
@@ -102,7 +102,7 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/login', {
-    templateUrl: 'partials/login.html',
+    templateUrl: 'html/login.html',
     controller: 'LoginCtrl'
   });
   
@@ -111,7 +111,7 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/view/:urn', {
-	  templateUrl: 'partials/view.html',
+	  templateUrl: 'html/view.html',
 	  controller: 'ViewCtrl'
   });
 	
@@ -120,11 +120,11 @@ function( $routeProvider ) {
 	
 	$routeProvider.
 	when('/delete/:urn', {
-		templateUrl: 'partials/delete.html',
+		templateUrl: 'html/delete.html',
 		controller: 'DeleteCtrl'
 	}).
 	when('/delete', {
-		templateUrl: 'partials/pre_delete.html',
+		templateUrl: 'html/pre_delete.html',
 		controller: 'PreDeleteCtrl'
 	});
 	
@@ -133,7 +133,7 @@ function( $routeProvider ) {
 	
 	$routeProvider.
 	when('/imgspect/:urn', {
-		templateUrl: 'partials/imgspect.html',
+		templateUrl: 'html/imgspect.html',
 		controller: 'imgspect'
 	})
   

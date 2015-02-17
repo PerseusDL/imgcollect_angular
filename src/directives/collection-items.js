@@ -1,6 +1,6 @@
 appDirectives.directive('collectionItems', 
 function(){
   return {
-    templateUrl: 'partials/share/collection-items.html'
+    templateUrl: 'html/share/collection-items.html'
   }
 });

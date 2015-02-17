@@ -1,6 +1,6 @@
 appDirectives.directive('uploadItems', 
 function(){
   return {
-    templateUrl: 'partials/share/upload-items.html'
+    templateUrl: 'html/share/upload-items.html'
   }
 });

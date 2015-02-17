@@ -1,6 +1,6 @@
 appDirectives.directive('resizeItems', 
 function(){
   return {
-    templateUrl: 'partials/share/resize-items.html'
+    templateUrl: 'html/share/resize-items.html'
   }
 });

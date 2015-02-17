@@ -7,7 +7,7 @@ return({
         
         // URL to Perseids user data object
         
-        ping: 'conf/ping.js'
+        ping: 'dev/ping.js'
         //ping: 'http://sosol.perseids.org/sosol/dmm_api/ping'
       },
       

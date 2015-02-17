@@ -1,6 +1,6 @@
 appDirectives.directive('urnInfo', 
 function(){
   return {
-    templateUrl: 'partials/share/urn-info.html'
+    templateUrl: 'html/share/urn-info.html'
   }
 });

@@ -7,6 +7,6 @@
 appDirectives.directive('urnUniqBox', 
 function(){
   return {
-    templateUrl: 'partials/share/urn-uniq-box.html'
+    templateUrl: 'html/share/urn-uniq-box.html'
   }
 });
