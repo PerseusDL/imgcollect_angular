@@ -7,12 +7,12 @@ Here are their GitHub repos.
 * [JackRDF](https://github.com/PerseusDL/JackRDF)
 * [imgup](https://github.com/PerseusDL/imgup)
 
-imgcollect is primarily written in...
+imgcollect and its servers are primarily written in...
 
 * Ruby -- 1.9.2 or above
 * Javascript
 
-It's built on top of these technologies...
+and built on top of these technologies...
 
 * Sinatra
 * AngularJS

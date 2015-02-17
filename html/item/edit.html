@@ -38,7 +38,7 @@
 			<h3>upload</h3>
 			
 			<div>
-				<img src="{{ upload[0].thumb }}" />
+				<img ng-src="{{ upload[0].thumb }}" />
 			</div>
 			
 			<div>
@@ -82,7 +82,7 @@
 						
 						<div class="row">
 						<div class="columns small-12 medium-4">
-						<img src="{{ img_src }}" 
+						<img ng-src="{{ img_src }}" 
 							   ng-param="{{ roi.x }},{{ roi.y }},{{ roi.width }},{{ roi.height }}"
 						img-bit />
 						</div>
