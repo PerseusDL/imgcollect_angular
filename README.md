@@ -91,14 +91,9 @@ Install bower
 
 	sudo npm install bower -g
 
-Install imgcollect_angular dependencies
+Install dependencies and build
 
-	bower install
-	bundle install
-
-Build CSS
-
-	bundle exec compass compile
+	rake install
 
 ### Install imgup server
 
@@ -276,12 +271,14 @@ If you have a non-standard installation ( one where the servers are running on d
 
 # Test suite
 ### Install
+
 imgcollect_angular uses Jasmine.
 To use it install the ruby Jasmine gem.
 
 	gem install jasmine
 
 ### Run
+
 Run the Jasmine server.
 
 	rake jasmine
@@ -295,6 +292,7 @@ Run the tests with phantomjs
 	rake jasmine:ci
 
 ### Notes
+
 This is the test root.
 
 	spec

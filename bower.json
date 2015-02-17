@@ -4,7 +4,8 @@
   "private": "true",
   "homepage": "https://github.com/PerseusDL/imgcollect_angular",
   "authors": [
-    "adamtavares <adamtavares@gmail.com>"
+    "Adam Tavares <adamtavares@gmail.com>",
+		"Bridget Almas <balmas@gmail.com>"
   ],
   "description": "UI for imgcollect",
   "license": "MIT",
