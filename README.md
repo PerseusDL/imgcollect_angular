@@ -102,25 +102,13 @@ Install dependencies and build
 	bundle install
 	rake start
 
-### Get CITE-JSON-LD templates
-
-	git clone https://github.com/PerseusDL/CITE-JSON-LD /var/www/JackSON/templates/cite
-
-### Create fake development data
-
-Make sure JackSON and Fuseki are running
-
-	gem install faker
-	cd /var/www/JackSON/templates/cite/templates/img
-	ruby fake.rb
-
 ### Your app is working?
 
 Take a quick peak.
 
 	http://localhost:4567/apps/imgcollect
 
-### Clearout fake data
+### Clearout data
 
 When the time comes...
 
