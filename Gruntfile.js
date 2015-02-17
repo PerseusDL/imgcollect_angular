@@ -34,6 +34,13 @@ module.exports = function( grunt ) {
 					'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
 				}
 			}
+		},
+		
+		// Watch for changes and then rebuild
+		
+		watch: {
+		  files: ['<%= concat.dist.src %>'],
+		  tasks: ['concat', 'uglify']
 		}
 		
 	});
