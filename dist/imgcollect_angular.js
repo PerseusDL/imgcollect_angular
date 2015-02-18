@@ -867,6 +867,215 @@ return({
 
 
 
+app.service( 'host', [ 
+function() {
+  
+  return({
+    url: location.protocol+'//'+location.hostname+( location.port ? ':' + location.port : '' )
+  });
+  
+}]);
+
+
+app.config([
+'$routeProvider',
+function( $routeProvider ) {
+  
+  // uploads
+  
+  $routeProvider.
+  when('/uploads', {
+    templateUrl: 'html/upload/list.html',
+    controller: 'UploadListCtrl'
+  }).
+  when('/uploads/:page', {
+    templateUrl: 'html/upload/list.html',
+    controller: 'UploadListCtrl'
+  }).
+  when('/upload/:urn', {
+    templateUrl: 'html/upload/edit.html',
+    controller: 'UploadCtrl'
+  }).
+  when('/new/upload', {
+    templateUrl: 'html/upload/new.html',
+    controller: 'UploadNew'
+  }).
+  otherwise({
+    redirectTo: '/uploads'
+  });
+  
+  
+  // items
+  
+  $routeProvider.
+  when('/items', {
+    templateUrl: 'html/item/list.html',
+    controller: 'ItemListCtrl'
+  }).
+  when('/items/:page', {
+    templateUrl: 'html/item/list.html',
+    controller: 'ItemListCtrl'
+  }).
+  when('/item/:urn', {
+    templateUrl: 'html/item/edit.html',
+    controller: 'ItemCtrl'
+  }).
+  when('/new/item/:urn', {
+    templateUrl: 'html/item/new.html',
+    controller: 'ItemNew'
+  });
+  
+  
+  // collections
+  
+  $routeProvider.
+  when('/collections', {
+    templateUrl: 'html/collection/list.html',
+    controller: 'CollectionListCtrl'
+  }).
+  when('/collections/:page', {
+    templateUrl: 'html/collection/list.html',
+    controller: 'CollectionListCtrl'
+  }).
+  when('/collection/:urn', {
+    templateUrl: 'html/collection/edit.html',
+    controller: 'CollectionCtrl'
+  }).
+  when('/new/collection', {
+    templateUrl: 'html/collection/new.html',
+    controller: 'CollectionNew'
+  });
+  
+  
+  // annotations
+  
+  $routeProvider.
+  when('/annotations', {
+    templateUrl: 'html/annotation/list.html',
+    controller: 'AnnotationListCtrl'
+  }).
+  when('/annotations/:page', {
+    templateUrl: 'html/annotation/list.html',
+    controller: 'AnnotationListCtrl'
+  }).
+  when('/annotation/:urn', {
+    templateUrl: 'html/annotation/edit.html',
+    controller: 'AnnotationCtrl'
+  }).
+  when('/new/annotation/:urn', {
+    templateUrl: 'html/imgspect.html',
+    controller: 'imgspect'
+  });
+  
+  
+  // resize
+  
+  $routeProvider.
+  when('/resize/:urn',{
+    templateUrl: 'html/resize.html',
+    controller: 'ResizeCtrl'
+  });
+  
+  
+  // login
+  
+  $routeProvider.
+  when('/login', {
+    templateUrl: 'html/login.html',
+    controller: 'LoginCtrl'
+  });
+  
+  
+  // view
+  
+  $routeProvider.
+  when('/view/:urn', {
+	  templateUrl: 'html/view.html',
+	  controller: 'ViewCtrl'
+  });
+	
+	
+	// deleter
+	
+	$routeProvider.
+	when('/delete/:urn', {
+		templateUrl: 'html/delete.html',
+		controller: 'DeleteCtrl'
+	}).
+	when('/delete', {
+		templateUrl: 'html/pre_delete.html',
+		controller: 'PreDeleteCtrl'
+	});
+	
+	
+	// imgspect
+	
+	$routeProvider.
+	when('/imgspect/:urn', {
+		templateUrl: 'html/imgspect.html',
+		controller: 'imgspect'
+	})
+  
+}])
+.run([
+'$rootScope',
+'$location',
+'user',
+'config',
+function( $rootScope, $location, user, config ){
+	
+	// Some views are public
+	
+	function public_view(){
+		var path = $location.path();
+		var pub = config.access.public_views;
+		for( var i=0; i<pub.length; i++ ){
+			if ( path.indexOf( pub[i] ) == 0 ){
+				return true
+			}
+		}
+	}
+	
+	// If a user is logged-in they don't need to see the login view
+	
+	function logged_in(){
+		var path = $location.path();
+		if ( path.indexOf( config.access.logged_out ) == 0 ){
+			$location.path( config.access.logged_in )
+		}
+	}
+	
+	// Run everytime scope changes
+  
+  $rootScope.$on('$routeChangeSuccess', function(){
+    
+    // Check for user data.
+    
+    user.check().then(
+
+      // All is well
+      
+      function(){
+				logged_in();
+        $rootScope.$emit( user.events.ok );
+      },
+      
+      // User is not logged in
+      
+      function(){
+				if ( public_view() == true ){
+					return;
+				}
+        $rootScope.$emit( user.events.error );
+        $location.path( config.access.logged_out );
+      }
+	  
+	);
+})
+}]);  // close app.config
+
+
+
 var appControllers = angular.module('appControllers',[]);
 
 
@@ -3200,203 +3409,1040 @@ function tserv( service ){
 }
 
 
-app.config([
-'$routeProvider',
-function( $routeProvider ) {
-  
-  // uploads
-  
-  $routeProvider.
-  when('/uploads', {
-    templateUrl: 'html/upload/list.html',
-    controller: 'UploadListCtrl'
-  }).
-  when('/uploads/:page', {
-    templateUrl: 'html/upload/list.html',
-    controller: 'UploadListCtrl'
-  }).
-  when('/upload/:urn', {
-    templateUrl: 'html/upload/edit.html',
-    controller: 'UploadCtrl'
-  }).
-  when('/new/upload', {
-    templateUrl: 'html/upload/new.html',
-    controller: 'UploadNew'
-  }).
-  otherwise({
-    redirectTo: '/uploads'
-  });
-  
-  
-  // items
-  
-  $routeProvider.
-  when('/items', {
-    templateUrl: 'html/item/list.html',
-    controller: 'ItemListCtrl'
-  }).
-  when('/items/:page', {
-    templateUrl: 'html/item/list.html',
-    controller: 'ItemListCtrl'
-  }).
-  when('/item/:urn', {
-    templateUrl: 'html/item/edit.html',
-    controller: 'ItemCtrl'
-  }).
-  when('/new/item/:urn', {
-    templateUrl: 'html/item/new.html',
-    controller: 'ItemNew'
-  });
-  
-  
-  // collections
-  
-  $routeProvider.
-  when('/collections', {
-    templateUrl: 'html/collection/list.html',
-    controller: 'CollectionListCtrl'
-  }).
-  when('/collections/:page', {
-    templateUrl: 'html/collection/list.html',
-    controller: 'CollectionListCtrl'
-  }).
-  when('/collection/:urn', {
-    templateUrl: 'html/collection/edit.html',
-    controller: 'CollectionCtrl'
-  }).
-  when('/new/collection', {
-    templateUrl: 'html/collection/new.html',
-    controller: 'CollectionNew'
-  });
-  
-  
-  // annotations
-  
-  $routeProvider.
-  when('/annotations', {
-    templateUrl: 'html/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotations/:page', {
-    templateUrl: 'html/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotation/:urn', {
-    templateUrl: 'html/annotation/edit.html',
-    controller: 'AnnotationCtrl'
-  }).
-  when('/new/annotation/:urn', {
-    templateUrl: 'html/imgspect.html',
-    controller: 'imgspect'
-  });
-  
-  
-  // resize
-  
-  $routeProvider.
-  when('/resize/:urn',{
-    templateUrl: 'html/resize.html',
-    controller: 'ResizeCtrl'
-  });
-  
-  
-  // login
-  
-  $routeProvider.
-  when('/login', {
-    templateUrl: 'html/login.html',
-    controller: 'LoginCtrl'
-  });
-  
-  
-  // view
-  
-  $routeProvider.
-  when('/view/:urn', {
-	  templateUrl: 'html/view.html',
-	  controller: 'ViewCtrl'
-  });
+app.service( 'cropper', [
+'json',
+'imgup',
+'config',
+'urnServ',
+'onto',
+function( json, imgup, config, urnServ, onto ) {
 	
+	return {
+		add: add
+	}
 	
-	// deleter
+	function add( _urn, _x, _y, _w, _h ){
+		max_width = _max_width;
+		max_height = _max_height;
+		urn = _urn;
+		return upload_src()
+	}
 	
-	$routeProvider.
-	when('/delete/:urn', {
-		templateUrl: 'html/delete.html',
-		controller: 'DeleteCtrl'
-	}).
-	when('/delete', {
-		templateUrl: 'html/pre_delete.html',
-		controller: 'PreDeleteCtrl'
+
+	
+}]);
+
+/*
+
+To run this in the console...
+
+var crop = tserv('cropper');
+crop.add( 'urn:cite:perseus:upload.ry897TREW', 0.5, 0.5, 0.25, 0.25 );
+
+*/
+
+
+app.service( 'imgup', [
+'$http',
+'$q',
+'$upload',
+'config',
+'user',
+function( $http, $q, $upload, config, user ) {
+	
+	// Output
+	
+	this.msg = "";
+	
+	return ({
+		upload: upload,
+		cp_url: cp_url,
+		resize: resize,
+		msg: this.msg
 	});
 	
 	
-	// imgspect
+	// Copy a URL path
 	
-	$routeProvider.
-	when('/imgspect/:urn', {
-		templateUrl: 'html/imgspect.html',
-		controller: 'imgspect'
-	})
-  
-}])
-.run([
-'$rootScope',
-'$location',
-'user',
+	function cp_url( src, success, error ){
+		return $http({
+		  method: 'POST',
+		  url: config.imgup.url+'/upload',
+		  headers: {
+		    'Content-Type': 'application/json'
+		  },
+		  data: { src: src }
+		})
+		.error( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+		.success( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+	}
+	
+	
+	// Resize an image
+	
+	function resize( src, width, height, send_to, json ){
+		var body = { 
+			src: src,
+			max_width: width,
+			max_height: height,
+			send_to: send_to,
+			json: json
+		};
+		
+		return $http({
+			method: 'POST',
+			url: config.imgup.url+'/resize',
+		  headers: { 
+				'Content-Type': 'application/json'
+			},
+			data: body
+		})
+		.error( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+		.success( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+	}
+	
+	
+	// Upload a file to an imgup server
+	
+	function upload( file, success, error ){	
+  	return $upload.upload({
+  		url: config.imgup.url+'/upload',
+  		method: 'POST',
+  		file: file
+   	})
+  	.error( function( r ){
+			update_msg( r );
+  		return r.data;
+   	})
+  	.success( function( r ){
+			update_msg( r );
+  		return r.data;
+   	})
+  }
+	
+	
+	// Update message
+	
+	function update_msg( r ){
+		this.msg = r.data;
+	}
+	
+}]);
+
+
+app.service( 'resizer', [
+'json',
+'imgup',
 'config',
-function( $rootScope, $location, user, config ){
+'urnServ',
+'onto',
+'tmpl',
+function( json, imgup, config, urnServ, onto, tmpl ) {
 	
-	// Some views are public
+	var max_width = null;
+	var max_height = null;
+	var src = null;
+	var upload = null;
+	var resize_urn = null;
+	var res_tmpl = null;
+	var urn = null;
 	
-	function public_view(){
-		var path = $location.path();
-		var pub = config.access.public_views;
-		for( var i=0; i<pub.length; i++ ){
-			if ( path.indexOf( pub[i] ) == 0 ){
-				return true
+	return {
+		add: add
+	}
+	
+	function add( _urn, _max_width, _max_height ){
+		max_width = _max_width;
+		max_height = _max_height;
+		urn = _urn;
+		return upload_src()
+	}
+	
+	function upload_src(){
+		return json.urn( urn ).then( 
+		function( data ){
+			src = data['src'][0];
+			return upload_json();
+		});
+	}
+	
+	function upload_json(){
+		return json.get( src ).then(
+		function( data ){
+			upload = data;
+			return get_urn();
+		});
+	}
+	
+	function get_urn(){
+		return urnServ.fresh( urnServ.base+"resize.{{ id }}", function( urn ){
+			resize_urn = urn;
+			return resize_tmpl();
+		});
+	}
+	
+	function resize_tmpl(){
+		return tmpl.get( 'resize' ).then( function( data ){
+			res_tmpl = data;
+			return set_vals();
+		});
+	}
+	
+	function set_vals(){
+		res_tmpl['@id'] = resize_urn;
+		res_tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
+		return send();
+	}
+	
+	function send(){
+		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
+		var img = upload[ onto.with_prefix('src') ]['@id'];
+		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( function( data ){
+			return data;
+		});
+	}
+	
+}]);
+
+/*
+
+To run this in the console...
+
+var r = tserv('resizer')
+r.add('urn:cite:perseus:upload.QAlWThSWNU1', 200, 200)
+
+*/
+
+
+app.service( 'deleter', [
+'json',
+'onto',
+'user',
+'sparql',
+function( json, onto, user, sparql ) {
+	
+	// Delete log 
+	// [ { urn: server_output } ... ]
+	
+	var log = [{}];
+	
+	return ({
+		urn: urn,
+		log: log,
+		refs: refs
+	});
+	
+	
+	// Delete by URN
+	
+	function urn( urn ){
+		return path( urn );
+	}
+	
+	
+	// Add a log_item
+	
+	function log_item( urn, data ){
+		log[ log.length-1 ] = {};
+		log[ log.length-1 ][ urn ] = data;
+	}
+	
+	
+	// Get the the path to the JSON files
+	
+	function path( urn ){
+		return json.urn( urn )
+		.then( function( data ){
+			var path = data.src[0];
+			return src( path, urn )
+		});
+	}
+	
+	
+	// Delete the JSON file
+	
+	function del( path, urn ){
+		return json.del( path ).then(
+		function( data ){
+			log_item( urn, data );
+		});
+	}
+	
+	
+	// Get related URNs
+	
+	function refs( src_urn ){
+		
+		var query = [
+		onto.prefixes(),
+		"SELECT ?urn ?verb",
+		"WHERE {",
+			"?urn ?verb <"+src_urn+">", 
+		"}" ];
+		
+		var output = [];
+		return sparql.search( query.join(' ') ).then(
+		function( data ){
+			for ( var i=0; i<data.length; i++ ) {
+				var urn = data[i].urn.value;
+				var verb = data[i].verb.value;
+				if ( urn == src_urn ){ continue }
+				output.push({ urn: urn, verb: onto.short( verb ) });
+			}
+			return output;
+		});
+	}
+	
+	
+	// Remove reference
+	
+	function ghost( src_urn, prefix, rm_urn ){
+		json.urn( src_urn )
+		.then( function( data ){
+			ghost_json( src_urn, prefix, rm_urn, data.src[0] );
+		});
+	}
+	
+	
+	// So far all URN references use '@id'.
+	// This may not be true.
+	// It would be better to walk the JSON
+	
+	function ghost_json( src_urn, prefix, rm_urn, url ){
+		json.get( url )
+		.then( function( data ){
+			var item = data[ prefix ];
+			if( item['@id'] == rm_urn ){
+				item['@id'] = '';
+			}
+			json.put( url, data )
+		});
+	}
+	
+	
+	// Geth the JSON src file
+	
+	function src( path ){
+		return json.get( path )
+		.then( function( data ){
+			
+			// TODO: Check the user...
+			
+			// Delete the initial JSON src file
+			return del( path, urn );
+		});
+	}
+	
+}]);
+
+/*
+
+Getting the deleter service working well.
+
+It's probably impossible to have a totally generic deleter service.
+I'd have to look at types.
+
+Move data in and out for testing...
+
+rm -rf /var/www/JackSON/data/*
+cp -R ~/Desktop/JackSON.data.bkup/* /var/www/JackSON/data/
+
+t = tserv('deleter');
+
+*/
+
+
+app.service( 'json', [
+'$http',
+'$q',
+'config',
+'user',
+function( $http, $q, config, user ) {
+	
+	
+	// output
+	
+	this.msg = "";
+	this.method = "";
+	this.status = "";
+	this.url = "";
+	
+	function state(){
+		return {
+			wait: 'WAIT',
+			success: 'SUCCESS',
+			error: 'ERROR'
+		}
+	};
+	
+	var events = [];
+	function on_change( event ){ events.push( event ) }
+	function run_events(){
+		angular.forEach( events, function( event ){
+			event( this.method, this.url, this.status, this.msg );
+		});
+	}
+	
+	
+	// Avoid typos with constants
+	
+	var GET = 'GET';
+	var POST = 'POST';
+	var PUT = 'PUT';
+	var DELETE = 'DELETE';
+	
+	
+	// Publicly accessible methods
+	
+	return ({
+		post: post,
+		put: put,
+		get: get,
+		delete: del,
+		del: del,
+		ls: ls,
+		urn: urn,
+		disp: disp,
+		on_change: on_change,
+		msg: this.msg,
+		method: this.method,
+		status: this.status,
+		state: state,
+		url: this.url
+	});
+	
+	
+	// Retrieve a JSON file path by URN
+	
+	function urn( urn ){
+		if ( urn == null ){
+			return;
+		}
+		var request = api( GET, config.xhr.json.url+'/src?urn='+urn );
+		return( request.then( 
+			success, 
+			error 
+		));
+	}
+	
+	
+	// Turn JSON into pretty-printed string
+	
+	function disp( data ) {
+		var json = {};
+		var out = [];
+		for ( var key in data ){
+			if ( key == '@context' ){ 
+				out[0] = angular.toJson( data[key], true );
+				continue;
+			}
+			json[key] = data[key];
+		}
+		out[1] = angular.toJson( json, true );
+		return out;
+	}
+	
+	
+	// Create a new JSON file if it doesn't already exist.
+	
+	function post( url, data ){
+		var request = api( POST, rel(url), data );
+		return( request.then(
+			success, 
+			function( r ){ return put( rel(url), data ) } 
+		));
+	}
+	
+	
+	// Update data on server
+	
+	function put( url, data ){
+		var request = api( PUT, rel(url), data );
+		return( request.then( 
+			success, 
+			error 
+		));
+	}
+	
+	
+	// DELETE the JSON
+	
+	function del( url ){
+		var request = api( DELETE, rel(url) );
+		return( request.then(
+			success,
+			error
+		));
+	}
+	
+	
+	// GET the JSON
+	
+	function get( url ){
+		var request = api( GET, rel(url) );
+		return( request.then( 
+			success, 
+			error 
+		));
+	}
+	
+	
+	// Run the ls command
+	
+	function ls( url ){
+		var request = api( GET, rel(url)+"?cmd=ls" );
+		return( request.then(
+			success,
+			error
+		));
+	}
+	
+	
+	// Add 'user' field potentially.
+	// Others in the future.
+	
+	function tack_on( data ){
+		if ( tack('user') ){
+			data['user'] = { '@id': user.url() }
+		}
+		return data;
+	}
+	
+	function tack( key ){
+		var tacks = config.xhr.json.tack_on;
+		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
+			return false;
+		}
+		return true;
+	}
+	
+	
+	// API
+	
+	function api( method, url, data ){
+		
+		// tack on standard data fields
+		this.method = method;
+		this.url = url;
+		this.status = state().wait;
+		run_events();
+		
+		if ( data != undefined ){
+			data = tack_on( data );
+		}
+		
+		return $http({
+			method: method.toUpperCase(),
+			url: url,
+		    headers: {
+		        'Content-Type': 'application/json'
+		    },
+			data: wrap( data )
+		});
+	}
+	
+	
+	// Properly resolve relative URLs
+	
+	function rel( url ){
+		if ( url.indexOf('http://') == 0 ){
+			return url;
+		}
+		return config.xhr.json.url+'/data/'+url;
+	}
+	
+	
+	// JackSON formatted json
+	
+	function wrap( json ){
+		return { data: json }
+	}
+	
+	
+	// Error handler
+	
+	function error( r ){
+		this.status = state().error;
+		this.msg = angular.toJson( r.data, true );
+		run_events();
+		if (
+			! angular.isObject( r.data ) ||
+			! r.data.error
+		){
+			var unknown = "An unknown error occurred."
+			return( $q.reject( unknown ) );
+		}
+		return( r.data );
+	}
+	
+	
+	// Success handler
+	
+	function success( r ){
+		this.status = state().success;
+		this.msg = angular.toJson( r.data, true );
+		run_events();
+		return( r.data );
+	}
+}]);
+
+
+app.service( 'onto', [ 
+'config',
+function( config ) {
+  var self = this;  
+
+  function precheck( a_term ){
+    return angular.isDefined( config.ontology[a_term] );
+  } 
+	
+	
+	// Get the prefix form from a url
+	
+	this.short = function( url ){
+    for ( var key in config.ontology ) {
+			var item = config.ontology[ key ];
+			var verb = item['ns']+item['term'];
+			if ( url == verb ) {
+				return item['prefix']+":"+item['term'];
+			}
+    }
+		return url
+	}
+	
+	
+	// Get ontology term with a prefix
+
+  this.with_prefix = function( a_term ){
+    if ( precheck( a_term ) ){
+      return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
+    }
+	  else {
+      console.log( "Missing ontology term " + a_term );
+      return null;
+    }
+  }
+
+	
+	// Get the ontology term with a name space
+	
+  this.with_ns = function( a_term ){
+    if ( precheck( a_term ) ){
+      return config.ontology[a_term].ns + config.ontology[a_term].term;
+    }
+	  else {
+      console.log( "Missing ontology term " + a_term );
+      return null;
+    }
+  }
+
+  this.default_value = function( a_term ){
+    if ( precheck( a_term ) ){
+		  
+      // TODO we should allow the config to specify the type as well
+		  
+      return config.ontology[a_term].default_value || "";
+    }
+	  else {
+      console.log( "Missing ontology term " + a_term );
+      return null;
+    }
+  }
+	
+	
+	// Build all the prefixes
+
+  this.prefixes = function() {
+    var pfx_query = "";
+    var seen = {};
+	  
+    angular.forEach( 
+		Object.keys( config.ontology ), 
+		function( term, i ) {
+		  if ( ! seen[ config.ontology[term].prefix ] ){
+			  pfx_query = pfx_query + " PREFIX " + config.ontology[term].prefix + ": <" + config.ontology[term].ns + ">";
+		  }
+		  seen[ config.ontology[term].prefix ] = 1;
+    });
+		  
+    // backwards compatibility
+		  
+    pfx_query = pfx_query + " PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
+    return pfx_query;
+  }
+	
+	
+	// Build the prefix as an array
+	
+	this.prefix_array = function(){
+		var arr = [];
+		var seen = {};
+    for ( var key in config.ontology ) {
+			var item = config.ontology[ key ];
+			if ( ! seen[ item.prefix ] ){
+				arr.push( "PREFIX " + item.prefix + ": <" + item.ns + ">" );
+				seen[ item.prefix ] = 1;
+			}
+    }
+		return arr;
+	}
+  
+}]);
+
+
+
+app.service( 'tmpl', [
+'$http',
+'config',
+function( $http, config ) {
+	
+	return {
+		get: get
+	}
+	
+	function get( type ){
+		return $http({
+			method: 'GET',
+			url: config.xhr.tmpl.url+'/'+type+'.json',
+			headers: {
+			    'Content-Type': 'application/json'
+			}
+		}).then( function( r ){
+			return r.data;
+		});
+	}
+	
+}]);
+
+/*
+
+To run this in the console...
+
+var tmpl = tserv('tmpl');
+tmpl.get('resize').then( function(data){ console.log( data ) });
+
+*/
+
+
+app.service( 'urnServ', [
+'sparql', 
+'json', 
+'host', 
+'config', 
+function( sparql, json, host, config ) {
+  
+  return ({
+    uniq: uniq,
+    fresh: fresh,
+    claim: claim,
+    base: config.serv.urn_serv.base
+  })
+  
+  function query( urn ) {
+  return "\
+  SELECT count( distinct ?o )\
+  WHERE { <"+urn+"> ?p ?o }"
+  }
+  
+  function uniq( urn, callback ) {
+    return sparql.search( query(urn) ).then(
+    function( data ){
+      var check = data[0]['.1']['value'];
+      
+      // urn already exists
+      
+      if ( check > 0 ) {
+        callback( false, urn );
+        return;
+      }
+      callback( true, urn );
+      return;
+    });
+  }
+  
+  
+  // Grab a fresh URN with an 11 digit id
+  
+  function fresh( templ, callback ) {
+    var urn = templ.replace( '{{ id }}', id( 11,'#aA') );
+    return uniq( urn, function( bool, urn ){
+      if ( bool == true ){
+      	callback( urn )
+      }
+			else {
+				fresh( templ, callback )
+			}
+    })
+  }
+  
+  
+  // Generate an id
+  
+  function id( n, chars ) {
+    var mask = '';
+    if ( chars.indexOf('a') > -1 ) mask += 'abcdefghijklmnopqrstuvwxyz';
+    if ( chars.indexOf('A') > -1 ) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if ( chars.indexOf('#') > -1 ) mask += '0123456789';
+    var out = '';
+    while ( n > 0 ) {
+      out += mask[ 
+        Math.round( Math.random() * ( mask.length-1 ) ) 
+      ];
+      n--;
+    }
+    return out
+  }
+  
+  
+  // Claim a URN and JackSON data location
+  
+  function claim( url, urn ) {
+    var base = {
+      '@context': {
+        "urn": "http://data.perseus.org/collections/urn:"
+      },
+      "@id": urn
+    }
+    return json.post( url, base );
+  }
+  
+}]);
+
+
+app.service( 'query', [
+'sparql',
+'config',
+'onto',
+'results',
+function( sparql, config, onto, results ) {
+	
+	
+	// Public methods
+	
+	return {
+		get: get,
+		count: count,
+		build: query
+	}
+	
+	
+	// Get count
+	// Ignores offset, limit, and order by
+	
+	function count( json ){
+		var b = construct( json );
+		var q = onto.prefix_array();
+		q = q.concat([ 
+			'SELECT count( distinct ?urn )',
+			'WHERE {',
+		]);
+		q = q.concat( b.where );
+		q = q.concat([
+			'}'
+		]);
+		return sparql.search( q.join("\n") ).then( 
+		function( data ){
+			return data[0]['.1']['value'];
+		});
+	}
+	
+	
+	// Get the triples
+	
+	function get( json ){
+    return sparql.search( query( json )  ).then(
+    function( data ){
+      return results.list( data );
+    });
+	}
+	
+	
+	// Build the WHERE clause
+	
+	function get_where( json ){
+		var where = [];
+		for ( var i=0; i<json.where.length; i++ ){
+			
+			var tri = json.where[i];
+			if ( tri == null ) continue;
+			
+			
+			// Get options
+			
+			var opt = {};
+			var last = tri[tri.length-1];
+			if ( last instanceof Object ){
+				opt = last;
+			}
+			
+			// Create optional clauses
+			
+			if ( "optional" in opt ){
+				if ( Array.isArray( tri[0] ) ){
+					var sub = [];
+					for ( var j=0; j<tri.length-1; j++ ){
+						sub.push( line( tri[j] ) );
+					}
+					where.push( "OPTIONAL { " );
+					where = where.concat( sub );
+					where.push( "}" );
+				}
+				else {
+					where.push( "OPTIONAL { "+ line( tri ) +" }" );
+				}
+			}
+			else {
+				where.push( line( tri ) );
+			}
+			
+			// Build a filter
+			
+			if ( "filter" in opt ){
+				where.push( "FILTER ( "+ opt.filter +" )" );
+			}
+			
+		}
+		return where;
+	}
+	
+	
+	// Construct the main body of the query
+	
+	function construct( json ){
+		var where = get_where( json );		
+		var handles = {};
+		handles = get_handles( json.where, handles );
+		var sel = [];
+		for ( var key in handles ){
+			sel.push( key );
+		}
+		return { where: where, selectors: sel }
+	}
+	
+	
+	// Build the query
+	
+	function query( json ){
+		
+		// Construct the main body of the query
+		
+		var b = construct( json );
+		
+		var q = onto.prefix_array();
+		q = q.concat([ 
+			'SELECT '+b.selectors.join(' '),
+			'WHERE {',
+		]);
+		q = q.concat( b.where );
+		q = q.concat([
+			'}'
+		]);
+		
+		// order by clause
+		
+		if ( 'order_by' in json ){
+			q = q.concat([
+				'ORDER BY '+json.order_by
+			]);
+		}
+			
+		// limit clause
+		
+		if ( 'limit' in json ){
+			q = q.concat([
+				'LIMIT '+json.limit
+			]);
+		}
+		
+		// offset clause
+		
+		if ( 'offset' in json ){
+			q = q.concat([
+				'OFFSET '+json.offset
+			]);
+		}
+		
+		// Return the query
+		
+		return q.join("\n");
+	}
+	
+	
+	// Get the SPARQL handles from WHERE
+	
+	function get_handles( search, handles ){
+		for ( var i=0; i<search.length; i++ ){
+			var tri = search[i];
+			if ( tri == null ) continue;
+			
+			if ( Array.isArray( tri[0] ) ){
+				get_handles( tri, handles )
+			}
+			
+			var n = [0,2]
+			for ( var j in n ){
+				var index = n[j];
+				if ( typeof tri[ index ] == "string" &&
+						 tri[ index ].indexOf("?") == 0 ){
+					handles[ tri[ index ] ] = 1;
+				}
 			}
 		}
+		return handles
 	}
 	
-	// If a user is logged-in they don't need to see the login view
 	
-	function logged_in(){
-		var path = $location.path();
-		if ( path.indexOf( config.access.logged_out ) == 0 ){
-			$location.path( config.access.logged_in )
-		}
+	// Build a triple line
+	
+	function line( tri ){
+		var sub = tri[0];
+		var obj = tri[2];
+		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
 	}
 	
-	// Run everytime scope changes
-  
-  $rootScope.$on('$routeChangeSuccess', function(){
-    
-    // Check for user data.
-    
-    user.check().then(
+}]);
+/*
 
-      // All is well
-      
-      function(){
-				logged_in();
-        $rootScope.$emit( user.events.ok );
-      },
-      
-      // User is not logged in
-      
-      function(){
-				if ( public_view() == true ){
-					return;
-				}
-        $rootScope.$emit( user.events.error );
-        $location.path( config.access.logged_out );
-      }
-	  
-	);
-})
-}]);  // close app.config
+// Test
 
+var t = tserv('query');
+t.query();
+
+
+// Samples
+
+var json = {
+	where: [
+		[ '?urn', 'type', 'upload' ],
+		[ '?urn', 'label', '?label', { filter:'regex( ?label, "space", "i" )' } ],
+		[
+			[ '?res', 'memberOf', '?urn'],
+			[ '?res', 'src', '?thumb' ],
+			{ optional:true }
+		],
+		[ '?urn', 'description', '?desc', { optional:true } ],
+		[ '?urn', 'created', '?time', { optional:true } ],
+		[ '?urn', 'represents', '?rep', { optional:true } ],
+		[ '?urn', 'creator', '?user', { optional:true } ],
+	],
+	order_by: 'desc( ?time )',
+	limit: 10,
+	offset: 0
+}  
+
+*/
 
 
 app.service( 'collection', [
@@ -3680,1115 +4726,6 @@ function( sparql, results, onto ){
 
 
 
-
-
-
-app.service( 'urnServ', [
-'sparql', 
-'json', 
-'host', 
-'config', 
-function( sparql, json, host, config ) {
-  
-  return ({
-    uniq: uniq,
-    fresh: fresh,
-    claim: claim,
-    base: config.serv.urn_serv.base
-  })
-  
-  function query( urn ) {
-  return "\
-  SELECT count( distinct ?o )\
-  WHERE { <"+urn+"> ?p ?o }"
-  }
-  
-  function uniq( urn, callback ) {
-    return sparql.search( query(urn) ).then(
-    function( data ){
-      var check = data[0]['.1']['value'];
-      
-      // urn already exists
-      
-      if ( check > 0 ) {
-        callback( false, urn );
-        return;
-      }
-      callback( true, urn );
-      return;
-    });
-  }
-  
-  
-  // Grab a fresh URN with an 11 digit id
-  
-  function fresh( templ, callback ) {
-    var urn = templ.replace( '{{ id }}', id( 11,'#aA') );
-    return uniq( urn, function( bool, urn ){
-      if ( bool == true ){
-      	callback( urn )
-      }
-			else {
-				fresh( templ, callback )
-			}
-    })
-  }
-  
-  
-  // Generate an id
-  
-  function id( n, chars ) {
-    var mask = '';
-    if ( chars.indexOf('a') > -1 ) mask += 'abcdefghijklmnopqrstuvwxyz';
-    if ( chars.indexOf('A') > -1 ) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    if ( chars.indexOf('#') > -1 ) mask += '0123456789';
-    var out = '';
-    while ( n > 0 ) {
-      out += mask[ 
-        Math.round( Math.random() * ( mask.length-1 ) ) 
-      ];
-      n--;
-    }
-    return out
-  }
-  
-  
-  // Claim a URN and JackSON data location
-  
-  function claim( url, urn ) {
-    var base = {
-      '@context': {
-        "urn": "http://data.perseus.org/collections/urn:"
-      },
-      "@id": urn
-    }
-    return json.post( url, base );
-  }
-  
-}]);
-
-
-app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
-  
-  // Event namespace
-  
-  var ns = 'SERVICE.USER.';
-  
-  // Variables
-  
-  var data = null;
-  var error = null;
-  
-  
-  // What gets made available?
-  
-  return({
-    data: function(){ 
-      return ( data != null ) ? data : null;
-    },
-    dir: function(){ 
-      return ( data != null ) ? data.uri.dirname() : null; 
-    },
-    id: function(){ 
-      return ( data != null ) ? data.uri : null; 
-    },
-    url: function(){ 
-      return ( data != null ) ? data.uri : null;
-    },
-    name: function(){
-      return ( data != null ) ? data.name : null;
-    },
-    events: {
-      ok: ns+'OK',
-      error: ns+'ERROR'
-    },
-    error: function(){ return error },
-    check: check,
-    only: false
-  });
-  
-  
-  // Make sure user exists
-  // see app.js/
-  
-  function check(){
-    var def = $q.defer();
-    
-    // If you already have user data
-    // don't request new user data
-    
-    if ( data != null ){
-      def.resolve();
-      return def.promise
-    }
-    
-    // Ping Perseids to get user data
-    
-    $http.get(config.serv.user.ping, { withCredentials: true} ).then( 
-      function( res ){
-        data = res.data.user;
-        def.resolve();
-      },
-      function( err ){
-        error = err;
-        def.reject();
-      }
-    )
-    return def.promise;
-  }
-}]);
-
-
-
-app.service( 'onto', [ 
-'config',
-function( config ) {
-  var self = this;  
-
-  function precheck( a_term ){
-    return angular.isDefined( config.ontology[a_term] );
-  } 
-	
-	
-	// Get the prefix form from a url
-	
-	this.short = function( url ){
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
-			var verb = item['ns']+item['term'];
-			if ( url == verb ) {
-				return item['prefix']+":"+item['term'];
-			}
-    }
-		return url
-	}
-	
-	
-	// Get ontology term with a prefix
-
-  this.with_prefix = function( a_term ){
-    if ( precheck( a_term ) ){
-      return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
-    }
-	  else {
-      console.log( "Missing ontology term " + a_term );
-      return null;
-    }
-  }
-
-	
-	// Get the ontology term with a name space
-	
-  this.with_ns = function( a_term ){
-    if ( precheck( a_term ) ){
-      return config.ontology[a_term].ns + config.ontology[a_term].term;
-    }
-	  else {
-      console.log( "Missing ontology term " + a_term );
-      return null;
-    }
-  }
-
-  this.default_value = function( a_term ){
-    if ( precheck( a_term ) ){
-		  
-      // TODO we should allow the config to specify the type as well
-		  
-      return config.ontology[a_term].default_value || "";
-    }
-	  else {
-      console.log( "Missing ontology term " + a_term );
-      return null;
-    }
-  }
-	
-	
-	// Build all the prefixes
-
-  this.prefixes = function() {
-    var pfx_query = "";
-    var seen = {};
-	  
-    angular.forEach( 
-		Object.keys( config.ontology ), 
-		function( term, i ) {
-		  if ( ! seen[ config.ontology[term].prefix ] ){
-			  pfx_query = pfx_query + " PREFIX " + config.ontology[term].prefix + ": <" + config.ontology[term].ns + ">";
-		  }
-		  seen[ config.ontology[term].prefix ] = 1;
-    });
-		  
-    // backwards compatibility
-		  
-    pfx_query = pfx_query + " PREFIX this: <https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#>";
-    return pfx_query;
-  }
-	
-	
-	// Build the prefix as an array
-	
-	this.prefix_array = function(){
-		var arr = [];
-		var seen = {};
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
-			if ( ! seen[ item.prefix ] ){
-				arr.push( "PREFIX " + item.prefix + ": <" + item.ns + ">" );
-				seen[ item.prefix ] = 1;
-			}
-    }
-		return arr;
-	}
-  
-}]);
-
-
-
-app.service( 'stdout', [ 
-function() {
-  
-  this.msg = ">>\n";
-  
-  // Write output message
-  
-  function log( str ) {
-    if ( typeof str == 'object' ){
-      str = angular.toJson( str, true );
-    }
-    this.msg += str+"\n";
-  }
-  
-  return ({
-    log: log,
-    msg: this.msg
-  })
-}]);
-
-
-app.service( 'cropper', [
-'json',
-'imgup',
-'config',
-'urnServ',
-'onto',
-function( json, imgup, config, urnServ, onto ) {
-	
-	return {
-		add: add
-	}
-	
-	function add( _urn, _x, _y, _w, _h ){
-		max_width = _max_width;
-		max_height = _max_height;
-		urn = _urn;
-		return upload_src()
-	}
-	
-
-	
-}]);
-
-/*
-
-To run this in the console...
-
-var crop = tserv('cropper');
-crop.add( 'urn:cite:perseus:upload.ry897TREW', 0.5, 0.5, 0.25, 0.25 );
-
-*/
-
-
-app.service( 'deleter', [
-'json',
-'onto',
-'user',
-'sparql',
-function( json, onto, user, sparql ) {
-	
-	// Delete log 
-	// [ { urn: server_output } ... ]
-	
-	var log = [{}];
-	
-	return ({
-		urn: urn,
-		log: log,
-		refs: refs
-	});
-	
-	
-	// Delete by URN
-	
-	function urn( urn ){
-		return path( urn );
-	}
-	
-	
-	// Add a log_item
-	
-	function log_item( urn, data ){
-		log[ log.length-1 ] = {};
-		log[ log.length-1 ][ urn ] = data;
-	}
-	
-	
-	// Get the the path to the JSON files
-	
-	function path( urn ){
-		return json.urn( urn )
-		.then( function( data ){
-			var path = data.src[0];
-			return src( path, urn )
-		});
-	}
-	
-	
-	// Delete the JSON file
-	
-	function del( path, urn ){
-		return json.del( path ).then(
-		function( data ){
-			log_item( urn, data );
-		});
-	}
-	
-	
-	// Get related URNs
-	
-	function refs( src_urn ){
-		
-		var query = [
-		onto.prefixes(),
-		"SELECT ?urn ?verb",
-		"WHERE {",
-			"?urn ?verb <"+src_urn+">", 
-		"}" ];
-		
-		var output = [];
-		return sparql.search( query.join(' ') ).then(
-		function( data ){
-			for ( var i=0; i<data.length; i++ ) {
-				var urn = data[i].urn.value;
-				var verb = data[i].verb.value;
-				if ( urn == src_urn ){ continue }
-				output.push({ urn: urn, verb: onto.short( verb ) });
-			}
-			return output;
-		});
-	}
-	
-	
-	// Remove reference
-	
-	function ghost( src_urn, prefix, rm_urn ){
-		json.urn( src_urn )
-		.then( function( data ){
-			ghost_json( src_urn, prefix, rm_urn, data.src[0] );
-		});
-	}
-	
-	
-	// So far all URN references use '@id'.
-	// This may not be true.
-	// It would be better to walk the JSON
-	
-	function ghost_json( src_urn, prefix, rm_urn, url ){
-		json.get( url )
-		.then( function( data ){
-			var item = data[ prefix ];
-			if( item['@id'] == rm_urn ){
-				item['@id'] = '';
-			}
-			json.put( url, data )
-		});
-	}
-	
-	
-	// Geth the JSON src file
-	
-	function src( path ){
-		return json.get( path )
-		.then( function( data ){
-			
-			// TODO: Check the user...
-			
-			// Delete the initial JSON src file
-			return del( path, urn );
-		});
-	}
-	
-}]);
-
-/*
-
-Getting the deleter service working well.
-
-It's probably impossible to have a totally generic deleter service.
-I'd have to look at types.
-
-Move data in and out for testing...
-
-rm -rf /var/www/JackSON/data/*
-cp -R ~/Desktop/JackSON.data.bkup/* /var/www/JackSON/data/
-
-t = tserv('deleter');
-
-*/
-
-
-app.service( 'host', [ 
-function() {
-  
-  return({
-    url: location.protocol+'//'+location.hostname+( location.port ? ':' + location.port : '' )
-  });
-  
-}]);
-
-
-app.service( 'imgup', [
-'$http',
-'$q',
-'$upload',
-'config',
-'user',
-function( $http, $q, $upload, config, user ) {
-	
-	// Output
-	
-	this.msg = "";
-	
-	return ({
-		upload: upload,
-		cp_url: cp_url,
-		resize: resize,
-		msg: this.msg
-	});
-	
-	
-	// Copy a URL path
-	
-	function cp_url( src, success, error ){
-		return $http({
-		  method: 'POST',
-		  url: config.imgup.url+'/upload',
-		  headers: {
-		    'Content-Type': 'application/json'
-		  },
-		  data: { src: src }
-		})
-		.error( function( r ){
-			update_msg( r );
-			return r.data;
-		})
-		.success( function( r ){
-			update_msg( r );
-			return r.data;
-		})
-	}
-	
-	
-	// Resize an image
-	
-	function resize( src, width, height, send_to, json ){
-		var body = { 
-			src: src,
-			max_width: width,
-			max_height: height,
-			send_to: send_to,
-			json: json
-		};
-		
-		return $http({
-			method: 'POST',
-			url: config.imgup.url+'/resize',
-		  headers: { 
-				'Content-Type': 'application/json'
-			},
-			data: body
-		})
-		.error( function( r ){
-			update_msg( r );
-			return r.data;
-		})
-		.success( function( r ){
-			update_msg( r );
-			return r.data;
-		})
-	}
-	
-	
-	// Upload a file to an imgup server
-	
-	function upload( file, success, error ){	
-  	return $upload.upload({
-  		url: config.imgup.url+'/upload',
-  		method: 'POST',
-  		file: file
-   	})
-  	.error( function( r ){
-			update_msg( r );
-  		return r.data;
-   	})
-  	.success( function( r ){
-			update_msg( r );
-  		return r.data;
-   	})
-  }
-	
-	
-	// Update message
-	
-	function update_msg( r ){
-		this.msg = r.data;
-	}
-	
-}]);
-
-
-app.service( 'json', [
-'$http',
-'$q',
-'config',
-'user',
-function( $http, $q, config, user ) {
-	
-	
-	// output
-	
-	this.msg = "";
-	this.method = "";
-	this.status = "";
-	this.url = "";
-	
-	function state(){
-		return {
-			wait: 'WAIT',
-			success: 'SUCCESS',
-			error: 'ERROR'
-		}
-	};
-	
-	var events = [];
-	function on_change( event ){ events.push( event ) }
-	function run_events(){
-		angular.forEach( events, function( event ){
-			event( this.method, this.url, this.status, this.msg );
-		});
-	}
-	
-	
-	// Avoid typos with constants
-	
-	var GET = 'GET';
-	var POST = 'POST';
-	var PUT = 'PUT';
-	var DELETE = 'DELETE';
-	
-	
-	// Publicly accessible methods
-	
-	return ({
-		post: post,
-		put: put,
-		get: get,
-		delete: del,
-		del: del,
-		ls: ls,
-		urn: urn,
-		disp: disp,
-		on_change: on_change,
-		msg: this.msg,
-		method: this.method,
-		status: this.status,
-		state: state,
-		url: this.url
-	});
-	
-	
-	// Retrieve a JSON file path by URN
-	
-	function urn( urn ){
-		if ( urn == null ){
-			return;
-		}
-		var request = api( GET, config.xhr.json.url+'/src?urn='+urn );
-		return( request.then( 
-			success, 
-			error 
-		));
-	}
-	
-	
-	// Turn JSON into pretty-printed string
-	
-	function disp( data ) {
-		var json = {};
-		var out = [];
-		for ( var key in data ){
-			if ( key == '@context' ){ 
-				out[0] = angular.toJson( data[key], true );
-				continue;
-			}
-			json[key] = data[key];
-		}
-		out[1] = angular.toJson( json, true );
-		return out;
-	}
-	
-	
-	// Create a new JSON file if it doesn't already exist.
-	
-	function post( url, data ){
-		var request = api( POST, rel(url), data );
-		return( request.then(
-			success, 
-			function( r ){ return put( rel(url), data ) } 
-		));
-	}
-	
-	
-	// Update data on server
-	
-	function put( url, data ){
-		var request = api( PUT, rel(url), data );
-		return( request.then( 
-			success, 
-			error 
-		));
-	}
-	
-	
-	// DELETE the JSON
-	
-	function del( url ){
-		var request = api( DELETE, rel(url) );
-		return( request.then(
-			success,
-			error
-		));
-	}
-	
-	
-	// GET the JSON
-	
-	function get( url ){
-		var request = api( GET, rel(url) );
-		return( request.then( 
-			success, 
-			error 
-		));
-	}
-	
-	
-	// Run the ls command
-	
-	function ls( url ){
-		var request = api( GET, rel(url)+"?cmd=ls" );
-		return( request.then(
-			success,
-			error
-		));
-	}
-	
-	
-	// Add 'user' field potentially.
-	// Others in the future.
-	
-	function tack_on( data ){
-		if ( tack('user') ){
-			data['user'] = { '@id': user.url() }
-		}
-		return data;
-	}
-	
-	function tack( key ){
-		var tacks = config.xhr.json.tack_on;
-		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
-			return false;
-		}
-		return true;
-	}
-	
-	
-	// API
-	
-	function api( method, url, data ){
-		
-		// tack on standard data fields
-		this.method = method;
-		this.url = url;
-		this.status = state().wait;
-		run_events();
-		
-		if ( data != undefined ){
-			data = tack_on( data );
-		}
-		
-		return $http({
-			method: method.toUpperCase(),
-			url: url,
-		    headers: {
-		        'Content-Type': 'application/json'
-		    },
-			data: wrap( data )
-		});
-	}
-	
-	
-	// Properly resolve relative URLs
-	
-	function rel( url ){
-		if ( url.indexOf('http://') == 0 ){
-			return url;
-		}
-		return config.xhr.json.url+'/data/'+url;
-	}
-	
-	
-	// JackSON formatted json
-	
-	function wrap( json ){
-		return { data: json }
-	}
-	
-	
-	// Error handler
-	
-	function error( r ){
-		this.status = state().error;
-		this.msg = angular.toJson( r.data, true );
-		run_events();
-		if (
-			! angular.isObject( r.data ) ||
-			! r.data.error
-		){
-			var unknown = "An unknown error occurred."
-			return( $q.reject( unknown ) );
-		}
-		return( r.data );
-	}
-	
-	
-	// Success handler
-	
-	function success( r ){
-		this.status = state().success;
-		this.msg = angular.toJson( r.data, true );
-		run_events();
-		return( r.data );
-	}
-}]);
-
-
-app.service( 'query', [
-'sparql',
-'config',
-'onto',
-'results',
-function( sparql, config, onto, results ) {
-	
-	
-	// Public methods
-	
-	return {
-		get: get,
-		count: count,
-		build: query
-	}
-	
-	
-	// Get count
-	// Ignores offset, limit, and order by
-	
-	function count( json ){
-		var b = construct( json );
-		var q = onto.prefix_array();
-		q = q.concat([ 
-			'SELECT count( distinct ?urn )',
-			'WHERE {',
-		]);
-		q = q.concat( b.where );
-		q = q.concat([
-			'}'
-		]);
-		return sparql.search( q.join("\n") ).then( 
-		function( data ){
-			return data[0]['.1']['value'];
-		});
-	}
-	
-	
-	// Get the triples
-	
-	function get( json ){
-    return sparql.search( query( json )  ).then(
-    function( data ){
-      return results.list( data );
-    });
-	}
-	
-	
-	// Build the WHERE clause
-	
-	function get_where( json ){
-		var where = [];
-		for ( var i=0; i<json.where.length; i++ ){
-			
-			var tri = json.where[i];
-			if ( tri == null ) continue;
-			
-			
-			// Get options
-			
-			var opt = {};
-			var last = tri[tri.length-1];
-			if ( last instanceof Object ){
-				opt = last;
-			}
-			
-			// Create optional clauses
-			
-			if ( "optional" in opt ){
-				if ( Array.isArray( tri[0] ) ){
-					var sub = [];
-					for ( var j=0; j<tri.length-1; j++ ){
-						sub.push( line( tri[j] ) );
-					}
-					where.push( "OPTIONAL { " );
-					where = where.concat( sub );
-					where.push( "}" );
-				}
-				else {
-					where.push( "OPTIONAL { "+ line( tri ) +" }" );
-				}
-			}
-			else {
-				where.push( line( tri ) );
-			}
-			
-			// Build a filter
-			
-			if ( "filter" in opt ){
-				where.push( "FILTER ( "+ opt.filter +" )" );
-			}
-			
-		}
-		return where;
-	}
-	
-	
-	// Construct the main body of the query
-	
-	function construct( json ){
-		var where = get_where( json );		
-		var handles = {};
-		handles = get_handles( json.where, handles );
-		var sel = [];
-		for ( var key in handles ){
-			sel.push( key );
-		}
-		return { where: where, selectors: sel }
-	}
-	
-	
-	// Build the query
-	
-	function query( json ){
-		
-		// Construct the main body of the query
-		
-		var b = construct( json );
-		
-		var q = onto.prefix_array();
-		q = q.concat([ 
-			'SELECT '+b.selectors.join(' '),
-			'WHERE {',
-		]);
-		q = q.concat( b.where );
-		q = q.concat([
-			'}'
-		]);
-		
-		// order by clause
-		
-		if ( 'order_by' in json ){
-			q = q.concat([
-				'ORDER BY '+json.order_by
-			]);
-		}
-			
-		// limit clause
-		
-		if ( 'limit' in json ){
-			q = q.concat([
-				'LIMIT '+json.limit
-			]);
-		}
-		
-		// offset clause
-		
-		if ( 'offset' in json ){
-			q = q.concat([
-				'OFFSET '+json.offset
-			]);
-		}
-		
-		// Return the query
-		
-		return q.join("\n");
-	}
-	
-	
-	// Get the SPARQL handles from WHERE
-	
-	function get_handles( search, handles ){
-		for ( var i=0; i<search.length; i++ ){
-			var tri = search[i];
-			if ( tri == null ) continue;
-			
-			if ( Array.isArray( tri[0] ) ){
-				get_handles( tri, handles )
-			}
-			
-			var n = [0,2]
-			for ( var j in n ){
-				var index = n[j];
-				if ( typeof tri[ index ] == "string" &&
-						 tri[ index ].indexOf("?") == 0 ){
-					handles[ tri[ index ] ] = 1;
-				}
-			}
-		}
-		return handles
-	}
-	
-	
-	// Build a triple line
-	
-	function line( tri ){
-		var sub = tri[0];
-		var obj = tri[2];
-		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
-	}
-	
-}]);
-/*
-
-// Test
-
-var t = tserv('query');
-t.query();
-
-
-// Samples
-
-var json = {
-	where: [
-		[ '?urn', 'type', 'upload' ],
-		[ '?urn', 'label', '?label', { filter:'regex( ?label, "space", "i" )' } ],
-		[
-			[ '?res', 'memberOf', '?urn'],
-			[ '?res', 'src', '?thumb' ],
-			{ optional:true }
-		],
-		[ '?urn', 'description', '?desc', { optional:true } ],
-		[ '?urn', 'created', '?time', { optional:true } ],
-		[ '?urn', 'represents', '?rep', { optional:true } ],
-		[ '?urn', 'creator', '?user', { optional:true } ],
-	],
-	order_by: 'desc( ?time )',
-	limit: 10,
-	offset: 0
-}  
-
-*/
-
-
-app.service( 'resizer', [
-'json',
-'imgup',
-'config',
-'urnServ',
-'onto',
-'tmpl',
-function( json, imgup, config, urnServ, onto, tmpl ) {
-	
-	var max_width = null;
-	var max_height = null;
-	var src = null;
-	var upload = null;
-	var resize_urn = null;
-	var res_tmpl = null;
-	var urn = null;
-	
-	return {
-		add: add
-	}
-	
-	function add( _urn, _max_width, _max_height ){
-		max_width = _max_width;
-		max_height = _max_height;
-		urn = _urn;
-		return upload_src()
-	}
-	
-	function upload_src(){
-		return json.urn( urn ).then( 
-		function( data ){
-			src = data['src'][0];
-			return upload_json();
-		});
-	}
-	
-	function upload_json(){
-		return json.get( src ).then(
-		function( data ){
-			upload = data;
-			return get_urn();
-		});
-	}
-	
-	function get_urn(){
-		return urnServ.fresh( urnServ.base+"resize.{{ id }}", function( urn ){
-			resize_urn = urn;
-			return resize_tmpl();
-		});
-	}
-	
-	function resize_tmpl(){
-		return tmpl.get( 'resize' ).then( function( data ){
-			res_tmpl = data;
-			return set_vals();
-		});
-	}
-	
-	function set_vals(){
-		res_tmpl['@id'] = resize_urn;
-		res_tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
-		return send();
-	}
-	
-	function send(){
-		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
-		var img = upload[ onto.with_prefix('src') ]['@id'];
-		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( function( data ){
-			return data;
-		});
-	}
-	
-}]);
-
-/*
-
-To run this in the console...
-
-var r = tserv('resizer')
-r.add('urn:cite:perseus:upload.QAlWThSWNU1', 200, 200)
-
-*/
-
-
 // Process results returned from SPARQL query
 
 app.service( 'results', [ 
@@ -4924,34 +4861,94 @@ function( $http, $q, config ) {
 }]);
 
 
-app.service( 'tmpl', [
-'$http',
-'config',
-function( $http, config ) {
-	
-	return {
-		get: get
-	}
-	
-	function get( type ){
-		return $http({
-			method: 'GET',
-			url: config.xhr.tmpl.url+'/'+type+'.json',
-			headers: {
-			    'Content-Type': 'application/json'
-			}
-		}).then( function( r ){
-			return r.data;
-		});
-	}
-	
+app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
+  
+  // Event namespace
+  
+  var ns = 'SERVICE.USER.';
+  
+  // Variables
+  
+  var data = null;
+  var error = null;
+  
+  
+  // What gets made available?
+  
+  return({
+    data: function(){ 
+      return ( data != null ) ? data : null;
+    },
+    dir: function(){ 
+      return ( data != null ) ? data.uri.dirname() : null; 
+    },
+    id: function(){ 
+      return ( data != null ) ? data.uri : null; 
+    },
+    url: function(){ 
+      return ( data != null ) ? data.uri : null;
+    },
+    name: function(){
+      return ( data != null ) ? data.name : null;
+    },
+    events: {
+      ok: ns+'OK',
+      error: ns+'ERROR'
+    },
+    error: function(){ return error },
+    check: check,
+    only: false
+  });
+  
+  
+  // Make sure user exists
+  // see app.js/
+  
+  function check(){
+    var def = $q.defer();
+    
+    // If you already have user data
+    // don't request new user data
+    
+    if ( data != null ){
+      def.resolve();
+      return def.promise
+    }
+    
+    // Ping Perseids to get user data
+    
+    $http.get(config.serv.user.ping, { withCredentials: true} ).then( 
+      function( res ){
+        data = res.data.user;
+        def.resolve();
+      },
+      function( err ){
+        error = err;
+        def.reject();
+      }
+    )
+    return def.promise;
+  }
 }]);
 
-/*
 
-To run this in the console...
 
-var tmpl = tserv('tmpl');
-tmpl.get('resize').then( function(data){ console.log( data ) });
-
-*/
+app.service( 'stdout', [ 
+function() {
+  
+  this.msg = ">>\n";
+  
+  // Write output message
+  
+  function log( str ) {
+    if ( typeof str == 'object' ){
+      str = angular.toJson( str, true );
+    }
+    this.msg += str+"\n";
+  }
+  
+  return ({
+    log: log,
+    msg: this.msg
+  })
+}]);
