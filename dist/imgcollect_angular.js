@@ -689,7 +689,8 @@ var app = angular.module('app',[
 'ngRoute',
 'appControllers',
 'appDirectives',
-'angularFileUpload'
+'angularFileUpload',
+'minicolors'
 ]);
 
 
@@ -1520,7 +1521,24 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
       input: {
         color: '#FDFDFD'
       }
-    }
+    },
+		color_picker: {
+			theme: 'bootstrap',
+			position: 'top left',
+			defaultValue: '',
+			animationSpeed: 50,
+  		animationEasing: 'swing',
+  		change: null,
+  		changeDelay: 0,
+  		control: 'hue',
+  		hide: null,
+  		hideSpeed: 100,
+  		inline: false,
+  		letterCase: 'lowercase',
+  		opacity: false,
+  		show: null,
+  		showSpeed: 100
+		}
   };  
   var orig = {};
 
