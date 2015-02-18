@@ -221,6 +221,13 @@ img.preview {
 .imgspect.nav {
   outline: 1px $vapor;
   position:absolute;
+	top:0;
+}
+.imgspect.nav.left {
+	left:5px;
+}
+.imgspect.nav.right {
+	right:5px;
 }
 .imgspect.nav .canvas {
   float:left;
