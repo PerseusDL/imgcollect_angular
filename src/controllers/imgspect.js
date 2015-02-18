@@ -30,6 +30,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   var add = $( '.imgspect.frame .canvas .lite.temp .add' );
   var cancel = $( '.imgspect.frame .canvas .lite.temp .cancel' );
   var nudge = $( '.imgspect.frame .canvas .lite.temp .nudge' );
+	var popup = $( '.imgspect.frame .canvas .annot' );
 
   
   // CONFIGURATION
@@ -58,12 +59,12 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
       opa:0.75
     },
     nav: {
-      opa:0.5
+      opa:0.5,
+			pos:'right'
     },
     annot: {
       color: '#F2F2F2',
       opa:0.9,
-      offset:15,
       input: {
         color: '#FDFDFD'
       }
@@ -78,13 +79,37 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   };
   $scope.frame_h = 600;
   
-  // Canvas Size and position
+  // Canvas size and position
 
   $scope.canvas_w = 0;
   $scope.canvas_h = 0;
   $scope.canvas_x = 0;
   $scope.canvas_y = 0;
-  $scope.zoom = 1
+  $scope.zoom = 1;
+	
+	// Calculate popup offset
+	
+	$scope.calc_offset = function( dim ){
+		var x = $scope.frame_x_rel( parseFloat( $scope.temp_lite.x ) + parseFloat( $scope.temp_lite.w * 0.5 ) );
+		var y = $scope.frame_y_rel( parseFloat( $scope.temp_lite.y ) + parseFloat( $scope.temp_lite.h ) );
+		switch( dim ){
+			case 'x':
+				if ( x > 0.75 ){
+					return popup.outerWidth()*-1;
+				}
+				return 0;
+				break;
+			case 'y':
+				if ( x > 0.75 ){
+					return 0;
+				}
+				if ( y < 0.75 ){
+					return $scope.to_canvas_y( $scope.temp_lite.h )
+				}
+				return popup.outerHeight()*-1;
+				break;
+		}
+	}
   
   
   // Ratios
@@ -143,8 +168,8 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   
   $scope.add = function(){
     var fresh = {
-      'rdf:label': $scope.temp_label,
-      'rdf:description': $scope.temp_desc,
+      'label': $scope.temp_label,
+      'description': $scope.temp_desc,
       'height': $scope.temp_lite.h,
       'width': $scope.temp_lite.w,
       'x': $scope.temp_lite.x,
@@ -153,6 +178,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
     var annots = annotations();
     annots.push( fresh );
 		$scope.popout( false );
+		$scope.lite_reset();
   }
   
   // Save new annotations to database
@@ -186,6 +212,8 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
     annot = angular.extend( def, annot );
     annot['@id'] = annotation_urn( annot );
     annot['cite:belongsTo'] = { "@id": $scope.urn };
+		annot['rdf:label'] = annot['label'];
+		annot['rdf:description'] = annot['description'];
     
     // save on the server
     
@@ -281,6 +309,16 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   $scope.to_nav_x = function( n ){ return n*$scope.nav_w() }
   $scope.to_nav_y = function( n ){ return n*$scope.nav_h }
   
+	$scope.frame_x_rel = function( n ){ 
+		var cx = $scope.to_canvas_x( n );
+		return ( cx - $scope.canvas_x ) / $scope.frame_w();
+	}
+	
+	$scope.frame_y_rel = function( n ){
+		var cy = $scope.to_canvas_y( n );
+		return ( cy + $scope.canvas_y ) / $scope.frame_h;
+		
+	}
   
   
   // LITE
@@ -485,8 +523,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
     var x = (e.clientX - pos.left);
     var y = (e.clientY - pos.top + $(document).scrollTop() );
     return { 'x':x/$scope.canvas_w, 'y':y/$scope.canvas_h }
-  }  
-  
+  }
   
   
   // DRAGGER
