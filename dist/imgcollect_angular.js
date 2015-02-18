@@ -1598,6 +1598,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   $scope.nav_scale = function(){
     return $scope.nav_h / orig.height
   }
+	$scope.nav_right = true;
   
   
   // Get default annotation data

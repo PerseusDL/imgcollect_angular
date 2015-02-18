@@ -102,12 +102,10 @@
 
 <!-- nav -->
 
-<div class="imgspect nav"
+<div ng-class="{true:'right', false:'left'}[nav_right]" class="imgspect nav"
 	 	 ng-style="{
 	   'width':nav_w()+'px',
 	   'height':nav_h+'px',
-   	 'top':'0',
-		 config.nav.pos :'5px'
 	   }">
 	 
 	 <!-- nav canvas -->
@@ -148,10 +146,7 @@
 
 <div class="imgspect controls">
 	
-	<div>nav</div>
-	<input type="text"
-				 ng-model="config.nav.pos"
-	/>
+	<a class="button tiny secondary" ng-click="nav_right = !nav_right">move nav</a>
 	
 	<div>zoom</div>
 	<input type="text" 
