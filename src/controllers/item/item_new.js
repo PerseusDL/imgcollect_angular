@@ -20,6 +20,7 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
   $scope.ready = false;
   $scope.collection = null;
   $scope.form = {};
+	$scope.user_collections = null;
   
   
   // User clicks collection to add upload
@@ -31,6 +32,12 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
     
     urnServ.fresh( urn+".{{ id }}", fresh_callback );
   }
+	
+	// Get the user's collections
+	
+	collection.mine().then( function( data ){
+		$scope.user_collections = data;
+	});
   
   
   // Get collections for the collection selector

@@ -2178,6 +2178,7 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
   $scope.ready = false;
   $scope.collection = null;
   $scope.form = {};
+	$scope.user_collections = null;
   
   
   // User clicks collection to add upload
@@ -2189,6 +2190,12 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
     
     urnServ.fresh( urn+".{{ id }}", fresh_callback );
   }
+	
+	// Get the user's collections
+	
+	collection.mine().then( function( data ){
+		$scope.user_collections = data;
+	});
   
   
   // Get collections for the collection selector
@@ -4450,12 +4457,15 @@ app.service( 'collection', [
 'results',
 'onto',
 'query',
-function( sparql, results, onto, query ) {
+'user',
+function( sparql, results, onto, query, user ) {
 	
   return({
     get:get,
     search:search,
-		items:items
+		items:items,
+		belonging_to:belonging_to,
+		mine:mine
   })
   
   function prefix(){
@@ -4526,8 +4536,35 @@ function( sparql, results, onto, query ) {
 			return data;
 		});
 	}
+	
+	
+	// Get a user's collections
+	
+	function belonging_to( user_url ){
+		if ( user_url == null ) {
+			throw 'belonging_to() requires user_url'
+		}
+		var q = {
+			where:[
+				[ '?urn', 'type', '"collection"' ],
+				[ '?urn', 'creator', '<'+ user_url +'>' ]
+			]
+		}
+		return query.get( q ).then(
+		function( data ){
+			return data;
+		});
+	}
+	
+	
+	// Get the current user's collections
+	
+	function mine(){
+		return belonging_to( user.url() );
+	}
   
 }]);
+
 /*
 
 var c = tserv('collection');
