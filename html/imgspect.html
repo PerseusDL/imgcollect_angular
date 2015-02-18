@@ -62,8 +62,10 @@
 		<div class="annot"
 			 ng-show="popout()"
 		     ng-style="{
-			   'left':to_canvas_x( temp_lite.x )+config.annot.offset+'px',
-			   'top':to_canvas_y( temp_lite.y )+config.annot.offset+'px',
+				 'height':'150px',
+				 'width':'240px',
+			   'left':to_canvas_x( temp_lite.x )+calc_offset('x')+'px',
+			   'top':to_canvas_y( temp_lite.y )+calc_offset('y')+'px',
 			   'opacity':config.annot.opa,
 			   'background-color':config.annot.color }">
 			   
@@ -103,7 +105,10 @@
 <div class="imgspect nav"
 	 	 ng-style="{
 	   'width':nav_w()+'px',
-	   'height':nav_h+'px' }">
+	   'height':nav_h+'px',
+   	 'top':'0',
+		 config.nav.pos :'5px'
+	   }">
 	 
 	 <!-- nav canvas -->
 	 
@@ -142,6 +147,11 @@
 <!-- controls -->
 
 <div class="imgspect controls">
+	
+	<div>nav</div>
+	<input type="text"
+				 ng-model="config.nav.pos"
+	/>
 	
 	<div>zoom</div>
 	<input type="text" 

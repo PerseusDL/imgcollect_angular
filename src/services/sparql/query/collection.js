@@ -93,6 +93,7 @@ function( sparql, results, onto, query, user ) {
 		var q = {
 			where:[
 				[ '?urn', 'type', '"collection"' ],
+				[ '?urn', 'label', '?label' ],
 				[ '?urn', 'creator', '<'+ user_url +'>' ]
 			]
 		}
