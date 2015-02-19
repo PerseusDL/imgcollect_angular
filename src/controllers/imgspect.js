@@ -54,6 +54,9 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   // Application state
 
   $scope.config = {
+		zoom: {
+			max: 5
+		},
     lite: {
       color:'#FF0',
       opa:0.75
@@ -70,24 +73,16 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
       }
     },
 		color_picker: {
-			theme: 'bootstrap',
-			position: 'top left',
-			defaultValue: '',
-			animationSpeed: 50,
-  		animationEasing: 'swing',
-  		change: null,
-  		changeDelay: 0,
-  		control: 'hue',
-  		hide: null,
-  		hideSpeed: 100,
-  		inline: false,
-  		letterCase: 'lowercase',
-  		opacity: false,
   		show: null,
   		showSpeed: 100
 		}
   };  
   var orig = {};
+	
+	$scope.lite_opa_chg = function(n){
+		$scope.config.lite.opa = n;
+		$scope.$apply();
+	}
 
   // Frame Size
   
@@ -103,6 +98,15 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
   $scope.canvas_x = 0;
   $scope.canvas_y = 0;
   $scope.zoom = 1;
+	
+	// Change zoom
+	
+	$scope.zoom_chg = function(n){
+		var max = $scope.config.zoom.max;
+		var zoom = n * max;
+		$scope.zoom = zoom.toPrecision(2);
+		dragging()
+	}
 	
 	// Calculate popup offset
 	
