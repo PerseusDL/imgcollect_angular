@@ -1,6 +1,13 @@
-<h1>{{ title }}</h1>
-<div ng-hide="progress.done" class="box">
+<div class="box">
 	
+	<h2>upload your file</h2>
+	
+	<!-- progress bar -->
+		
+	<div id="progressbar"></div>
+	
+	<div ng-hide="progress.done">
+		
 	<!-- upload -->
 	
 	<input type="file"
@@ -9,10 +16,6 @@
          accept="image/*"
 	/>
 	
-	<!-- progress bar -->
-		
-	<div id="progressbar"></div>
-	
 	<!-- submit button -->
 	
 	<input type="submit" 
@@ -20,6 +23,8 @@
 				 value="Upload"
 				 ng-click="upload()" 
 	/>
+	</div>
+	
 </div>
 
 <div ng-show="progress.done || progress.error" class="box">
@@ -27,6 +32,7 @@
 	<!-- success message -->
 	
 	<div ng-show="progress.error">
+	<h2>error</h2>
 	<pre>{{ progress.error }}</pre>
 	refresh page to try again.
 	</div>
@@ -35,14 +41,44 @@
 	<!-- upload link -->
 	
 	<div ng-show="progress.done">
-		<strong>{{ progress.orig }}</strong>
-		uploaded to
-		<a href="{{ progress.src }}">
-			{{ progress.src }}
-		</a>
+	<h2>success!</h2>
+	<strong>{{ progress.orig }}</strong>
+	uploaded to
+	<a href="{{ progress.src }}">
+		{{ progress.src }}
+	</a>
 	</div>
 	
 </div>
 
-<div ng-show="progress.done"></div>
+<div ng-show="tmpl.loaded" class="box">
+	<h4>upload template loaded...<h4>
+	<p>add metadata...</p>
+	
+	<!-- metadata -->
+	
+	<form ng-show="tmpl.loaded">
+		<input type="text" 
+		       ng-repeat="field in edit_fields" 
+					 ng-change="change(field)" 
+					 ng-model="form[field]" 
+					 placeholder="{{field}}" 
+		/>
+		
+		<input class="button secondary" 
+           type="submit" 
+           value="save" 
+           ng-click="save()" 
+		/>
+		
+		<!-- messages received from JackSON server -->
+		
+		<div ng-show="tmpl.saving" json-msg></div>
+		
+</div>
+
+<div ng-show="tmpl.saved" class="box">
+	<h4>upload record saved!</h4>
+	<p>thumbnail creation added to imgup job queue.</p>
+</div>
 
