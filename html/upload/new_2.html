@@ -1,6 +1,6 @@
 <div class="box">
 	
-	<h2>upload your file</h2>
+	<h4>Upload your file...</h4>
 	
 	<!-- progress bar -->
 		
@@ -32,16 +32,16 @@
 	<!-- success message -->
 	
 	<div ng-show="progress.error">
-	<h2>error</h2>
-	<pre>{{ progress.error }}</pre>
-	refresh page to try again.
+	<h4>Error</h4>
+	<pre>{{ error_output }}</pre>
+	Refresh page to try again.
 	</div>
 	
 
 	<!-- upload link -->
 	
 	<div ng-show="progress.done">
-	<h2>success!</h2>
+	<h4>Success!</h4>
 	<strong>{{ progress.orig }}</strong>
 	uploaded to
 	<a href="{{ progress.src }}">
@@ -52,8 +52,7 @@
 </div>
 
 <div ng-show="tmpl.loaded" class="box">
-	<h4>upload template loaded...<h4>
-	<p>add metadata...</p>
+	<h4>Add JSON-LD metadata...<h4>
 	
 	<!-- metadata -->
 	
@@ -68,7 +67,7 @@
 		<input class="button secondary" 
            type="submit" 
            value="save" 
-           ng-click="save()" 
+           ng-click="save()"
 		/>
 		
 		<!-- messages received from JackSON server -->
@@ -77,8 +76,14 @@
 		
 </div>
 
+<div ng-show="tmpl.error" class="box">
+	<h4>Error saving metadata!</h4>
+	<pre>{{ tmpl.error }}</pre>
+	<pre>{{ error_out }}</pre>
+</div>
+
 <div ng-show="tmpl.saved" class="box">
-	<h4>upload record saved!</h4>
-	<p>thumbnail creation added to imgup job queue.</p>
+	<h4>Upload metadata saved!</h4>
+	<p>It is safe to leave this page.</p>
 </div>
 

@@ -48,6 +48,7 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
 		})
 		.error( function(r){
 			$scope.progress.error = true;
+			$scope.error_output = json.disp( r );
 		})
 		.success( function(r){
 			$scope.progress.orig = r.orig;
@@ -135,11 +136,16 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
     touch();
     json.post( $scope.data_path( $scope.urn ), $scope.json ).then(
     function( data ){
-			$scope.tmpl.saved = true;
-			resizer.add( $scope.urn, 200, 200 );
+			if ( 'error' in data ){
+				$scope.tmpl.error = data;
+				$scope.error_out = json.disp( $scope.json );
+			}
+			else {
+				$scope.tmpl.saved = true;
+				resizer.add( $scope.urn, 200, 200 );
+			}
     });
   }
-  
   
   // Set basic values
   
@@ -147,9 +153,11 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
     $scope.json['@id'] = $scope.urn;
     var creator = onto.with_prefix('creator');
     var created = onto.with_prefix('created');
+		var orig = onto.with_prefix('orig');
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
-		$scope.json[src]['@id'] = $scope.progress.src;
+		$scope.json[src]['@id'] = $scope.progress.src.replace(' ', "%20");
+		$scope.json[orig] = $scope.progress.orig;
   }
 	
 	
