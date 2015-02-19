@@ -77,35 +77,36 @@
 			<ul class="items list">
 				
 				<div class="row" ng-repeat="roi in rois">
+				<div class="columns small-12 box">
 					
-					<div class="columns small-12 box">
-						
-						<div class="row">
-						<div class="columns small-12 medium-4">
-						<img ng-src="{{ img_src }}" 
-							   ng-param="{{ roi.x }},{{ roi.y }},{{ roi.width }},{{ roi.height }}"
-						img-bit />
-						</div>
-
-						<div class="columns small-12 medium-8">						
-							<table>
-								<tr>
-									<th>urn</th>
-									<td><a href="#/view/{{ roi.urn }}">{{ roi.urn }}</a></td>
-								</tr>
-								<tr>
-									<th>label</th>
-									<td>{{ roi.label }}</td>
-								</tr>
-								<tr>
-									<th>desc</th>
-									<td>{{ roi.description }}</td>
-								</tr>
-							</table>
-						</div>
+					<div class="row">
+					<div class="columns small-12 centered">
+					<img ng-src="{{ img_src }}" 
+						   ng-param="{{ roi.x }},{{ roi.y }},{{ roi.width }},{{ roi.height }}"
+					img-bit />
 					</div>
 					</div>
 					
+					<div class="row">
+					<div class="columns small-12 centered">						
+						<table>
+							<tr>
+								<th>urn</th>
+								<td><a href="#/view/{{ roi.urn }}">{{ roi.urn }}</a></td>
+							</tr>
+							<tr>
+								<th>label</th>
+								<td>{{ roi.label }}</td>
+							</tr>
+							<tr>
+								<th>desc</th>
+								<td>{{ roi.description }}</td>
+							</tr>
+						</table>
+					</div>
+					</div>
+					
+				</div>
 				</div>
 				
 				<!-- Open Imgspect -->
