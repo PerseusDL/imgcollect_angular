@@ -3169,40 +3169,6 @@ function( $scope, $routeParams, json ){
 var appDirectives = angular.module('appDirectives',[]);
 
 
-appDirectives.directive('collectionItemsShort', 
-function(){
-  return {
-    templateUrl: 'html/share/collection-items-short.html'
-  }
-});
-
-
-appDirectives.directive('collectionItems', 
-function(){
-  return {
-    templateUrl: 'html/share/collection-items.html'
-  }
-});
-
-
-appDirectives.directive('controlBox',
-function(){
-	return {
-		templateUrl: 'html/share/control-box.html'
-	}
-});
-
-
-// Build a filterbox in list controllers
-
-appDirectives.directive('filterBox', 
-function(){
-  return {
-    templateUrl: 'html/share/filter-box.html'
-  }
-});
-
-
 // img-bit functionality.
 // see .img-bit in app.scss
 
@@ -3324,6 +3290,54 @@ function(){
 });
 
 
+appDirectives.directive('collectionItemsShort', 
+function(){
+  return {
+    templateUrl: 'html/share/collection-items-short.html'
+  }
+});
+
+
+appDirectives.directive('collectionItems', 
+function(){
+  return {
+    templateUrl: 'html/share/collection-items.html'
+  }
+});
+
+
+appDirectives.directive('controlBox',
+function(){
+	return {
+		templateUrl: 'html/share/control-box.html'
+	}
+});
+
+
+appDirectives.directive('listMetaBox', 
+function(){
+  return {
+    templateUrl: 'html/share/list-meta-box.html'
+  }
+});
+
+
+appDirectives.directive('resizeItems', 
+function(){
+  return {
+    templateUrl: 'html/share/resize-items.html'
+  }
+});
+
+
+appDirectives.directive('uploadItems', 
+function(){
+  return {
+    templateUrl: 'html/share/upload-items.html'
+  }
+});
+
+
 appDirectives.directive('jsonMsgMini',
 function(){
 	return {
@@ -3348,30 +3362,6 @@ function(){
 });
 
 
-appDirectives.directive('listMetaBox', 
-function(){
-  return {
-    templateUrl: 'html/share/list-meta-box.html'
-  }
-});
-
-
-appDirectives.directive('navBox', 
-function(){
-  return {
-    templateUrl: 'html/share/nav-box.html'
-  }
-});
-
-
-appDirectives.directive('resizeItems', 
-function(){
-  return {
-    templateUrl: 'html/share/resize-items.html'
-  }
-});
-
-
 appDirectives.directive('sparqlMsg',
 function(){
 	return {
@@ -3388,10 +3378,28 @@ function(){
 });
 
 
-appDirectives.directive('uploadItems', 
+appDirectives.directive('urnServMsg',
+function(){
+	return {
+		templateUrl: 'html/share/msg/urn-serv-msg.html'
+	}
+});
+
+
+// Build a filterbox in list controllers
+
+appDirectives.directive('filterBox', 
 function(){
   return {
-    templateUrl: 'html/share/upload-items.html'
+    templateUrl: 'html/share/filter-box.html'
+  }
+});
+
+
+appDirectives.directive('navBox', 
+function(){
+  return {
+    templateUrl: 'html/share/nav-box.html'
   }
 });
 
@@ -3401,14 +3409,6 @@ function(){
   return {
     templateUrl: 'html/share/urn-info.html'
   }
-});
-
-
-appDirectives.directive('urnServMsg',
-function(){
-	return {
-		templateUrl: 'html/share/msg/urn-serv-msg.html'
-	}
 });
 
 
