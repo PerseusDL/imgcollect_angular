@@ -1,0 +1,48 @@
+<h1>{{ title }}</h1>
+<div ng-hide="progress.done" class="box">
+	
+	<!-- upload -->
+	
+	<input type="file"
+         ng-file-select
+         ng-model="file"
+         accept="image/*"
+	/>
+	
+	<!-- progress bar -->
+		
+	<div id="progressbar"></div>
+	
+	<!-- submit button -->
+	
+	<input type="submit" 
+			   class="button secondary" 
+				 value="Upload"
+				 ng-click="upload()" 
+	/>
+</div>
+
+<div ng-show="progress.done || progress.error" class="box">
+	
+	<!-- success message -->
+	
+	<div ng-show="progress.error">
+	<pre>{{ progress.error }}</pre>
+	refresh page to try again.
+	</div>
+	
+
+	<!-- upload link -->
+	
+	<div ng-show="progress.done">
+		<strong>{{ progress.orig }}</strong>
+		uploaded to
+		<a href="{{ progress.src }}">
+			{{ progress.src }}
+		</a>
+	</div>
+	
+</div>
+
+<div ng-show="progress.done"></div>
+

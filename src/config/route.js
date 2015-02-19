@@ -21,6 +21,10 @@ function( $routeProvider ) {
     templateUrl: 'html/upload/new.html',
     controller: 'UploadNew'
   }).
+	when('/new_2/upload', {
+		templateUrl: 'html/upload/new_2.html',
+		controller: 'UploadNew2'
+	}).
   otherwise({
     redirectTo: '/uploads'
   });
