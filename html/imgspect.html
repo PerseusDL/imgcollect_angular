@@ -148,21 +148,47 @@
 	
 	<a class="button tiny secondary" ng-click="nav_right = !nav_right">move nav</a>
 	
-	<div>zoom</div>
-	<input type="text" 
-	       ng-model="zoom"
-	/>
+	<div class="row">
 	
-	<div>color</div>
-	<div>
-		<input minicolors="config.color_picker" ng-model="config.lite.color" />
+		<!-- zoom slider -->
+		
+		<div class="columns small-12 medium-4">
+		<div class="box">	
+			<div>zoom</div>
+			<div slider 
+					 change="zoom_chg"
+					 start="{{ zoom / config.zoom.max }}"
+			>
+			</div><span>{{ zoom }}x</span>
+		</div>
+		</div>
+		
+		<!-- highlight color -->
+		
+		<div class="columns small-12 medium-4">
+		<div class="box">
+		<div>lite color</div>
+		<div>
+			<input minicolors="config.color_picker" ng-model="config.lite.color" />
+		</div>
+		</div>
+		</div>
+		
+		<!-- opacity slider -->
+		
+		<div class="columns small-12 medium-4">
+		<div class="box">
+		<div>opacity</div>
+		<div slider 
+				 change="lite_opa_chg"
+				 start="{{ config.lite.opa }}"
+		>
+		</div><span>{{ config.lite.opa }}</span>
+		</div>
+		</div>
+	
 	</div>
 	
-	<div>opacity</div>
-	<input type="text" 
-	       ng-model="config.lite.opa"
-	/>
-	 
 	<!-- save application state -->
 	
 	<input ng-click="save()" 
