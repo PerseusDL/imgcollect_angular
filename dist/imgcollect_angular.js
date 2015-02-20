@@ -4021,6 +4021,43 @@ t = tserv('deleter');
 */
 
 
+// This service adds user and timestamp data to JSON sent to server
+
+app.service( 'jsonPrep', [
+'onto',
+'user',
+function( onto, user ) {
+	
+	return({
+		post: post,
+		put: put
+	});
+	
+	function post( json ){
+		
+	}
+	
+	function put( json ){
+		
+	}
+	
+}]);
+
+/*
+
+To test this...
+
+var tmpl = tserv( 'tmpl' );
+var json = null;
+tmpl.get( 'collection' ).then(
+function( json ){
+	console.log
+});
+
+
+*/
+
+
 app.service( 'json', [
 '$http',
 '$q',
@@ -4190,7 +4227,6 @@ function( $http, $q, config, user ) {
 	
 	function api( method, url, data ){
 		
-		// tack on standard data fields
 		this.method = method;
 		this.url = url;
 		this.status = state().wait;
