@@ -167,7 +167,6 @@ function( $http, $q, config, user ) {
 	
 	function api( method, url, data ){
 		
-		// tack on standard data fields
 		this.method = method;
 		this.url = url;
 		this.status = state().wait;

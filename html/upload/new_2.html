@@ -1,0 +1,89 @@
+<div class="box">
+	
+	<h4>Upload your file...</h4>
+	
+	<!-- progress bar -->
+		
+	<div id="progressbar"></div>
+	
+	<div ng-hide="progress.done">
+		
+	<!-- upload -->
+	
+	<input type="file"
+         ng-file-select
+         ng-model="file"
+         accept="image/*"
+	/>
+	
+	<!-- submit button -->
+	
+	<input type="submit" 
+			   class="button secondary" 
+				 value="Upload"
+				 ng-click="upload()" 
+	/>
+	</div>
+	
+</div>
+
+<div ng-show="progress.done || progress.error" class="box">
+	
+	<!-- success message -->
+	
+	<div ng-show="progress.error">
+	<h4>Error</h4>
+	<pre>{{ error_output }}</pre>
+	Refresh page to try again.
+	</div>
+	
+
+	<!-- upload link -->
+	
+	<div ng-show="progress.done">
+	<h4>Success!</h4>
+	<strong>{{ progress.orig }}</strong>
+	uploaded to
+	<a href="{{ progress.src }}">
+		{{ progress.src }}
+	</a>
+	</div>
+	
+</div>
+
+<div ng-show="tmpl.loaded" class="box">
+	<h4>Add JSON-LD metadata...<h4>
+	
+	<!-- metadata -->
+	
+	<form ng-show="tmpl.loaded">
+		<input type="text" 
+		       ng-repeat="field in edit_fields" 
+					 ng-change="change(field)" 
+					 ng-model="form[field]" 
+					 placeholder="{{field}}" 
+		/>
+		
+		<input class="button secondary" 
+           type="submit" 
+           value="save" 
+           ng-click="save()"
+		/>
+		
+		<!-- messages received from JackSON server -->
+		
+		<div ng-show="tmpl.saving" json-msg></div>
+		
+</div>
+
+<div ng-show="tmpl.error" class="box">
+	<h4>Error saving metadata!</h4>
+	<pre>{{ tmpl.error }}</pre>
+	<pre>{{ error_out }}</pre>
+</div>
+
+<div ng-show="tmpl.saved" class="box">
+	<h4>Upload metadata saved!</h4>
+	<p>It is safe to leave this page.</p>
+</div>
+
