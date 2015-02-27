@@ -18,6 +18,7 @@ function( query, onto, user ){
         [ '?urn', 'label', '?label', 
           { filter:'regex( ?label, "'+ filter +'", "i" )' }
         ],
+				[ '?urn', 'description', '?description', { optional: true } ],
         [
           [ '?crop', 'represents', '?urn' ],
           [ '?crop', 'type', '"crop"' ],

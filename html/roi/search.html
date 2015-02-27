@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="columns small-12">
+		
+		<!-- Search Form -->
+		
+		<div id="search-form" 
+		     class="box">
+			<form> 
+				<input type="text" 
+							 ng-model="search_for" 
+							 placeholder="label" />
+				<input type="button" 
+							 ng-click="search()"
+							 value="search"
+							 class="button secondary"
+				/>
+			</form>			
+		</div>
+		
+	</div>
+</div>
+
+<!-- ROIS -->
+
+<div class="row">
+	<div class="columns medium-12">
+		
+		<div id="item-rois">
+			<h3>rois</h3>
+			<ul class="items list">
+				
+				<div class="row" ng-repeat="roi in rois">
+				<div class="columns small-12 box">
+					
+					<!-- img -->
+					
+					<div class="row">
+					<div class="columns small-12 centered">
+					<img ng-src="{{ roi.src }}"  />
+					</div>
+					</div>
+					
+					<!-- table -->
+					
+					<div class="row">
+					<div class="columns small-12 centered">						
+						<table>
+							<tr>
+								<th>urn</th>
+								<td><a href="#/view/{{ roi.urn }}">{{ roi.urn }}</a></td>
+							</tr>
+							<tr>
+								<th>label</th>
+								<td>{{ roi.label }}</td>
+							</tr>
+							<tr>
+								<th>desc</th>
+								<td>{{ roi.description }}</td>
+							</tr>
+						</table>
+					</div>
+					</div>
+					
+				</div>
+				</div>
+				
+			</ul>
+		</div>
+		
+	</div>
+</div>
+

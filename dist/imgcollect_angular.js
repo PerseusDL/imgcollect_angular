@@ -901,10 +901,10 @@ function( $routeProvider ) {
     templateUrl: 'html/upload/new.html',
     controller: 'UploadNew'
   }).
-	when('/new_2/upload', {
-		templateUrl: 'html/upload/new_2.html',
-		controller: 'UploadNew2'
-	}).
+  when('/new_2/upload', {
+    templateUrl: 'html/upload/new_2.html',
+    controller: 'UploadNew2'
+  }).
   otherwise({
     redirectTo: '/uploads'
   });
@@ -952,31 +952,19 @@ function( $routeProvider ) {
   });
   
   
-  // annotations
+  // roi search
   
   $routeProvider.
-  when('/annotations', {
-    templateUrl: 'html/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotations/:page', {
-    templateUrl: 'html/annotation/list.html',
-    controller: 'AnnotationListCtrl'
-  }).
-  when('/annotation/:urn', {
-    templateUrl: 'html/annotation/edit.html',
-    controller: 'AnnotationCtrl'
-  }).
-  when('/new/annotation/:urn', {
-    templateUrl: 'html/imgspect.html',
-    controller: 'imgspect'
+  when('/roi/search', {
+    templateUrl: 'html/roi/search.html',
+    controller: 'RoiSearch'
   });
   
   
   // resize
   
   $routeProvider.
-  when('/resize/:urn',{
+  when('/resize/:urn', {
     templateUrl: 'html/resize.html',
     controller: 'ResizeCtrl'
   });
@@ -995,31 +983,31 @@ function( $routeProvider ) {
   
   $routeProvider.
   when('/view/:urn', {
-	  templateUrl: 'html/view.html',
-	  controller: 'ViewCtrl'
+    templateUrl: 'html/view.html',
+    controller: 'ViewCtrl'
   });
-	
-	
-	// deleter
-	
-	$routeProvider.
-	when('/delete/:urn', {
-		templateUrl: 'html/delete.html',
-		controller: 'DeleteCtrl'
-	}).
-	when('/delete', {
-		templateUrl: 'html/pre_delete.html',
-		controller: 'PreDeleteCtrl'
-	});
-	
-	
-	// imgspect
-	
-	$routeProvider.
-	when('/imgspect/:urn', {
-		templateUrl: 'html/imgspect.html',
-		controller: 'imgspect'
-	})
+  
+  
+  // deleter
+  
+  $routeProvider.
+  when('/delete/:urn', {
+    templateUrl: 'html/delete.html',
+    controller: 'DeleteCtrl'
+  }).
+  when('/delete', {
+    templateUrl: 'html/pre_delete.html',
+    controller: 'PreDeleteCtrl'
+  });
+  
+  
+  // imgspect
+  
+  $routeProvider.
+  when('/imgspect/:urn', {
+    templateUrl: 'html/imgspect.html',
+    controller: 'imgspect'
+  });
   
 }])
 .run([
@@ -1028,31 +1016,31 @@ function( $routeProvider ) {
 'user',
 'config',
 function( $rootScope, $location, user, config ){
-	
-	// Some views are public
-	
-	function public_view(){
-		var path = $location.path();
-		var pub = config.access.public_views;
-		for( var i=0; i<pub.length; i++ ){
-			if ( path.indexOf( pub[i] ) == 0 ){
-				return true
-			}
-		}
-	}
-	
-	// If a user is logged-in they don't need to see the login view
-	
-	function logged_in(){
-		var path = $location.path();
-		if ( path.indexOf( config.access.logged_out ) == 0 ){
-			$location.path( config.access.logged_in )
-		}
-	}
-	
-	// Run everytime scope changes
   
-  $rootScope.$on('$routeChangeSuccess', function(){
+  // Some views are public
+  
+  function public_view(){
+    var path = $location.path();
+    var pub = config.access.public_views;
+    for( var i=0; i<pub.length; i++ ){
+      if ( path.indexOf( pub[i] ) == 0 ){
+        return true
+      }
+    }
+  }
+  
+  // If a user is logged-in they don't need to see the login view
+  
+  function logged_in(){
+    var path = $location.path();
+    if ( path.indexOf( config.access.logged_out ) == 0 ){
+      $location.path( config.access.logged_in )
+    }
+  }
+  
+  // Run everytime scope changes
+  
+  $rootScope.$on( '$routeChangeSuccess', function(){
     
     // Check for user data.
     
@@ -1061,21 +1049,21 @@ function( $rootScope, $location, user, config ){
       // All is well
       
       function(){
-				logged_in();
+        logged_in();
         $rootScope.$emit( user.events.ok );
       },
       
       // User is not logged in
       
       function(){
-				if ( public_view() == true ){
-					return;
-				}
+        if ( public_view() == true ){
+          return;
+        }
         $rootScope.$emit( user.events.error );
         $location.path( config.access.logged_out );
       }
-	  
-	);
+    
+  );
 })
 }]);  // close app.config
 
@@ -2665,6 +2653,27 @@ function( $scope, $injector, user, $rootScope, onto ){
     
     $scope.init();
   }
+}]);
+
+
+// collection/:urn
+
+appControllers.controller( 'RoiSearch', [ 
+'$scope',
+'user',
+'roi',
+function( $scope, user, roi ){
+  
+  $scope.search_for = null;
+	
+	$scope.search = function(){
+		roi.by_label( $scope.search_for ).then( 
+		function( r ){
+			$scope.rois = r;
+			console.log( $scope.rois );
+		});
+	}
+
 }]);
 
 
@@ -5135,6 +5144,7 @@ function( query, onto, user ){
         [ '?urn', 'label', '?label', 
           { filter:'regex( ?label, "'+ filter +'", "i" )' }
         ],
+				[ '?urn', 'description', '?description', { optional: true } ],
         [
           [ '?crop', 'represents', '?urn' ],
           [ '?crop', 'type', '"crop"' ],
