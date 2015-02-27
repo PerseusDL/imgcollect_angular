@@ -61,7 +61,6 @@ function( json, imgup, config, urnServ, onto, item, tmpl ) {
   function set_vals(){
     crop_tmpl['@id'] = crop_urn;
     crop_tmpl[ onto.with_prefix('represents') ] = { '@id': roi_urn };
-    console.log( crop_tmpl );
     send();
   }
   

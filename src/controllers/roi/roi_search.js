@@ -12,7 +12,6 @@ function( $scope, user, roi ){
 		roi.by_label( $scope.search_for ).then( 
 		function( r ){
 			$scope.rois = r;
-			console.log( $scope.rois );
 		});
 	}
 

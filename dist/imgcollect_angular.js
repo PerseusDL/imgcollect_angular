@@ -1453,7 +1453,8 @@ appControllers.controller( 'imgspect', [
 'item',
 'onto',
 'tmpl',
-function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
+'cropper',
+function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
   
   // SELECTORS
   
@@ -1692,6 +1693,10 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
         console.log( err );
       }
     )
+		
+		// kick off imgup crop job
+		
+		cropper.add( annot['@id'] );
   }
   
   function annotations(){
@@ -2670,7 +2675,6 @@ function( $scope, user, roi ){
 		roi.by_label( $scope.search_for ).then( 
 		function( r ){
 			$scope.rois = r;
-			console.log( $scope.rois );
 		});
 	}
 
@@ -3738,7 +3742,6 @@ function( json, imgup, config, urnServ, onto, item, tmpl ) {
   function set_vals(){
     crop_tmpl['@id'] = crop_urn;
     crop_tmpl[ onto.with_prefix('represents') ] = { '@id': roi_urn };
-    console.log( crop_tmpl );
     send();
   }
   

@@ -8,7 +8,8 @@ appControllers.controller( 'imgspect', [
 'item',
 'onto',
 'tmpl',
-function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
+'cropper',
+function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
   
   // SELECTORS
   
@@ -247,6 +248,10 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl ){
         console.log( err );
       }
     )
+		
+		// kick off imgup crop job
+		
+		cropper.add( annot['@id'] );
   }
   
   function annotations(){
