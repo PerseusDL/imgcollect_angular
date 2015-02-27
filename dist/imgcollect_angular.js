@@ -1521,8 +1521,9 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
 		color_picker: {
   		show: null,
   		showSpeed: 100
-		}
-  };  
+		},
+  };
+	  
   var orig = {};
 	
 	$scope.lite_opa_chg = function(n){
@@ -1544,6 +1545,45 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
   $scope.canvas_x = 0;
   $scope.canvas_y = 0;
   $scope.zoom = 1;
+	
+	// Canvas filters
+	
+	$scope.filter_val = { 
+		saturate: '100%',
+		contrast: '100%',
+		brightness: '100%',
+		invert: '0%'
+	}
+	
+	$scope.filter = function(){
+		var config = [
+			$scope.sat_filter(),
+			$scope.con_filter(),
+			$scope.bri_filter(),
+			$scope.inv_filter()
+		]
+		return config.join(' ');
+	};
+	
+	$scope.sat_filter = function(){
+		var val = $scope.filter_val.saturate;
+		return 'saturate(' + val + ')'
+	}
+	
+	$scope.con_filter = function(){
+		var val = $scope.filter_val.contrast;
+		return 'contrast(' + val + ')'
+	}
+	
+	$scope.bri_filter = function(){
+		var val = $scope.filter_val.brightness;
+		return 'brightness(' + val + ')'
+	}
+	
+	$scope.inv_filter = function(){
+		var val = $scope.filter_val.invert;
+		return 'invert(' + val + ')'
+	}
 	
 	// Change zoom
 	
