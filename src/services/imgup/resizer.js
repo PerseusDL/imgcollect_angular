@@ -43,14 +43,16 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	}
 	
 	function get_urn(){
-		return urnServ.fresh( urnServ.base+"resize.{{ id }}", function( urn ){
+		return urnServ.fresh( urnServ.base+"resize.{{ id }}", 
+		function( urn ){
 			resize_urn = urn;
 			return resize_tmpl();
 		});
 	}
 	
 	function resize_tmpl(){
-		return tmpl.get( 'resize' ).then( function( data ){
+		return tmpl.get( 'resize' ).then( 
+		function( data ){
 			res_tmpl = data;
 			return set_vals();
 		});
@@ -65,7 +67,8 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	function send(){
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
 		var img = upload[ onto.with_prefix('src') ]['@id'];
-		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( function( data ){
+		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( 
+		function( data ){
 			return data;
 		});
 	}

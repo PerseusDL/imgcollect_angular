@@ -14,6 +14,7 @@ function( $http, $q, $upload, config, user ) {
 		upload: upload,
 		cp_url: cp_url,
 		resize: resize,
+		crop: crop,
 		msg: this.msg
 	});
 	
@@ -54,6 +55,38 @@ function( $http, $q, $upload, config, user ) {
 		return $http({
 			method: 'POST',
 			url: config.imgup.url+'/resize',
+		  headers: { 
+				'Content-Type': 'application/json'
+			},
+			data: body
+		})
+		.error( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+		.success( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+	}
+	
+	
+	// Crop an image
+	
+	function crop( src, x, y, width, height, send_to, json ){
+		var body = {
+			src: src,
+			x: x,
+			y: y,
+			width: width,
+			height: height,
+			send_to: send_to,
+			json: json
+		};
+		
+		return $http({
+			method: 'POST',
+			url: config.imgup.url+'/crop',
 		  headers: { 
 				'Content-Type': 'application/json'
 			},

@@ -3672,21 +3672,78 @@ app.service( 'cropper', [
 'config',
 'urnServ',
 'onto',
-function( json, imgup, config, urnServ, onto ) {
-	
-	return {
-		add: add
-	}
-	
-	function add( _urn, _x, _y, _w, _h ){
-		max_width = _max_width;
-		max_height = _max_height;
-		urn = _urn;
-		return upload_src()
-	}
-	
-
-	
+'item',
+'tmpl',
+function( json, imgup, config, urnServ, onto, item, tmpl ) {
+  
+  var roi_urn = null;
+  var img = null;
+  var item_urn = null;
+  var crop_urn = null;
+  var crop_tmpl = null;
+  var urn = null;
+  var param = [];
+  
+  return {
+    add: add
+  }
+  
+  
+  // _urn @string ROI URN 
+  // ex. 'urn:cite:perseus:manuscript.ROF3ZnNQT8q@0.7112,0.4808,0.1922,0.0774'
+  
+  function add( urn ){
+    
+    // Break-up ROI URN
+    
+    roi_urn = urn;
+    var s = urn.split('@');
+    item_urn = s[0];
+    param = s[1].split(',');
+    
+    // Get the upload path associated with item_urn
+    
+    return item.upload_src( item_urn ).then(
+    function( r ){
+      img = r[0]['img'];
+      return get_urn();
+    });
+  }
+  
+  function get_urn(){
+    return urnServ.fresh( urnServ.base+"crop.{{ id }}",
+    function( urn ){
+      crop_urn = urn;
+      return get_tmpl();
+    });
+  }
+  
+  function get_tmpl(){
+    return tmpl.get( 'crop' ).then(
+    function( r ){
+      crop_tmpl = r;
+      return set_vals();
+    })
+  }
+  
+  function set_vals(){
+    crop_tmpl['@id'] = crop_urn;
+    crop_tmpl[ onto.with_prefix('represents') ] = { '@id': roi_urn };
+    console.log( crop_tmpl );
+    send();
+  }
+  
+  
+  // Send the crop job to imgup
+  
+  function send(){
+    var save_to = config.xhr.json.url+'/data/crop/'+crop_urn;
+    return imgup.crop( img, param[0], param[1], param[2], param[3], save_to, crop_tmpl ).then(
+    function( r ){
+      return r;
+    });
+  }
+  
 }]);
 
 /*
@@ -3694,7 +3751,10 @@ function( json, imgup, config, urnServ, onto ) {
 To run this in the console...
 
 var crop = tserv('cropper');
-crop.add( 'urn:cite:perseus:upload.ry897TREW', 0.5, 0.5, 0.25, 0.25 );
+crop.add( 'urn:cite:perseus:manuscript.ROF3ZnNQT8q@0.7112,0.4808,0.1922,0.0774' ).then(
+function( r ){
+  console.log( r );
+});
 
 */
 
@@ -3715,6 +3775,7 @@ function( $http, $q, $upload, config, user ) {
 		upload: upload,
 		cp_url: cp_url,
 		resize: resize,
+		crop: crop,
 		msg: this.msg
 	});
 	
@@ -3755,6 +3816,38 @@ function( $http, $q, $upload, config, user ) {
 		return $http({
 			method: 'POST',
 			url: config.imgup.url+'/resize',
+		  headers: { 
+				'Content-Type': 'application/json'
+			},
+			data: body
+		})
+		.error( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+		.success( function( r ){
+			update_msg( r );
+			return r.data;
+		})
+	}
+	
+	
+	// Crop an image
+	
+	function crop( src, x, y, width, height, send_to, json ){
+		var body = {
+			src: src,
+			x: x,
+			y: y,
+			width: width,
+			height: height,
+			send_to: send_to,
+			json: json
+		};
+		
+		return $http({
+			method: 'POST',
+			url: config.imgup.url+'/crop',
 		  headers: { 
 				'Content-Type': 'application/json'
 			},
@@ -3844,14 +3937,16 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	}
 	
 	function get_urn(){
-		return urnServ.fresh( urnServ.base+"resize.{{ id }}", function( urn ){
+		return urnServ.fresh( urnServ.base+"resize.{{ id }}", 
+		function( urn ){
 			resize_urn = urn;
 			return resize_tmpl();
 		});
 	}
 	
 	function resize_tmpl(){
-		return tmpl.get( 'resize' ).then( function( data ){
+		return tmpl.get( 'resize' ).then( 
+		function( data ){
 			res_tmpl = data;
 			return set_vals();
 		});
@@ -3866,7 +3961,8 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	function send(){
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
 		var img = upload[ onto.with_prefix('src') ]['@id'];
-		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( function( data ){
+		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( 
+		function( data ){
 			return data;
 		});
 	}
@@ -3881,6 +3977,9 @@ var r = tserv('resizer')
 r.add('urn:cite:perseus:upload.QAlWThSWNU1', 200, 200)
 
 */
+
+
+
 
 
 app.service( 'deleter', [
@@ -5014,6 +5113,45 @@ function( sparql, results, onto ) {
   }
 }]);
 
+
+
+app.service( 'roi', [
+'query',
+'onto',
+'user',
+function( query, onto, user ){
+  
+  return({
+    by_label:by_label
+  })
+  
+  
+  // Get the ROIs by label
+  
+  function by_label( filter ){
+    var q = {
+      where:[
+        [ '?urn', 'type', '"roi"'],
+        [ '?urn', 'label', '?label', 
+          { filter:'regex( ?label, "'+ filter +'", "i" )' }
+        ],
+        [
+          [ '?crop', 'represents', '?urn' ],
+          [ '?crop', 'type', '"crop"' ],
+          [ '?crop', 'src', '?src' ],
+          { optional: true }
+        ] 
+      ]
+    }
+    return query.get( q ).then(
+    function( r ){
+      return r
+    });
+  }
+  
+}
+  
+]);
 
 
 app.service( 'upload', [

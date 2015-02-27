@@ -1,0 +1,17 @@
+{
+  "@context": {
+    "urn": "http://data.perseus.org/collections/urn:",
+    "cite": "http://www.homermultitext.org/cite/rdf/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "dct": "http://purl.org/dc/terms/",
+    "crm": "http://www.cidoc-crm.org/cidoc-crm/",
+    "this": "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#"
+  },
+  "@id": "urn:cite:crop.",
+  "dct:type": "crop",
+  "crm:P138_represents": { "@id" : "" },
+  "dct:references": { "@id": "{{ src }}" },
+  "this:filetype": "jpg",
+  "dct:creator": { "@id": "" },
+  "dct:created": ""
+}

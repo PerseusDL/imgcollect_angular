@@ -1,3 +1,17 @@
+## Video Tutorials
+TODO
+
+	imgcollect demo
+	
+	create triple data in javascript
+	create SPARQL query
+	
+	create imgup worker
+	create angular interface to communicate with worker
+	create angular interface to search worker created data
+
+## Overview
+
 I've been working on an image collection tool.
 It is built on top of a backend I built.
 I called it JackSON.
@@ -21,6 +35,8 @@ This means...
 	
 * Changing data-models is as easy as changing JSON-LD files.
 	* You don't have to issue CREATE or ALTER TABLE queries or modify model classes.
+
+* Merging data is trivial.
 	
 * You don't have to write an API to publish machine actionable data as you would if you were using a relational database.
 	* everything is queryable at the SPARQL endpoint, because that's what the application is using.
@@ -40,12 +56,12 @@ It has flaws...
 		* JackSON's handling concurrent writes to the filesystem .
 		* SPARQL queries requesting lots of records.
 
+* Uses lots of disk space.
+
 
 ...but even in its infant state it's a great prototyping tool.
 
 So let me show you a prototype application I built on top of JackSON called imgcollect.
-
-	GIVE DEMO
 
 
 ## What's happening behind the curtain.
@@ -82,7 +98,7 @@ and tasks to run and interact with it.
 	/var/www/JackRDF
 		rake start
 
-imgup is a server that saves images, serves them.
+imgup is a server that saves images and serves them.
 
 It can also run various background image processing jobs.
 Resizing, format conversion, cropping, potentially OCR, and can communicate with JackSON.
@@ -118,6 +134,7 @@ I can regenerate all my triples from the saved JSON-LD with this command...
 Let me show you some of the Javascript libraries that imgcollect is built-on.
 
 	var tmpl = tserv( 'tmpl' );
+	var user = tserv( 'user' );
 
 GET a JSON_LD template.
 
@@ -130,6 +147,7 @@ Fill out the template.
 
 	data['@id'] = 'urn:cite:perseus:collection.234567';
 	data['rdf:label'] = 'This is a new rcord';
+	data['dct:creator']['@id'] = user.url();
 
 POST the data to the JackSON server.
 
@@ -185,11 +203,13 @@ We'll use chance.js, a random data generation library, to help with the task.
 		return d
 	}
 	
-	for ( var i=0; i<10024; i++ ){
+	for ( var i=0; i<1024; i++ ){
 		d = record();
 		json.post( 'test/'+d['@id'], d );
 		d = null;
 	}
+
+# Queries
 
 And just like that we created over a thousand collection records.
 Now let's write a SPARQL query and retrieve some data.
@@ -336,4 +356,6 @@ but finding word boundaries in manuscripts is an easier problem.
 The same JSON-LD template used by the imgspect app 
 could be filled with this word boundary data, 
 and submitted to JackSON to be checked with human eye-balls and brains 
-through an application like imgcollect.
+through an application like imgspect.
+
+
