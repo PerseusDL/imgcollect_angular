@@ -2,7 +2,9 @@
 	<h3 class="title">{{ type }}s</h3>
 	<div>{{ count }} total </div>
 	<div>page {{ page }} of {{ pages}}</div>
+	
 	<!-- Pagination -->
+	
 	<div class="pager">
 		<a class="button secondary" ng-show="prev" href="#/{{ type }}s/{{ page-1 }}">&lt;</a>
 		<a class="button secondary" ng-show="next" href="#/{{ type }}s/{{ page+1 }}">&gt;</a>

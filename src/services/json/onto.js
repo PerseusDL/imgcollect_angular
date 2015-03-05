@@ -1,7 +1,19 @@
 app.service( 'onto', [ 
 'config',
 function( config ) {
-  var self = this;  
+	
+	return({
+		short: short,
+		with_prefix: with_prefix,
+		prefix: with_prefix,
+		with_ns: with_ns,
+		default_value: default_value,
+		prefixes: prefixes,
+		prefix_array: prefix_array
+	});
+
+
+	// precheck
 
   function precheck( a_term ){
     return angular.isDefined( config.ontology[a_term] );
@@ -10,7 +22,7 @@ function( config ) {
 	
 	// Get the prefix form from a url
 	
-	this.short = function( url ){
+	function short( url ){
     for ( var key in config.ontology ) {
 			var item = config.ontology[ key ];
 			var verb = item['ns']+item['term'];
@@ -24,7 +36,7 @@ function( config ) {
 	
 	// Get ontology term with a prefix
 
-  this.with_prefix = function( a_term ){
+	function with_prefix( a_term ){
     if ( precheck( a_term ) ){
       return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
     }
@@ -37,7 +49,7 @@ function( config ) {
 	
 	// Get the ontology term with a name space
 	
-  this.with_ns = function( a_term ){
+	function with_ns( a_term ){
     if ( precheck( a_term ) ){
       return config.ontology[a_term].ns + config.ontology[a_term].term;
     }
@@ -47,7 +59,8 @@ function( config ) {
     }
   }
 
-  this.default_value = function( a_term ){
+
+	function default_value( a_term ){
     if ( precheck( a_term ) ){
 		  
       // TODO we should allow the config to specify the type as well
@@ -63,7 +76,7 @@ function( config ) {
 	
 	// Build all the prefixes
 
-  this.prefixes = function() {
+  function prefixes() {
     var pfx_query = "";
     var seen = {};
 	  
@@ -85,7 +98,7 @@ function( config ) {
 	
 	// Build the prefix as an array
 	
-	this.prefix_array = function(){
+	function prefix_array(){
 		var arr = [];
 		var seen = {};
     for ( var key in config.ontology ) {

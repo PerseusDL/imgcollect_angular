@@ -143,26 +143,6 @@ function( $http, $q, config, user ) {
 		));
 	}
 	
-	
-	// Add 'user' field potentially.
-	// Others in the future.
-	
-	function tack_on( data ){
-		if ( tack('user') ){
-			data['user'] = { '@id': user.url() }
-		}
-		return data;
-	}
-	
-	function tack( key ){
-		var tacks = config.xhr.json.tack_on;
-		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
-			return false;
-		}
-		return true;
-	}
-	
-	
 	// API
 	
 	function api( method, url, data ){
@@ -171,10 +151,6 @@ function( $http, $q, config, user ) {
 		this.url = url;
 		this.status = state().wait;
 		run_events();
-		
-		if ( data != undefined ){
-			data = tack_on( data );
-		}
 		
 		return $http({
 			method: method.toUpperCase(),

@@ -4144,12 +4144,84 @@ function( onto, user ) {
 		put: put
 	});
 	
+	
+	// Prepare json for an HTTP POST
+	
 	function post( json ){
 		
+		// get creator, created, and modified 
+		// data keys from onto
+		
+		// creator can be single object or array
+		
+		var creator = onto.with_prefix('creator');
+		var created = onto.with_prefix('created');
+		
+		json[ creator ] = user.node();
+		json[ created ] = time_it();
 	}
+	
+	
+	// Prepare json for an HTTP PUT
 	
 	function put( json ){
 		
+		// should creator be used
+		// is there another dublin core ontology term
+		// that's a better fit?
+		
+		var contributor = onto.with_prefix('contributor');
+		var modified = onto.with_prefix('modified');
+		
+		// modified
+		
+		json[ contributor ] = [];
+		json[ modified ] = [];
+	}
+	
+	
+	// Return a timestamp in xsd format
+	
+	function time_it(){
+		return ( new TimeStamp ).xsd()
+	}
+	
+	// Add time 
+	
+	function add_time(){
+		
+	}
+	
+	
+	// Add a contributor
+	
+	function add_user( json, key ){
+		
+		// is a key an object or an array of objects
+		
+		if ( json[key] == user.node() ){
+			return
+		}
+		
+		// if it's an array add check if it exists
+		
+		for( var i=0; i<json[key].length; i++ ){
+			if ( json[key] == user.node() ){
+				return
+			}
+		}
+		
+		/*
+		if ( type json[key] == Array ){
+			json[key].push( user.node() );
+		}
+		else if ( json[key] == null || json[key] == '' ){
+			json[key] = user.node();
+		}
+		else if ( type json[key] == Object ){
+			json[key] = [ json[key], user.node() ];
+		}
+		*/
 	}
 	
 }]);
@@ -4314,26 +4386,6 @@ function( $http, $q, config, user ) {
 		));
 	}
 	
-	
-	// Add 'user' field potentially.
-	// Others in the future.
-	
-	function tack_on( data ){
-		if ( tack('user') ){
-			data['user'] = { '@id': user.url() }
-		}
-		return data;
-	}
-	
-	function tack( key ){
-		var tacks = config.xhr.json.tack_on;
-		if ( tacks == undefined || tacks.indexOf( key ) == -1 ){
-			return false;
-		}
-		return true;
-	}
-	
-	
 	// API
 	
 	function api( method, url, data ){
@@ -4342,10 +4394,6 @@ function( $http, $q, config, user ) {
 		this.url = url;
 		this.status = state().wait;
 		run_events();
-		
-		if ( data != undefined ){
-			data = tack_on( data );
-		}
 		
 		return $http({
 			method: method.toUpperCase(),
@@ -4406,7 +4454,19 @@ function( $http, $q, config, user ) {
 app.service( 'onto', [ 
 'config',
 function( config ) {
-  var self = this;  
+	
+	return({
+		short: short,
+		with_prefix: with_prefix,
+		prefix: with_prefix,
+		with_ns: with_ns,
+		default_value: default_value,
+		prefixes: prefixes,
+		prefix_array: prefix_array
+	});
+
+
+	// precheck
 
   function precheck( a_term ){
     return angular.isDefined( config.ontology[a_term] );
@@ -4415,7 +4475,7 @@ function( config ) {
 	
 	// Get the prefix form from a url
 	
-	this.short = function( url ){
+	function short( url ){
     for ( var key in config.ontology ) {
 			var item = config.ontology[ key ];
 			var verb = item['ns']+item['term'];
@@ -4429,7 +4489,7 @@ function( config ) {
 	
 	// Get ontology term with a prefix
 
-  this.with_prefix = function( a_term ){
+	function with_prefix( a_term ){
     if ( precheck( a_term ) ){
       return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
     }
@@ -4442,7 +4502,7 @@ function( config ) {
 	
 	// Get the ontology term with a name space
 	
-  this.with_ns = function( a_term ){
+	function with_ns( a_term ){
     if ( precheck( a_term ) ){
       return config.ontology[a_term].ns + config.ontology[a_term].term;
     }
@@ -4452,7 +4512,8 @@ function( config ) {
     }
   }
 
-  this.default_value = function( a_term ){
+
+	function default_value( a_term ){
     if ( precheck( a_term ) ){
 		  
       // TODO we should allow the config to specify the type as well
@@ -4468,7 +4529,7 @@ function( config ) {
 	
 	// Build all the prefixes
 
-  this.prefixes = function() {
+  function prefixes() {
     var pfx_query = "";
     var seen = {};
 	  
@@ -4490,7 +4551,7 @@ function( config ) {
 	
 	// Build the prefix as an array
 	
-	this.prefix_array = function(){
+	function prefix_array(){
 		var arr = [];
 		var seen = {};
     for ( var key in config.ontology ) {
@@ -5363,6 +5424,9 @@ app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
     url: function(){ 
       return ( data != null ) ? data.uri : null;
     },
+		node: function(){
+			return ( data != null ) ? { "@id": data.uri } : null;
+		},
     name: function(){
       return ( data != null ) ? data.name : null;
     },

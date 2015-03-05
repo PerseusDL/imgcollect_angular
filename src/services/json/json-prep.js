@@ -10,12 +10,84 @@ function( onto, user ) {
 		put: put
 	});
 	
+	
+	// Prepare json for an HTTP POST
+	
 	function post( json ){
 		
+		// get creator, created, and modified 
+		// data keys from onto
+		
+		// creator can be single object or array
+		
+		var creator = onto.with_prefix('creator');
+		var created = onto.with_prefix('created');
+		
+		json[ creator ] = user.node();
+		json[ created ] = time_it();
 	}
+	
+	
+	// Prepare json for an HTTP PUT
 	
 	function put( json ){
 		
+		// should creator be used
+		// is there another dublin core ontology term
+		// that's a better fit?
+		
+		var contributor = onto.with_prefix('contributor');
+		var modified = onto.with_prefix('modified');
+		
+		// modified
+		
+		json[ contributor ] = [];
+		json[ modified ] = [];
+	}
+	
+	
+	// Return a timestamp in xsd format
+	
+	function time_it(){
+		return ( new TimeStamp ).xsd()
+	}
+	
+	// Add time 
+	
+	function add_time(){
+		
+	}
+	
+	
+	// Add a contributor
+	
+	function add_user( json, key ){
+		
+		// is a key an object or an array of objects
+		
+		if ( json[key] == user.node() ){
+			return
+		}
+		
+		// if it's an array add check if it exists
+		
+		for( var i=0; i<json[key].length; i++ ){
+			if ( json[key] == user.node() ){
+				return
+			}
+		}
+		
+		/*
+		if ( type json[key] == Array ){
+			json[key].push( user.node() );
+		}
+		else if ( json[key] == null || json[key] == '' ){
+			json[key] = user.node();
+		}
+		else if ( type json[key] == Object ){
+			json[key] = [ json[key], user.node() ];
+		}
+		*/
 	}
 	
 }]);
