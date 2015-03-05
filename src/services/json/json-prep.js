@@ -20,8 +20,8 @@ function( onto, user ) {
 		
 		// creator can be single object or array
 		
-		var creator = onto.with_prefix('creator');
-		var created = onto.with_prefix('created');
+		var creator = onto.pre('creator');
+		var created = onto.pre('created');
 		
 		json[ creator ] = user.node();
 		json[ created ] = time_it();
@@ -36,8 +36,8 @@ function( onto, user ) {
 		// is there another dublin core ontology term
 		// that's a better fit?
 		
-		var contributor = onto.with_prefix('contributor');
-		var modified = onto.with_prefix('modified');
+		var contributor = onto.pre('contributor');
+		var modified = onto.pre('modified');
 		
 		// modified
 		

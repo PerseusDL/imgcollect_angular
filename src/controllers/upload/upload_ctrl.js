@@ -9,11 +9,11 @@ appControllers.controller( 'UploadCtrl', [
 function( $scope, $injector, resize, item, onto ){
   $scope.title = "Upload";
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var keyword = onto.with_prefix('subject');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var keyword = onto.pre('subject');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
 	
   $scope.form = {};
   $scope.form[label] = null;

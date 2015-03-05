@@ -17,10 +17,10 @@ function( sparql, results, onto ) {
   "+prefix()+"\
   SELECT ?urn ?width ?height\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'resize'.\
-    ?urn " + onto.with_prefix('memberOf') + " <"+urn+">\
-    OPTIONAL { ?urn " + onto.with_prefix('width') + " ?width . }\
-    OPTIONAL { ?urn " + onto.with_prefix('height') +" ?height . }\
+    ?urn " + onto.pre('type') +" 'resize'.\
+    ?urn " + onto.pre('memberOf') + " <"+urn+">\
+    OPTIONAL { ?urn " + onto.pre('width') + " ?width . }\
+    OPTIONAL { ?urn " + onto.pre('height') +" ?height . }\
   }"
   }
   

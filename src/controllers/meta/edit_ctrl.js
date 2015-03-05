@@ -17,7 +17,7 @@ function( $scope, json, $routeParams, onto ){
   $scope.src = null;
   $scope.json = {};
   $scope.json_string = '';
-  $scope.upload_ref = onto.with_prefix('src');
+  $scope.upload_ref = onto.pre('src');
       
   $scope.save = function(){ save() }
   $scope.change = function( key ){ change(key) }

@@ -1091,8 +1091,8 @@ function( $scope, $injector, user, $rootScope, onto ){
     $scope.title = "Annotation List";
     $scope.keys = [ 'urn','label','desc','user','time' ];
 	  
-	  var label = onto.with_prefix('label');  
-	  var desc = onto.with_prefix('description');
+	  var label = onto.pre('label');  
+	  var desc = onto.pre('description');
 				  
     $injector.invoke( ListCtrl, this, { $scope: $scope } );
     $scope.init([label,desc]);
@@ -1131,11 +1131,11 @@ function( $scope, $injector, user, $rootScope, onto, collection ){
   $scope.title = "Collection";
 	$scope.keys = [ 'urn','label','desc','user','time' ];
 
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var keyword = onto.with_prefix('subject');
-  var imgViewer = onto.with_prefix('imgViewer');
-  var imgServer = onto.with_prefix('imgServer');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var keyword = onto.pre('subject');
+  var imgViewer = onto.pre('imgViewer');
+  var imgServer = onto.pre('imgServer');
 
   $scope.form = {};
   $scope.form[label] = '';
@@ -1181,8 +1181,8 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
 
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
   $scope.filter = {};
   $scope.filter[label] = null;
   $scope.filter[desc] = null;
@@ -1287,8 +1287,8 @@ function( $scope, $injector, urnServ, $rootScope, user, onto ){
   $scope.type = "collection";
   $scope.show_uniq = true;
 	$scope.error = false;
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
   $scope.form = {};
   $scope.form[label] = onto.default_value('label');
   $scope.form[desc] = onto.default_value('description');
@@ -1707,7 +1707,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
   
   json.urn( $scope.urn ).then( function( data ){
     var src = data.src[0];
-    var srckey = onto.with_prefix('src');
+    var srckey = onto.pre('src');
     json.get( src ).then( function( data ){
       $scope.json.item = data;
       upload_json( data[srckey]['@id'] );
@@ -2049,11 +2049,11 @@ function( $scope, $injector, onto, item ){
 	
   $scope.title = "Item";
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var rep = onto.with_prefix('represents');
-  var license = onto.with_prefix('rights');
-  var keyword = onto.with_prefix('subject');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var rep = onto.pre('represents');
+  var license = onto.pre('rights');
+  var keyword = onto.pre('subject');
 	
   $scope.form = {};
   $scope.form[label] = "";
@@ -2114,9 +2114,9 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
 
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var rep = onto.with_prefix('represents');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var rep = onto.pre('represents');
   $scope.filter = {};
   $scope.filter[label] = null;
   $scope.filter[desc] = null;
@@ -2311,13 +2311,13 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
 		return json.urn( $scope.upload_urn ).then( function( data ){
 			return json.get( data.src[0] ).then( function( data ){
 				
-		  	var src = onto.with_prefix('src');
-		  	var creator = onto.with_prefix('creator');
-		  	var memberOf = onto.with_prefix('memberOf');
-		  	var created = onto.with_prefix('created');
-		  	var license = onto.with_prefix('rights');
-				var label = onto.with_prefix('label');
-				var desc = onto.with_prefix('description');
+		  	var src = onto.pre('src');
+		  	var creator = onto.pre('creator');
+		  	var memberOf = onto.pre('memberOf');
+		  	var created = onto.pre('created');
+		  	var license = onto.pre('rights');
+				var label = onto.pre('label');
+				var desc = onto.pre('description');
 				
 		  	$scope.json['@id'] = $scope.urn;
 		  	$scope.json[src]['@id'] = $scope.upload_urn;
@@ -2408,7 +2408,7 @@ function( $scope, json, $routeParams, onto ){
   $scope.src = null;
   $scope.json = {};
   $scope.json_string = '';
-  $scope.upload_ref = onto.with_prefix('src');
+  $scope.upload_ref = onto.pre('src');
       
   $scope.save = function(){ save() }
   $scope.change = function( key ){ change(key) }
@@ -2590,8 +2590,8 @@ function( $scope, urnServ, json, stdout, user, onto, tmpl ){
   
   var touch = function(){
     $scope.json['@id'] = $scope.urn;
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
   }
@@ -2639,9 +2639,9 @@ function( $scope, $injector, user, $rootScope, onto ){
   $rootScope.$on( user.events.ok, function(){ go() });
   
   function go(){
-    var label = onto.with_prefix('label');
-    var desc = onto.with_prefix('description');
-    var keyword = onto.with_prefix('subject');
+    var label = onto.pre('label');
+    var desc = onto.pre('description');
+    var keyword = onto.pre('subject');
     $scope.title = "Resize";
     $scope.form = {};
     $scope.form[label] = "";
@@ -2652,7 +2652,7 @@ function( $scope, $injector, user, $rootScope, onto ){
     $scope.run = function() {
       $scope.uploads = [];
       $scope.uploads[0] = { 
-        urn: $scope.json[onto.with_prefix('src')]['@id'] 
+        urn: $scope.json[onto.pre('src')]['@id'] 
       };
     }
     
@@ -2722,11 +2722,11 @@ appControllers.controller( 'UploadCtrl', [
 function( $scope, $injector, resize, item, onto ){
   $scope.title = "Upload";
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var keyword = onto.with_prefix('subject');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var keyword = onto.pre('subject');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
 	
   $scope.form = {};
   $scope.form[label] = null;
@@ -2774,8 +2774,8 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
   
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
   $scope.filter = {};
   $scope.filter[label] = null;
   $scope.filter[desc] = null;
@@ -2890,11 +2890,11 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.title = "Upload New";
   $scope.stdout = "";
   
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var src = onto.with_prefix('src');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var src = onto.pre('src');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
   
   $scope.form = {};
   $scope.form[ label ] = "";
@@ -2935,8 +2935,8 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   
   
   function touch (){
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
     $scope.json['@id'] = $scope.urn;
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
@@ -3058,8 +3058,8 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   function upload_success( data ){
 		$scope.upload_out = "Uploaded successfully";
   	exif_json( data );
-  	$scope.json[ onto.with_prefix('src') ]['@id'] = data.src.replace(' ', "%20");
-  	$scope.json[ onto.with_prefix('orig') ] = data.orig;
+  	$scope.json[ onto.pre('src') ]['@id'] = data.src.replace(' ', "%20");
+  	$scope.json[ onto.pre('orig') ] = data.orig;
   	json_to_str( $scope.json );
   	urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
   }
@@ -3178,11 +3178,11 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
 		};
 	}
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var src = onto.with_prefix('src');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var src = onto.pre('src');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
   
   $scope.form = {};
   $scope.form[ label ] = "";
@@ -3246,9 +3246,9 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
   
 	function touch(){
     $scope.json['@id'] = $scope.urn;
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
-		var orig = onto.with_prefix('orig');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
+		var orig = onto.pre('orig');
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
 		$scope.json[src]['@id'] = $scope.progress.src.replace(' ', "%20");
@@ -3741,7 +3741,7 @@ function( json, imgup, config, urnServ, onto, item, tmpl ) {
   
   function set_vals(){
     crop_tmpl['@id'] = crop_urn;
-    crop_tmpl[ onto.with_prefix('represents') ] = { '@id': roi_urn };
+    crop_tmpl[ onto.pre('represents') ] = { '@id': roi_urn };
     send();
   }
   
@@ -3966,13 +3966,13 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	
 	function set_vals(){
 		res_tmpl['@id'] = resize_urn;
-		res_tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
+		res_tmpl[onto.pre('memberOf')]['@id'] = upload['@id'];
 		return send();
 	}
 	
 	function send(){
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
-		var img = upload[ onto.with_prefix('src') ]['@id'];
+		var img = upload[ onto.pre('src') ]['@id'];
 		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( 
 		function( data ){
 			return data;
@@ -4154,8 +4154,8 @@ function( onto, user ) {
 		
 		// creator can be single object or array
 		
-		var creator = onto.with_prefix('creator');
-		var created = onto.with_prefix('created');
+		var creator = onto.pre('creator');
+		var created = onto.pre('created');
 		
 		json[ creator ] = user.node();
 		json[ created ] = time_it();
@@ -4170,8 +4170,8 @@ function( onto, user ) {
 		// is there another dublin core ontology term
 		// that's a better fit?
 		
-		var contributor = onto.with_prefix('contributor');
-		var modified = onto.with_prefix('modified');
+		var contributor = onto.pre('contributor');
+		var modified = onto.pre('modified');
 		
 		// modified
 		
@@ -4459,6 +4459,7 @@ function( config ) {
 		short: short,
 		with_prefix: with_prefix,
 		prefix: with_prefix,
+		pre: with_prefix,
 		with_ns: with_ns,
 		default_value: default_value,
 		prefixes: prefixes,
@@ -4874,7 +4875,7 @@ function( sparql, config, onto, results ) {
 	function line( tri ){
 		var sub = tri[0];
 		var obj = tri[2];
-		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
+		return sub+" "+onto.pre( tri[1] )+" "+obj+" .";
 	}
 	
 }]);
@@ -4945,7 +4946,7 @@ function( sparql, results, onto, query, user ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') + " 'collection'\
+    ?urn " + onto.pre('type') + " 'collection'\
   }"
   }
   
@@ -4964,7 +4965,7 @@ function( sparql, results, onto, query, user ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'collection'\
+    ?urn " + onto.pre('type') +" 'collection'\
     FILTER regex( str(?urn), \""+str+"\" )\
   }"
   }
@@ -5056,7 +5057,7 @@ function( sparql, results, onto, query ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'item'.\
+    ?urn " + onto.pre('type') +" 'item'.\
     "+where+"\
   }"
   }
@@ -5072,7 +5073,7 @@ function( sparql, results, onto, query ) {
   }
 
   function upload_query( urn ){
-  return old_query( "?urn " + onto.with_prefix('src') + " <"+urn+">" );
+  return old_query( "?urn " + onto.pre('src') + " <"+urn+">" );
   }
   
   
@@ -5086,7 +5087,7 @@ function( sparql, results, onto, query ) {
   }
   
   function collection_query( urn ){
-    return old_query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
+    return old_query( "?urn " + onto.pre('memberOf') + " <"+urn+">" );    
   }
 	
 	
@@ -5171,10 +5172,10 @@ function( sparql, results, onto ) {
   "+prefix()+"\
   SELECT ?urn ?width ?height\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'resize'.\
-    ?urn " + onto.with_prefix('memberOf') + " <"+urn+">\
-    OPTIONAL { ?urn " + onto.with_prefix('width') + " ?width . }\
-    OPTIONAL { ?urn " + onto.with_prefix('height') +" ?height . }\
+    ?urn " + onto.pre('type') +" 'resize'.\
+    ?urn " + onto.pre('memberOf') + " <"+urn+">\
+    OPTIONAL { ?urn " + onto.pre('width') + " ?width . }\
+    OPTIONAL { ?urn " + onto.pre('height') +" ?height . }\
   }"
   }
   
@@ -5254,8 +5255,8 @@ function( sparql, results, onto ){
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    <"+urn+"> " + onto.with_prefix('memberOf') + " ?item .\
-    ?item " + onto.with_prefix('src') + " ?urn\
+    <"+urn+"> " + onto.pre('memberOf') + " ?item .\
+    ?item " + onto.pre('src') + " ?urn\
   }"
   }
 }]);

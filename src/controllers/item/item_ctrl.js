@@ -9,11 +9,11 @@ function( $scope, $injector, onto, item ){
 	
   $scope.title = "Item";
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var rep = onto.with_prefix('represents');
-  var license = onto.with_prefix('rights');
-  var keyword = onto.with_prefix('subject');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var rep = onto.pre('represents');
+  var license = onto.pre('rights');
+  var keyword = onto.pre('subject');
 	
   $scope.form = {};
   $scope.form[label] = "";

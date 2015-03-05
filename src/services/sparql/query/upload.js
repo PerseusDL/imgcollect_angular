@@ -24,8 +24,8 @@ function( sparql, results, onto ){
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    <"+urn+"> " + onto.with_prefix('memberOf') + " ?item .\
-    ?item " + onto.with_prefix('src') + " ?urn\
+    <"+urn+"> " + onto.pre('memberOf') + " ?item .\
+    ?item " + onto.pre('src') + " ?urn\
   }"
   }
 }]);

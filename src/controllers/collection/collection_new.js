@@ -13,8 +13,8 @@ function( $scope, $injector, urnServ, $rootScope, user, onto ){
   $scope.type = "collection";
   $scope.show_uniq = true;
 	$scope.error = false;
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
   $scope.form = {};
   $scope.form[label] = onto.default_value('label');
   $scope.form[desc] = onto.default_value('description');

@@ -13,9 +13,9 @@ function( $scope, $injector, user, $rootScope, onto ){
   $rootScope.$on( user.events.ok, function(){ go() });
   
   function go(){
-    var label = onto.with_prefix('label');
-    var desc = onto.with_prefix('description');
-    var keyword = onto.with_prefix('subject');
+    var label = onto.pre('label');
+    var desc = onto.pre('description');
+    var keyword = onto.pre('subject');
     $scope.title = "Resize";
     $scope.form = {};
     $scope.form[label] = "";
@@ -26,7 +26,7 @@ function( $scope, $injector, user, $rootScope, onto ){
     $scope.run = function() {
       $scope.uploads = [];
       $scope.uploads[0] = { 
-        urn: $scope.json[onto.with_prefix('src')]['@id'] 
+        urn: $scope.json[onto.pre('src')]['@id'] 
       };
     }
     

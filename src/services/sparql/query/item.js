@@ -22,7 +22,7 @@ function( sparql, results, onto, query ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'item'.\
+    ?urn " + onto.pre('type') +" 'item'.\
     "+where+"\
   }"
   }
@@ -38,7 +38,7 @@ function( sparql, results, onto, query ) {
   }
 
   function upload_query( urn ){
-  return old_query( "?urn " + onto.with_prefix('src') + " <"+urn+">" );
+  return old_query( "?urn " + onto.pre('src') + " <"+urn+">" );
   }
   
   
@@ -52,7 +52,7 @@ function( sparql, results, onto, query ) {
   }
   
   function collection_query( urn ){
-    return old_query( "?urn " + onto.with_prefix('memberOf') + " <"+urn+">" );    
+    return old_query( "?urn " + onto.pre('memberOf') + " <"+urn+">" );    
   }
 	
 	

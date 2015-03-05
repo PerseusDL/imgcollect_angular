@@ -262,7 +262,7 @@ function( $scope, $injector, $routeParams, json, item, onto, tmpl, cropper ){
   
   json.urn( $scope.urn ).then( function( data ){
     var src = data.src[0];
-    var srckey = onto.with_prefix('src');
+    var srckey = onto.pre('src');
     json.get( src ).then( function( data ){
       $scope.json.item = data;
       upload_json( data[srckey]['@id'] );

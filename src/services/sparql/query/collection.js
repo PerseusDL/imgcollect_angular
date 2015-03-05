@@ -33,7 +33,7 @@ function( sparql, results, onto, query, user ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') + " 'collection'\
+    ?urn " + onto.pre('type') + " 'collection'\
   }"
   }
   
@@ -52,7 +52,7 @@ function( sparql, results, onto, query, user ) {
   "+prefix()+"\
   SELECT ?urn\
   WHERE {\
-    ?urn " + onto.with_prefix('type') +" 'collection'\
+    ?urn " + onto.pre('type') +" 'collection'\
     FILTER regex( str(?urn), \""+str+"\" )\
   }"
   }

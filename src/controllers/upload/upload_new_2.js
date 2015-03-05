@@ -83,11 +83,11 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
 		};
 	}
 	
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var src = onto.with_prefix('src');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var src = onto.pre('src');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
   
   $scope.form = {};
   $scope.form[ label ] = "";
@@ -151,9 +151,9 @@ function( $scope, config, json, tmpl, resizer, $upload, onto, urnServ, user, res
   
 	function touch(){
     $scope.json['@id'] = $scope.urn;
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
-		var orig = onto.with_prefix('orig');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
+		var orig = onto.pre('orig');
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
 		$scope.json[src]['@id'] = $scope.progress.src.replace(' ', "%20");

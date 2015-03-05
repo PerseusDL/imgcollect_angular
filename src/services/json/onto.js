@@ -6,6 +6,7 @@ function( config ) {
 		short: short,
 		with_prefix: with_prefix,
 		prefix: with_prefix,
+		pre: with_prefix,
 		with_ns: with_ns,
 		default_value: default_value,
 		prefixes: prefixes,

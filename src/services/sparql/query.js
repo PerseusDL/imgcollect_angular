@@ -186,7 +186,7 @@ function( sparql, config, onto, results ) {
 	function line( tri ){
 		var sub = tri[0];
 		var obj = tri[2];
-		return sub+" "+onto.with_prefix( tri[1] )+" "+obj+" .";
+		return sub+" "+onto.pre( tri[1] )+" "+obj+" .";
 	}
 	
 }]);

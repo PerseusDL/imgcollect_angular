@@ -12,11 +12,11 @@ function( $scope, $injector, user, $rootScope, onto, collection ){
   $scope.title = "Collection";
 	$scope.keys = [ 'urn','label','desc','user','time' ];
 
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var keyword = onto.with_prefix('subject');
-  var imgViewer = onto.with_prefix('imgViewer');
-  var imgServer = onto.with_prefix('imgServer');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var keyword = onto.pre('subject');
+  var imgViewer = onto.pre('imgViewer');
+  var imgServer = onto.pre('imgServer');
 
   $scope.form = {};
   $scope.form[label] = '';

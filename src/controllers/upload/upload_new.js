@@ -17,11 +17,11 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   $scope.title = "Upload New";
   $scope.stdout = "";
   
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var src = onto.with_prefix('src');
-  var rights = onto.with_prefix('rights');
-  var owner = onto.with_prefix('owner');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var src = onto.pre('src');
+  var rights = onto.pre('rights');
+  var owner = onto.pre('owner');
   
   $scope.form = {};
   $scope.form[ label ] = "";
@@ -62,8 +62,8 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   
   
   function touch (){
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
     $scope.json['@id'] = $scope.urn;
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
@@ -185,8 +185,8 @@ function( $scope, $injector, urnServ, json, stdout, user, $upload, config, $http
   function upload_success( data ){
 		$scope.upload_out = "Uploaded successfully";
   	exif_json( data );
-  	$scope.json[ onto.with_prefix('src') ]['@id'] = data.src.replace(' ', "%20");
-  	$scope.json[ onto.with_prefix('orig') ] = data.orig;
+  	$scope.json[ onto.pre('src') ]['@id'] = data.src.replace(' ', "%20");
+  	$scope.json[ onto.pre('orig') ] = data.orig;
   	json_to_str( $scope.json );
   	urnServ.fresh( urnServ.base+"upload.{{ id }}", fresh_callback );
   }

@@ -96,13 +96,13 @@ function( $scope, urnServ, $routeParams, collection, $location, json, stdout, us
 		return json.urn( $scope.upload_urn ).then( function( data ){
 			return json.get( data.src[0] ).then( function( data ){
 				
-		  	var src = onto.with_prefix('src');
-		  	var creator = onto.with_prefix('creator');
-		  	var memberOf = onto.with_prefix('memberOf');
-		  	var created = onto.with_prefix('created');
-		  	var license = onto.with_prefix('rights');
-				var label = onto.with_prefix('label');
-				var desc = onto.with_prefix('description');
+		  	var src = onto.pre('src');
+		  	var creator = onto.pre('creator');
+		  	var memberOf = onto.pre('memberOf');
+		  	var created = onto.pre('created');
+		  	var license = onto.pre('rights');
+				var label = onto.pre('label');
+				var desc = onto.pre('description');
 				
 		  	$scope.json['@id'] = $scope.urn;
 		  	$scope.json[src]['@id'] = $scope.upload_urn;
