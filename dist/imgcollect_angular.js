@@ -694,8 +694,9 @@ var app = angular.module('app',[
 ]);
 
 
-app.service( 'config', [ 'host', function( host ){
-return({
+app.service( 'config', [ 
+'host',
+function( host ){ return({
     
     serv: {
       
@@ -747,114 +748,6 @@ return({
       //url: 'http://www.perseids.org/imgup/upload'
 			
     },
-		ontology: {
-		  imgViewer: {
-		    term: "imageViewer",
-		    ns: "http://data.perseus.org/rdfvocab/cite/",
-		    prefix: "citex"
-		  },
-		  imgServer: {
-		    term: "imageServer",
-		    ns: "http://data.perseus.org/rdfvocab/cite/",
-		    prefix: "citex"
-		  },
-		  label:  {
-		     term: "label",
-		     ns: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-		     prefix: "rdf"
-		  },
-		  description: {
-		     term: "description",
-		     ns: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-		     prefix: "rdf"
-		  }, 
-		  type: {
-		     term: "type",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  src: {
-		     term: "references",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  orig:  {
-		     term: "orig",
-		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		     prefix: "this"
-		  },
-		  owner: {
-		     term: "publisher",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  creator: {
-		     term: "creator",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-			identifier: {
-				term: "dct:identifier",
-	     ns: "http://purl.org/dc/terms/",
-	     prefix: "dct"
-			},
-		  contributor: {
-		     term: "contributor",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  created: {
-		     term: "created",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  modified: {
-		     term: "modified",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  width: {
-		     term: "width",
-		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		     prefix: "this"
-		  },
-		  height: {
-		     term: "height",
-		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		     prefix: "this"
-		  },
-		  x: {
-		     term: "x",
-		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		     prefix: "this"
-		  },
-		  y: {
-		     term: "y",
-		     ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
-		     prefix: "this"
-		  },
-		  subject: {
-		     term: "subject",
-		     ns: "http://purl.org/dc/terms/",
-		     prefix: "dct"
-		  },
-		  memberOf: {
-		     term: "belongsTo",
-		     ns: "http://www.homermultitext.org/cite/rdf/",
-		     prefix: "cite"
-		  },
-		  represents: {
-		     term: "P138_represents",
-		     ns: "http://www.cidoc-crm.org/cidoc-crm/",
-		     prefix: "crm"
-		  },
-		  rights: {
-		     term: "license",
-		     ns: "http://www.homermultitext.org/cite/rdf/",
-		     prefix: "cite",
-		     default_value: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
-		  }
-		},
 		
 		// Config user access
 		
@@ -875,6 +768,119 @@ function() {
     url: location.protocol+'//'+location.hostname+( location.port ? ':' + location.port : '' )
   });
   
+}]);
+
+
+app.service( 'onto_config', [ 
+function(){ 
+	return({
+		imgViewer: {
+		  term: "imageViewer",
+		  ns: "http://data.perseus.org/rdfvocab/cite/",
+		  prefix: "citex"
+		},
+		imgServer: {
+		  term: "imageServer",
+		  ns: "http://data.perseus.org/rdfvocab/cite/",
+		  prefix: "citex"
+		},
+		label:  {
+		   term: "label",
+		   ns: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		   prefix: "rdf"
+		},
+		description: {
+		   term: "description",
+		   ns: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		   prefix: "rdf"
+		}, 
+		type: {
+		   term: "type",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		src: {
+		   term: "references",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		orig:  {
+		   term: "orig",
+		   ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		   prefix: "this"
+		},
+		owner: {
+		   term: "publisher",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		creator: {
+		   term: "creator",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		identifier: {
+			term: "dct:identifier",
+		 ns: "http://purl.org/dc/terms/",
+		 prefix: "dct"
+		},
+		contributor: {
+		   term: "contributor",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		created: {
+		   term: "created",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		modified: {
+		   term: "modified",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		width: {
+		   term: "width",
+		   ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		   prefix: "this"
+		},
+		height: {
+		   term: "height",
+		   ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		   prefix: "this"
+		},
+		x: {
+		   term: "x",
+		   ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		   prefix: "this"
+		},
+		y: {
+		   term: "y",
+		   ns: "https://github.com/PerseusDL/CITE-JSON-LD/blob/master/templates/img/SCHEMA.md#",
+		   prefix: "this"
+		},
+		subject: {
+		   term: "subject",
+		   ns: "http://purl.org/dc/terms/",
+		   prefix: "dct"
+		},
+		memberOf: {
+		   term: "belongsTo",
+		   ns: "http://www.homermultitext.org/cite/rdf/",
+		   prefix: "cite"
+		},
+		represents: {
+		   term: "P138_represents",
+		   ns: "http://www.cidoc-crm.org/cidoc-crm/",
+		   prefix: "crm"
+		},
+		rights: {
+		   term: "license",
+		   ns: "http://www.homermultitext.org/cite/rdf/",
+		   prefix: "cite",
+		   default_value: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+		}
+	});
 }]);
 
 
@@ -4452,8 +4458,8 @@ function( $http, $q, config, user ) {
 
 
 app.service( 'onto', [ 
-'config',
-function( config ) {
+'onto_config',
+function( onto_config ) {
 	
 	return({
 		short: short,
@@ -4470,15 +4476,15 @@ function( config ) {
 	// precheck
 
   function precheck( a_term ){
-    return angular.isDefined( config.ontology[a_term] );
+    return angular.isDefined( onto_config[a_term] );
   } 
 	
 	
 	// Get the prefix form from a url
 	
 	function short( url ){
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
+    for ( var key in onto_config ) {
+			var item = onto_config[ key ];
 			var verb = item['ns']+item['term'];
 			if ( url == verb ) {
 				return item['prefix']+":"+item['term'];
@@ -4492,7 +4498,7 @@ function( config ) {
 
 	function with_prefix( a_term ){
     if ( precheck( a_term ) ){
-      return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
+      return onto_config[a_term].prefix + ":" + onto_config[a_term].term;
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -4505,7 +4511,7 @@ function( config ) {
 	
 	function with_ns( a_term ){
     if ( precheck( a_term ) ){
-      return config.ontology[a_term].ns + config.ontology[a_term].term;
+      return onto_config[a_term].ns + onto_config[a_term].term;
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -4517,9 +4523,9 @@ function( config ) {
 	function default_value( a_term ){
     if ( precheck( a_term ) ){
 		  
-      // TODO we should allow the config to specify the type as well
+      // TODO we should allow the onto_config to specify the type as well
 		  
-      return config.ontology[a_term].default_value || "";
+      return onto_config[a_term].default_value || "";
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -4535,12 +4541,12 @@ function( config ) {
     var seen = {};
 	  
     angular.forEach( 
-		Object.keys( config.ontology ), 
+		Object.keys( onto_config ), 
 		function( term, i ) {
-		  if ( ! seen[ config.ontology[term].prefix ] ){
-			  pfx_query = pfx_query + " PREFIX " + config.ontology[term].prefix + ": <" + config.ontology[term].ns + ">";
+		  if ( ! seen[ onto_config[term].prefix ] ){
+			  pfx_query = pfx_query + " PREFIX " + onto_config[term].prefix + ": <" + onto_config[term].ns + ">";
 		  }
-		  seen[ config.ontology[term].prefix ] = 1;
+		  seen[ onto_config[term].prefix ] = 1;
     });
 		  
     // backwards compatibility
@@ -4555,8 +4561,8 @@ function( config ) {
 	function prefix_array(){
 		var arr = [];
 		var seen = {};
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
+    for ( var key in onto_config ) {
+			var item = onto_config[ key ];
 			if ( ! seen[ item.prefix ] ){
 				arr.push( "PREFIX " + item.prefix + ": <" + item.ns + ">" );
 				seen[ item.prefix ] = 1;

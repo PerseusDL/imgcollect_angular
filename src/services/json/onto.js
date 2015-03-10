@@ -1,6 +1,6 @@
 app.service( 'onto', [ 
-'config',
-function( config ) {
+'onto_config',
+function( onto_config ) {
 	
 	return({
 		short: short,
@@ -17,15 +17,15 @@ function( config ) {
 	// precheck
 
   function precheck( a_term ){
-    return angular.isDefined( config.ontology[a_term] );
+    return angular.isDefined( onto_config[a_term] );
   } 
 	
 	
 	// Get the prefix form from a url
 	
 	function short( url ){
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
+    for ( var key in onto_config ) {
+			var item = onto_config[ key ];
 			var verb = item['ns']+item['term'];
 			if ( url == verb ) {
 				return item['prefix']+":"+item['term'];
@@ -39,7 +39,7 @@ function( config ) {
 
 	function with_prefix( a_term ){
     if ( precheck( a_term ) ){
-      return config.ontology[a_term].prefix + ":" + config.ontology[a_term].term;
+      return onto_config[a_term].prefix + ":" + onto_config[a_term].term;
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -52,7 +52,7 @@ function( config ) {
 	
 	function with_ns( a_term ){
     if ( precheck( a_term ) ){
-      return config.ontology[a_term].ns + config.ontology[a_term].term;
+      return onto_config[a_term].ns + onto_config[a_term].term;
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -64,9 +64,9 @@ function( config ) {
 	function default_value( a_term ){
     if ( precheck( a_term ) ){
 		  
-      // TODO we should allow the config to specify the type as well
+      // TODO we should allow the onto_config to specify the type as well
 		  
-      return config.ontology[a_term].default_value || "";
+      return onto_config[a_term].default_value || "";
     }
 	  else {
       console.log( "Missing ontology term " + a_term );
@@ -82,12 +82,12 @@ function( config ) {
     var seen = {};
 	  
     angular.forEach( 
-		Object.keys( config.ontology ), 
+		Object.keys( onto_config ), 
 		function( term, i ) {
-		  if ( ! seen[ config.ontology[term].prefix ] ){
-			  pfx_query = pfx_query + " PREFIX " + config.ontology[term].prefix + ": <" + config.ontology[term].ns + ">";
+		  if ( ! seen[ onto_config[term].prefix ] ){
+			  pfx_query = pfx_query + " PREFIX " + onto_config[term].prefix + ": <" + onto_config[term].ns + ">";
 		  }
-		  seen[ config.ontology[term].prefix ] = 1;
+		  seen[ onto_config[term].prefix ] = 1;
     });
 		  
     // backwards compatibility
@@ -102,8 +102,8 @@ function( config ) {
 	function prefix_array(){
 		var arr = [];
 		var seen = {};
-    for ( var key in config.ontology ) {
-			var item = config.ontology[ key ];
+    for ( var key in onto_config ) {
+			var item = onto_config[ key ];
 			if ( ! seen[ item.prefix ] ){
 				arr.push( "PREFIX " + item.prefix + ": <" + item.ns + ">" );
 				seen[ item.prefix ] = 1;
