@@ -17,8 +17,8 @@ function( $scope, $injector, user, $rootScope, onto ){
     $scope.title = "Annotation List";
     $scope.keys = [ 'urn','label','desc','user','time' ];
 	  
-	  var label = onto.with_prefix('label');  
-	  var desc = onto.with_prefix('description');
+	  var label = onto.pre('label');  
+	  var desc = onto.pre('description');
 				  
     $injector.invoke( ListCtrl, this, { $scope: $scope } );
     $scope.init([label,desc]);

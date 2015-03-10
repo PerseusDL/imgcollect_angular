@@ -25,6 +25,9 @@ app.service( 'user', [ '$http', '$q', 'config', function( $http, $q, config ) {
     url: function(){ 
       return ( data != null ) ? data.uri : null;
     },
+		node: function(){
+			return ( data != null ) ? { "@id": data.uri } : null;
+		},
     name: function(){
       return ( data != null ) ? data.name : null;
     },

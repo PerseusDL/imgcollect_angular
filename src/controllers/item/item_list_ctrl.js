@@ -17,9 +17,9 @@ function( $scope, $injector, $rootScope, $routeParams, user, onto, query ){
   // The fields you allow users to filter
   // are set with object keys in $scope.filter
 
-  var label = onto.with_prefix('label');  
-  var desc = onto.with_prefix('description');
-  var rep = onto.with_prefix('represents');
+  var label = onto.pre('label');  
+  var desc = onto.pre('description');
+  var rep = onto.pre('represents');
   $scope.filter = {};
   $scope.filter[label] = null;
   $scope.filter[desc] = null;

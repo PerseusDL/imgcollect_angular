@@ -74,8 +74,8 @@ function( $scope, urnServ, json, stdout, user, onto, tmpl ){
   
   var touch = function(){
     $scope.json['@id'] = $scope.urn;
-    var creator = onto.with_prefix('creator');
-    var created = onto.with_prefix('created');
+    var creator = onto.pre('creator');
+    var created = onto.pre('created');
     $scope.json[creator]['@id'] = user.id();
     $scope.json[created] = ( new TimeStamp ).xsd();
   }

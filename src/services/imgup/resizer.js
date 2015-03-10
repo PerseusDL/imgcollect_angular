@@ -60,13 +60,13 @@ function( json, imgup, config, urnServ, onto, tmpl ) {
 	
 	function set_vals(){
 		res_tmpl['@id'] = resize_urn;
-		res_tmpl[onto.with_prefix('memberOf')]['@id'] = upload['@id'];
+		res_tmpl[onto.pre('memberOf')]['@id'] = upload['@id'];
 		return send();
 	}
 	
 	function send(){
 		var save_to = config.xhr.json.url+'/data/resize/'+resize_urn;
-		var img = upload[ onto.with_prefix('src') ]['@id'];
+		var img = upload[ onto.pre('src') ]['@id'];
 		return imgup.resize( img, 200, 200, save_to, res_tmpl ).then( 
 		function( data ){
 			return data;
