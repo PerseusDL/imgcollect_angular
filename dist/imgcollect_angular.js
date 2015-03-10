@@ -2617,19 +2617,6 @@ function( $scope, urnServ, json, stdout, user, onto, tmpl ){
 }];
 
 
-// Pre-delete
-
-appControllers.controller( 'PreDeleteCtrl', [
-'$scope',
-'$window',
-function( $scope, $window ){
-	$scope.urn = null;
-	$scope.go = function(){
-		$window.location.href ="#/delete/"+$scope.urn;
-	}
-}]);
-
-
 // resize/:urn
 
 appControllers.controller( 'ResizeCtrl', [
@@ -3576,6 +3563,19 @@ function(){
 	return {
 		templateUrl: 'html/share/msg/urn-serv-msg.html'
 	}
+});
+
+
+// Build a delete button
+
+appDirectives.directive('deleteUrn', 
+function(){
+return {
+  link: function( scope, elem, attr ){
+		var urn = attr.ngParam;
+		elem.wrap( '<a href="#/delete/'+urn+'"></a>' );
+  }
+}
 });
 
 
