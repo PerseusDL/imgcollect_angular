@@ -165,6 +165,7 @@ function( $rootScope, $location, user, config ){
 			}
 		}
 	}
+        $rootScope.public_view = public_view;
 	
 	// If a user is logged-in they don't need to see the login view
 	
