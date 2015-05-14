@@ -11,16 +11,18 @@
 
 
 <!-- img-loc -->
+<div class="row">
+  <div class="columns small-12">
+    <div class="rights"><span class="rights-preamble">This image is licensed or protected by copyright under </span><a href="{{ license }}">{{ license }}</a></div>
+  </div>
+</div>
+
 
 <div class="row">
 	<div class="columns small-12">
 		<img src="{{ src }}" ng-param="{{ coords[0] }},{{ coords[1] }},{{ coords[2] }},{{ coords[3] }},{{ max_width }},{{ max_height }}" img-loc />
 	</div>
 	<div class="clearfix padder"></div>
-</div>
-
-<div class="row">
-    <div class="rights"><a href="{{ license }}">{{ license }}</a></div>
 </div>
 
 <div class="row">
