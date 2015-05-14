@@ -146,7 +146,8 @@ appControllers.controller( 'ViewCtrl', [
 '$scope',
 '$routeParams',
 'json',
-function( $scope, $routeParams, json ){
+'onto',
+function( $scope, $routeParams, json, onto ){
   
   // Get the URN
   
@@ -163,6 +164,7 @@ function( $scope, $routeParams, json ){
   	get_src( urn );
   }
   $scope.max_width = 600;
+  $scope.license = "";
   
   
   // What's the src JSON?
@@ -187,6 +189,10 @@ function( $scope, $routeParams, json ){
       break;
     }
   }
+
+  function set_license(data) {
+    $scope.license = data[onto.with_prefix('rights')]['@id'];
+  }
   
   
   // Get the src JSON
@@ -194,6 +200,7 @@ function( $scope, $routeParams, json ){
   function get_json( src ){
     json.get( src ).then( function( data ){
       check_type( data );
+      set_license( data );
     });
   }
   
