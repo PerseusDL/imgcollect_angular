@@ -13,7 +13,8 @@
 <!-- img-loc -->
 <div class="row">
   <div class="columns small-12">
-    <div class="rights"><span class="rights-preamble">This image is licensed or protected by copyright under </span><a href="{{ license }}">{{ license }}</a></div>
+    <div class="rights" ng-if="license_text"><span class="rights-preamble">{{ license_text}} </span></div>
+    <div class="rights" ng-if="license_url"><span class="rights-preamble">This image is licensed under <a href="{{license_url}}">{{ license_url }}</a></span></div>
   </div>
 </div>
 

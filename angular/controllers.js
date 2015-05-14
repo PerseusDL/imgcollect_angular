@@ -164,7 +164,8 @@ function( $scope, $routeParams, json, onto ){
   	get_src( urn );
   }
   $scope.max_width = 600;
-  $scope.license = "";
+  $scope.license_url = "";
+  $scope.license_text = "";
   
   
   // What's the src JSON?
@@ -191,7 +192,12 @@ function( $scope, $routeParams, json, onto ){
   }
 
   function set_license(data) {
-    $scope.license = data[onto.with_prefix('rights')]['@id'];
+    var license = data[onto.with_prefix('rights')]['@id'];
+    if (license.match(/^http/)) {
+      $scope.license_url = license;
+    } else {
+      $scope.license_text = license;
+    }
   }
   
   
